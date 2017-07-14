@@ -6,6 +6,10 @@
 package Controlador;
 
 import Dao.DaoItemsComercializacion;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -40,6 +44,26 @@ public class ControladorItemsComercializacion {
         if (filaRegistro == 0) {
             
             mensaje = "Fallo en la eliminacion del item";
+        }
+        
+        return mensaje;
+    }
+    
+    public String existeItem(String item){
+        String mensaje = null ;
+                              
+        ResultSet rs = dao.consultarItemComercializacion(item);
+
+        try {
+            if ( rs.next() )
+            {
+                mensaje = "El item ya se encuentra registrado en la base de datos";
+            }
+            else {
+                mensaje =  "No existe";
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorItemsInversion.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return mensaje;

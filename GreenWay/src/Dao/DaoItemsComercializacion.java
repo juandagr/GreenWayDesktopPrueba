@@ -42,6 +42,23 @@ public class DaoItemsComercializacion {
         return numFilas;
     }
     
+    public ResultSet consultarItemComercializacion(String item){
+        
+        String sql_select;
+        sql_select="SELECT * FROM items_de_comercializacion WHERE item = '"+item+"';";
+        try{
+            
+                Connection conn= fachada.conectar_BD();
+                instruccion = conn.createStatement();
+                respuesta = instruccion.executeQuery(sql_select);
+                fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        return respuesta; 
+    }
+    
     public ResultSet consultarItemsComercializacion(){
         
         String sql_select;

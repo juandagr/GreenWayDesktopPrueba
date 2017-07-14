@@ -310,6 +310,7 @@ public class GUI_items extends javax.swing.JFrame {
         String categoria = jComboBoxCategoria.getSelectedItem().toString();
         String subCategoria = jComboBoxSubCategoria.getSelectedItem().toString();
         String item = jTextField1.getText();
+        String mensaje = null;
         
         if (item.trim().equalsIgnoreCase("")) {
             JOptionPane.showMessageDialog(null, "No escribio ningun item", "Error", JOptionPane.ERROR_MESSAGE);
@@ -318,9 +319,16 @@ public class GUI_items extends javax.swing.JFrame {
 
                 if (subCategoria.equalsIgnoreCase("Seleccione una subcategoria") == false) {
                     ControladorItemsInversion controlador = new ControladorItemsInversion();
-                    String mensaje = controlador.ingresarItem(subCategoria, item);
-                    this.consultarItemsInversionSubcategoria(subCategoria);
-                    JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    mensaje = controlador.existeItem(item);
+                    
+                    if (mensaje.equalsIgnoreCase("No existe")) {
+                        mensaje = controlador.ingresarItem(subCategoria, item);
+                        this.consultarItemsInversionSubcategoria(subCategoria);
+                        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Seleccione una subcategoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -329,9 +337,15 @@ public class GUI_items extends javax.swing.JFrame {
 
                 if (subCategoria.equalsIgnoreCase("Seleccione una subcategoria") == false) {
                     ControladorCostosOperacionales controlador = new ControladorCostosOperacionales();
-                    String mensaje = controlador.ingresarItem(subCategoria, item);
-                    this.consultarItemsCostosOperacionalesSubcategoria(subCategoria);
-                    JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    mensaje = controlador.existeItem(item);
+                    
+                    if (mensaje.equalsIgnoreCase("No existe")) {
+                        mensaje = controlador.ingresarItem(subCategoria, item);
+                        this.consultarItemsCostosOperacionalesSubcategoria(subCategoria);
+                        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }else{
                     JOptionPane.showMessageDialog(null, "Seleccione una subcategoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -339,9 +353,15 @@ public class GUI_items extends javax.swing.JFrame {
             }else if (categoria.equalsIgnoreCase("Comercializacion")){
 
                 ControladorItemsComercializacion controlador = new ControladorItemsComercializacion();
-                String mensaje = controlador.ingresarItem(item);
-                consultarItemsComercializacion();
-                JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                mensaje = controlador.existeItem(item);
+                    
+                    if (mensaje.equalsIgnoreCase("No existe")) {
+                        mensaje = controlador.ingresarItem(item);
+                        this.consultarItemsComercializacion();
+                        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(null, mensaje, "Informacion", JOptionPane.INFORMATION_MESSAGE);
+                    }
 
             }else{
                 JOptionPane.showMessageDialog(null, "Seleccione una categoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);

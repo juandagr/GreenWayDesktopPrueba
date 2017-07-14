@@ -44,6 +44,23 @@ public class DaoItemsInversion {
         return numFilas;
     }
     
+    public ResultSet consultarItemInversion(String item){
+        
+        String sql_select;
+        sql_select="SELECT * FROM items_de_inversion WHERE item = '"+item+"';";
+        try{
+            
+                Connection conn= fachada.conectar_BD();
+                instruccion = conn.createStatement();
+                respuesta = instruccion.executeQuery(sql_select);
+                fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        return respuesta; 
+    }
+    
     public ResultSet consultarItemsInversion(){
         
         String sql_select;
