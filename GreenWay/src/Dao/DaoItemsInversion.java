@@ -6,7 +6,7 @@
 package Dao;
 
 import Conexion.Fachada;
-import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
