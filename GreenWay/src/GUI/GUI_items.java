@@ -367,6 +367,8 @@ public class GUI_items extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Seleccione una categoria", "Informacion", JOptionPane.INFORMATION_MESSAGE);
             }     
         }
+        
+        jTextField1.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBoxSubCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSubCategoriaActionPerformed
