@@ -29,7 +29,7 @@ public class DaoEmpleado {
     }
 
     //metodo encargado de ingresar un empleado a la base de datos en la tabla empleado, el metodo recribe un empleado 
-    // y lo guarda en la BD
+    // y lo guarda en la base de datos
     public int ingresarEmpleadoBD(Empleado empleado) {
         
         int numFilas;
@@ -55,6 +55,8 @@ public class DaoEmpleado {
         return numFilas;
     }
     
+    //Metodo para consultar un empleado en la base de datos, la busqueda se realiza por medio
+    //de la cedula
     public ResultSet consultarEmpleadoBD(String idEmpleado){
         
         String sql_select;
@@ -72,6 +74,8 @@ public class DaoEmpleado {
     
     }
     
+    //Metodo para consultar todos los empleados que se encuentran registrados en la base
+    //de datos
     public ResultSet consultarTodosEmpleadosBD(){
         
         String sql_select;
@@ -88,7 +92,7 @@ public class DaoEmpleado {
         return respuesta; 
     
     }
-     
+    
     /*public int actualizarEmpleado(Empleado emp){
         
         int numFilas = 0;

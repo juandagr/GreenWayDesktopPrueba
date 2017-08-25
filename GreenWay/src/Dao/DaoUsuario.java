@@ -25,6 +25,8 @@ public class DaoUsuario {
         fachada = new Fachada();
     }
     
+    //metodo encargado de ingresar un usuario a la base de datos en la tabla usuario, el metodo recribe un usuario 
+    // y lo guarda en la base de datos
     public int ingresarUsuarioBD(Usuario usuario){
         int numFilas = 0;
         String consulta = "INSERT INTO Usuario (usuario, password, estado, Empleado_identificacion) "
@@ -47,16 +49,35 @@ public class DaoUsuario {
         return numFilas;
     }
     
-    public ResultSet consultarItemInversion(String identificacion){
+    //Metodo para consultar un usuario en la base de datos, la busqueda se realiza por medio
+    //de la identificacion del empleado al cual corresponde el usuario
+    public ResultSet consultarUsuarioPorId(String idUsuario){
         
         String sql_select;
-        sql_select="SELECT * FROM Usuario WHERE Empleado_identificacion = '"+identificacion+"';";
+        sql_select="SELECT * FROM usuario WHERE empleado_identificacion ='"+idUsuario+"';";
         try{
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
             
-                Connection conn= fachada.conectar_BD();
-                instruccion = conn.createStatement();
-                respuesta = instruccion.executeQuery(sql_select);
-                fachada.cerrarConexion(conn);              
+            System.out.println("Error al consultar datos");
+        }
+        return respuesta; 
+    }
+    
+    //Metodo para consultar un usuario en la base de datos, la busqueda se realiza por medio
+    //del nombre de usuario
+    public ResultSet consultarUsuarioPorNombre(String nombreUsuario){
+        
+        String sql_select;
+        sql_select="SELECT * FROM usuario WHERE usuario ='"+nombreUsuario+"';";
+        try{
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
         }catch(SQLException e){
             
             System.out.println("Error al consultar datos");

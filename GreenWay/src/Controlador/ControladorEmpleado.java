@@ -7,9 +7,11 @@ package Controlador;
 
 import Clases.Empleado;
 import Dao.DaoEmpleado;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,11 +20,11 @@ import java.sql.SQLException;
 public class ControladorEmpleado {
     
     //Atributos
-    private DaoEmpleado daoUsuario;
+    private DaoEmpleado daoEmpleado;
     
     //Constructor
     public ControladorEmpleado() {
-        this.daoUsuario = new DaoEmpleado();
+        this.daoEmpleado = new DaoEmpleado();
     }
     
     //metodo para realizar el ingreso de un empleado a la base de datos, dados los datos
@@ -32,7 +34,7 @@ public class ControladorEmpleado {
         String mensaje = "Empleado creado exitosamente." ;
         Empleado empleado = new Empleado(nombre, apellido, identificacion, cargo, telefono, direccion, estado, fotografia, correo, fechaDeNacimiento, estado_civil);
                               
-        int filaRegistro = this.daoUsuario.ingresarEmpleadoBD(empleado);
+        int filaRegistro = this.daoEmpleado.ingresarEmpleadoBD(empleado);
 
         if (filaRegistro == -1) {
             
@@ -46,7 +48,7 @@ public class ControladorEmpleado {
     public Empleado consultarEmpleado(String idEmpleado){
         
         Empleado empleado = null;
-        ResultSet consulta = this.daoUsuario.consultarEmpleadoBD(idEmpleado);
+        ResultSet consulta = this.daoEmpleado.consultarEmpleadoBD(idEmpleado);
         try {
             //se pregunta si el resultset no esta vacio, es decir si consulto algo
             if( consulta.next()){
@@ -80,5 +82,25 @@ public class ControladorEmpleado {
         
         return empleado;
         
+    }
+    
+     
+    //Metodo para verificar si un empleado ya ha sido registrado en la base de datos
+    public boolean empleadoRegistrado(String identificacion){
+        boolean resultado = false;
+        ResultSet rs = this.daoEmpleado.consultarEmpleadoBD(identificacion);
+        
+        try {
+            if (rs.next()) {
+                resultado = true;
+
+            }else{
+
+                resultado = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
 }

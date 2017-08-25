@@ -7,14 +7,14 @@ package GUI;
 
 /**
  *
- * @author Paola
+ * @author 
  */
 public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
 
+    //Atributos
     public Gui_login gui_login;
-    /**
-     * Creates new form Gui_VentanaPrincipal
-     */
+    
+    //Constructor
     public Gui_VentanaPrincipalGerente(Gui_login login) {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -152,13 +152,14 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
         // TODO add your handling code here:
-        /*try{
-         Gui_empleado empleado =new Gui_empleado(this);
+        
+         GUI_empleados empleados =new GUI_empleados(this);
     
-         empleado.setVisible(true);
+         empleados.setVisible(true);
+         
          this.dispose();
          
-       }catch(Exception e){}*/
+       
       
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
@@ -203,7 +204,7 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
     private void jButtonItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonItemsActionPerformed
         this.setVisible(false); 
         
-        GUI_items gui_items = new GUI_items();
+        GUI_items gui_items = new GUI_items(this);
         
         gui_items.setVisible(true);
     }//GEN-LAST:event_jButtonItemsActionPerformed

@@ -5,19 +5,21 @@
  */
 package GUI;
 
+import Clases.Validaciones;
+
 
 
 /**
  *
- * @author Paola
+ * @author 
  */
 public class Gui_login extends javax.swing.JFrame {
 
+    //Atributos
     public String usuario="";
     public String cargoUsuario="";
-    /**
-     * Creates new form gui_login
-     */
+
+    //Constructor
     public Gui_login() {
         initComponents();
         this.setLocationRelativeTo(null);

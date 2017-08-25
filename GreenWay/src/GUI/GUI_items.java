@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GUI_items extends javax.swing.JFrame {
 
+    Gui_VentanaPrincipalGerente gui_gerente;
     String[] subCategoriasInversion = {"APS", "Equipos y maquinaria"};
     String[] subCategoriasCostosOperacionales = {"Mano de obra", "Insecticidas-acaricidas", "Fungicidas", "Herbicidas", "Coadyuvantes", "Fertilizantes foliares", "Fertilizantes edaficos", "Otros gastos-imprevistos"};
     DefaultTableModel modeloItems = new DefaultTableModel(){
@@ -36,9 +37,10 @@ public class GUI_items extends javax.swing.JFrame {
     /**
      * Creates new form GUI_items
      */
-    public GUI_items() {
+    public GUI_items(Gui_VentanaPrincipalGerente gui_gerente) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.gui_gerente = gui_gerente;
         modeloItems.addColumn("Id");
         modeloItems.addColumn("Item");
     }
@@ -191,6 +193,7 @@ public class GUI_items extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jComboBoxSubCategoria = new javax.swing.JComboBox();
         jButtonEliminar = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -255,6 +258,13 @@ public class GUI_items extends javax.swing.JFrame {
             }
         });
 
+        jToggleButton1.setText("Salir");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -275,7 +285,8 @@ public class GUI_items extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBoxSubCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jComboBoxSubCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jToggleButton1))
                 .addContainerGap(48, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -283,7 +294,7 @@ public class GUI_items extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxSubCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -295,7 +306,9 @@ public class GUI_items extends javax.swing.JFrame {
                     .addComponent(jButtonEliminar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToggleButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -456,6 +469,11 @@ public class GUI_items extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        this.gui_gerente.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -486,7 +504,7 @@ public class GUI_items extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_items().setVisible(true);
+                new GUI_items(new Gui_VentanaPrincipalGerente(new Gui_login())).setVisible(true);
             }
         });
     }
@@ -501,5 +519,6 @@ public class GUI_items extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableItems;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }
