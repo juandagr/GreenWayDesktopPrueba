@@ -20,7 +20,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -43,36 +47,114 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
     
 
     //metodo para guardar una imagen que representa la foto del empleado
-   /*public String copiarImagen(){
+    public String copiarImagen(){
         FileInputStream in = null;
         String ruta=null;
-        try {
-            File inFile = new File(foto.toString());
-            ruta="Empleados/"+jTextFieldIdentificacion.getText()+".png";
-            File outFile = new File(ruta);
-            in = new FileInputStream(inFile);
-            FileOutputStream out = new FileOutputStream(outFile);
-            int c;
-            while( (c = in.read() ) != -1)
-                out.write(c);
-            in.close();
-            out.close();
+        
+        if (foto == null) {
             
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Gui_producto.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Gui_producto.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        }else{
             try {
+                File inFile = new File(foto.toString());
+                ruta="Empleados/"+jTextFieldIdentificacion.getText()+".png";
+                File outFile = new File(ruta);
+                in = new FileInputStream(inFile);
+                FileOutputStream out = new FileOutputStream(outFile);
+                int c;
+                while( (c = in.read() ) != -1)
+                    out.write(c);
                 in.close();
+                out.close();
+
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(Gui_producto.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    in.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                }catch (NullPointerException ex) {
+                    Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         
+        
         return ruta;
-    }*/
+    }
 
+    //metodo para agregar un empleado a la base de datos
+    public String agregarEmpleado(){
+        //variable que almacenara el resultado
+        String resultado = "";
+        
+        // Obtencion de datos de la interfaz
+        String id=jTextFieldIdentificacion.getText().trim(),nom=jTextFieldNombre.getText().trim(),ape=jTextFieldApellidos.getText().trim();
+        String cargo=this.jComboBoxCargo.getSelectedItem().toString();
+        String dni=jComboBoxEstado.getSelectedItem().toString();
+        boolean estado = true;
+        if (dni.equalsIgnoreCase("activo")) {
+            estado = true;
+        }else{
+            estado = false;
+        }
+        String tel=jTextFieldCelular.getText().trim(),emil=jTextFieldEmail.getText().trim();
+        String dir=jTextFieldDireccion.getText().trim();
+        String estadoCivil = jComboBoxEstadoCivil.getSelectedItem().toString();
+        Date fechaNacimiento = jDateChooserNacimiento.getDate();
+        String usuario=jTextFieldUsuario.getText().trim();
+        String contraseña = jTextFieldContraseña.getText().trim();
+        String foto = this.copiarImagen();
+        
+        //creacion de  controlador para realizar el ingreso del empleado y el usuario, tambien de la clase que valida los campos
+        ControladorEmpleado controladorEmpleado = new ControladorEmpleado();
+        ControladorUsuario controladorUsuario = new ControladorUsuario();
+        Validaciones validar = new Validaciones();
+        
+        try {
+            //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
+            if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarCargoEmpleado(cargo) && validar.validarEstadoCivilEmpleado(estadoCivil) && (foto != null)) {
+                //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
+                if (controladorEmpleado.empleadoRegistrado(id) == false) {
+                    //se verifica si el nombre de usuario ya se encuentra registrado en la base de datos
+                    if (controladorUsuario.usuarioRegistrado(usuario) == false) {
+                        
+                        resultado = controladorEmpleado.ingresarEmpleado(nom, ape, id, cargo, tel, dir, estado, foto, emil, fechaNacimiento, estadoCivil);
+                        controladorUsuario.ingresarUsuario(usuario, contraseña, estado, id);
+                        
+                        limpiar();
+                        
+                    }else{
+                        
+                        resultado = "El usuario ya se encuentra registrado.";
+                        //JOptionPane.showMessageDialog(null, "El usuario ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
+                        jTextFieldUsuario.setText("");
+                    }
+                    
+                }else{
+                    
+                    resultado = "El empleado ya se encuentra registrado.";
+                    //JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
+                    limpiar();
+                }                
+                
+            }else{
+                resultado = "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+                //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (NullPointerException ex) {
+            resultado = "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+            //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+            limpiar();
+        } catch (Exception ex) {
+            Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultado;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -456,20 +538,21 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldCelularKeyTyped
 
     private void jButtonSeleccionarFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarFotoActionPerformed
-        /*// TODO add your handling code here:
+        // TODO add your handling code here:
         int resultado;
-        Cargar_imagen ventana = new Cargar_imagen();
+
+        JFileChooser ventana = new JFileChooser();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("JPG y PNG","jpg","png");
 
-        ventana.jFileChooserCargarImagen.setFileFilter(filtro);
+        ventana.setFileFilter(filtro);
 
-        resultado= ventana.jFileChooserCargarImagen.showOpenDialog(null);
+        resultado= ventana.showOpenDialog(null);
 
 
         if (JFileChooser.APPROVE_OPTION == resultado){
 
 
-                foto = ventana.jFileChooserCargarImagen.getSelectedFile();
+                foto = ventana.getSelectedFile();
 
                 try{
 
@@ -484,67 +567,22 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
 
                 }
 
-         }*/
+         }
     }//GEN-LAST:event_jButtonSeleccionarFotoActionPerformed
 
     private void jButtonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonagregarActionPerformed
-
-        // Obtencion de datos de la interfaz
-        String id=jTextFieldIdentificacion.getText().trim(),nom=jTextFieldNombre.getText().trim(),ape=jTextFieldApellidos.getText().trim();
-        String cargo=this.jComboBoxCargo.getSelectedItem().toString();
-        String dni=jComboBoxEstado.getSelectedItem().toString();
-        boolean estado = true;
-        if (dni.equalsIgnoreCase("activo")) {
-            estado = true;
+        String resultado = this.agregarEmpleado();
+        if (resultado.equalsIgnoreCase("No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
+            JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
+        }else if (resultado.equalsIgnoreCase("El usuario ya se encuentra registrado.")) {
+            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
+        }else if (resultado.equalsIgnoreCase("El empleado ya se encuentra registrado.")) {
+            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
         }else{
-            estado = false;
+            JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+
         }
-        String tel=jTextFieldCelular.getText().trim(),emil=jTextFieldEmail.getText().trim();
-        String dir=jTextFieldDireccion.getText().trim();
-        String estadoCivil = jComboBoxEstadoCivil.getSelectedItem().toString();
-        Date fechaNacimiento = jDateChooserNacimiento.getDate();
-        String usuario=jTextFieldUsuario.getText().trim();
-        String contraseña = jTextFieldContraseña.getText().trim();
-        
-        //creacion de  controlador para realizar el ingreso del empleado y el usuario, tambien de la clase que valida los campos
-        ControladorEmpleado controladorEmpleado = new ControladorEmpleado();
-        ControladorUsuario controladorUsuario = new ControladorUsuario();
-        Validaciones validar = new Validaciones();
-        
-        try {
-            //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
-            if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarCargoEmpleado(cargo) && validar.validarEstadoCivilEmpleado(estadoCivil)) {
-                //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
-                if (controladorEmpleado.empleadoRegistrado(id) == false) {
-                    //se verifica si el nombre de usuario ya se encuentra registrado en la base de datos
-                    if (controladorUsuario.usuarioRegistrado(usuario) == false) {
-                        String resultado = controladorEmpleado.ingresarEmpleado(nom, ape, id, cargo, tel, dir, estado, "", emil, fechaNacimiento, estadoCivil);
-                        controladorUsuario.ingresarUsuario(usuario, contraseña, estado, id);
-                        JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
-                        limpiar();
-                        
-                    }else{
-                        
-                        JOptionPane.showMessageDialog(null, "El usuario ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
-                        jTextFieldUsuario.setText("");
-                    }
-                    
-                }else{
-                    
-                    JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
-                    limpiar();
-                }                
-                
-            }else{
-                JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
             
-        } catch (NullPointerException ex) {
-            JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
-            limpiar();
-        } catch (Exception ex) {
-            Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-        }    
     }//GEN-LAST:event_jButtonagregarActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
@@ -559,7 +597,7 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         limpiar();
         habilitar();
-        
+        foto = null;
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jTextFieldIdentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdentificacionActionPerformed
