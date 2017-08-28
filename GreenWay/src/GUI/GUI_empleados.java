@@ -68,6 +68,45 @@ public class GUI_empleados extends javax.swing.JFrame {
         
     }
 
+    //metodo para buscar y mostrar la informacion de un solo empleado por medio de su identificacion
+    public String buscarEmpleadoPorId(){
+        String resultado = "";
+        if (jTextFieldIdentificacion.getText().trim().equalsIgnoreCase("") == false) {
+            
+            Empleado empleado = new ControladorEmpleado().consultarEmpleado(jTextFieldIdentificacion.getText().trim());
+            
+            if (empleado != null) {
+                
+                while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
+                jTableEmpleados.setModel(modeloItems);
+
+                // Se crea un array que será una de las filas de la tabla.
+                Object [] fila = new Object[6]; // Hay tres columnas en la tabla
+
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                fila[0] = empleado.getIdentificacion();
+                fila[1] = empleado.getNombre();
+                fila[2] = empleado.getApellido();
+                fila[3] = empleado.getCargo();
+                if (empleado.isEstado()) {
+                    fila[4] = "Activo";
+                }else fila[4] = "Inactivo";
+                fila[5] = empleado.getTelefono();
+
+                // Se añade al modelo la fila completa.
+                modeloItems.addRow(fila);
+                
+                resultado = "";
+                
+            }else{
+                resultado = "";
+            }
+        }else{
+            resultado = "";
+        }
+        
+        return resultado;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -253,7 +292,10 @@ public class GUI_empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldIdentificacionKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //Empleado empleado = new Co
+        
+        
+            
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
