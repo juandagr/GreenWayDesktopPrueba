@@ -25,8 +25,11 @@ public class DaoUsuario {
         fachada = new Fachada();
     }
     
-    //metodo encargado de ingresar un usuario a la base de datos en la tabla usuario, el metodo recribe un usuario 
-    // y lo guarda en la base de datos
+    /**
+     * Metodo encargado de ingresar un usuario a la base de datos en la tabla usuario, el metodo recribe un usuario y lo guarda en la base de datos
+     * @param usuario
+     * @return
+     */
     public int ingresarUsuarioBD(Usuario usuario){
         int numFilas = 0;
         String consulta = "INSERT INTO Usuario (usuario, password, estado, Empleado_identificacion) "
@@ -49,8 +52,11 @@ public class DaoUsuario {
         return numFilas;
     }
     
-    //Metodo para consultar un usuario en la base de datos, la busqueda se realiza por medio
-    //de la identificacion del empleado al cual corresponde el usuario
+    /**
+     * Metodo para consultar un usuario en la base de datos, la busqueda se realiza por medio de la identificacion del empleado al cual corresponde el usuario
+     * @param idUsuario
+     * @return
+     */
     public ResultSet consultarUsuarioPorId(String idUsuario){
         
         String sql_select;
@@ -67,8 +73,11 @@ public class DaoUsuario {
         return respuesta; 
     }
     
-    //Metodo para consultar un usuario en la base de datos, la busqueda se realiza por medio
-    //del nombre de usuario
+    /**
+     * Metodo para consultar un usuario en la base de datos, la busqueda se realiza por medio del nombre de usuario
+     * @param nombreUsuario
+     * @return
+     */
     public ResultSet consultarUsuarioPorNombre(String nombreUsuario){
         
         String sql_select;
@@ -84,4 +93,37 @@ public class DaoUsuario {
         }
         return respuesta; 
     }
+    
+    /**
+     *  Metodo para realizar la actualización de un usuario en la base de datos
+     * @param usuario
+     * @return
+     */
+    public int actualizarUsuarioBD(Usuario usuario){
+        
+        int numFilas = 0;
+        String sql_update;
+        
+            sql_update = "UPDATE empleado SET usuario='" + usuario.getUsuario() + "', password='" + usuario.getPassword()+ 
+                    "',estado='" + usuario.getEstado() + "', empleado_identificacion='" + usuario.getIdentificacion() +
+                    "' WHERE id_empleado= '" + usuario.getIdentificacion()+"';";         
+        try{
+                Connection conn= fachada.conectar_BD();
+                instruccion = conn.createStatement();
+                numFilas = instruccion.executeUpdate(sql_update);
+                fachada.cerrarConexion(conn);     
+        }
+        catch(SQLException sqle){
+            
+            System.out.println("Error de Sql al conectar en programa \n" + sqle);
+            numFilas = -1;   
+        }
+        catch(Exception e){
+            
+            System.out.println("Ocurrió cualquier otra excepcion en programa"+e);
+            numFilas = -1;   
+        }
+        return numFilas;
+    }
+    
 }

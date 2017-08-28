@@ -26,8 +26,15 @@ public class ControladorUsuario {
         this.daoUsuario = new DaoUsuario();
     }
     
-    //metodo para realizar el ingreso de un usuario a la base de datos, dados los datos
-    //recibidos desde una interfaz de usuario
+   
+    /**
+     * metodo para realizar el ingreso de un usuario a la base de datos, dados los datos recibidos desde una interfaz de usuario
+     * @param nombreUsuario
+     * @param password
+     * @param estado
+     * @param identificacion
+     * @return String mensaje
+     */
     public String ingresarUsuario(String nombreUsuario, String password, boolean estado, String identificacion){
        
         String mensaje = "Usuario creado exitosamente." ;
@@ -42,8 +49,11 @@ public class ControladorUsuario {
         return mensaje;
     } 
     
-    //metodo para realizar la consulta de un usuario a la base de datos, este recibe la cedula del empleado asociado al cual se le desea
-    //consultar el usuario y devuelve el objeto representando el mismo
+    /**
+     *  metodo para realizar la consulta de un usuario a la base de datos, este recibe la cedula del empleado asociado al cual se le desea consultar el usuario y devuelve el objeto representando el mismo
+     * @param idEmpleado
+     * @return Usuario
+     */
     public Usuario consultarUsuario(String idEmpleado){
         
         Usuario usuario = null;
@@ -76,10 +86,36 @@ public class ControladorUsuario {
         
     }
     
-    //Metodo para verificar si un usuario ya ha sido registrado en la base de datos
-    public boolean usuarioRegistrado(String nomreUsuario){
+    /**
+     * Metodo para realizar la actualizacion de un usuario en base a los datos que hay en la interfaz
+     * @param nombreUsuario
+     * @param password
+     * @param estado
+     * @param identificacion
+     * @return String mensaje
+     */
+    public String actualizarEmpleado(String nombreUsuario, String password, boolean estado, String identificacion){
+       
+        String mensaje = "Actualizo un empleado con Exito" ;
+        Usuario usuario = new Usuario(nombreUsuario, password, estado, identificacion);
+        
+        int filaRegistro = daoUsuario.actualizarUsuarioBD(usuario);
+
+        if (filaRegistro == -1) {
+            
+            mensaje = "Fallo la actualizacion del empleaado";
+        }
+        return mensaje;
+    }   
+    
+    /**
+     * Metodo para verificar si un usuario ya ha sido registrado en la base de datos
+     * @param nombreUsuario
+     * @return boolean resultado
+     */
+    public boolean usuarioRegistrado(String nombreUsuario){
         boolean resultado = false;
-        ResultSet rs = this.daoUsuario.consultarUsuarioPorNombre(nomreUsuario);
+        ResultSet rs = this.daoUsuario.consultarUsuarioPorNombre(nombreUsuario);
         
         try {
             if (rs.next()) {

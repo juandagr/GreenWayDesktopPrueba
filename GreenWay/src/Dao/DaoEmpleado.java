@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -28,8 +29,12 @@ public class DaoEmpleado {
         fachada = new Fachada();
     }
 
-    //metodo encargado de ingresar un empleado a la base de datos en la tabla empleado, el metodo recribe un empleado 
-    // y lo guarda en la base de datos
+
+    /**
+     *metodo encargado de ingresar un empleado a la base de datos en la tabla empleado, el metodo recribe un empleado y lo guarda en la base de datos
+     * @param empleado
+     * @return
+     */
     public int ingresarEmpleadoBD(Empleado empleado) {
         
         int numFilas;
@@ -55,12 +60,16 @@ public class DaoEmpleado {
         return numFilas;
     }
     
-    //Metodo para consultar un empleado en la base de datos, la busqueda se realiza por medio
-    //de la cedula
+    /**
+     *  Metodo para consultar un empleado en la base de datos, la busqueda se realiza por medio de la cedula (id_empleado)
+     * @param idEmpleado
+     * @return
+     */
     public ResultSet consultarEmpleadoBD(String idEmpleado){
         
         String sql_select;
         sql_select="SELECT * FROM empleado WHERE identificacion ='"+idEmpleado+"';";
+        
         try{
             Connection conn= fachada.conectar_BD();
             instruccion = conn.createStatement();
@@ -74,8 +83,10 @@ public class DaoEmpleado {
     
     }
     
-    //Metodo para consultar todos los empleados que se encuentran registrados en la base
-    //de datos
+    /**
+     * Metodo para consultar todos los empleados que se encuentran registrados en la base de datos 
+     * @return
+     */
     public ResultSet consultarTodosEmpleadosBD(){
         
         String sql_select;
@@ -93,16 +104,24 @@ public class DaoEmpleado {
     
     }
     
-    /*public int actualizarEmpleado(Empleado emp){
+    /**
+     *  Metodo para realizar la actualización de un empleado en la base de datos
+     * @param empleado
+     * @return
+     */
+    public int actualizarEmpleadoBD(Empleado empleado){
         
         int numFilas = 0;
         String sql_update;
-         
-        sql_update = "UPDATE empleado SET nombre='" + emp.getNombre()+ "',cargo='" + emp.getCargo() +"',telefono='"+emp.getTelefono()
-                    +"',direccion='"+emp.getDireccion() + "' WHERE id_empleado= '"+emp.getIdEmpleado()+"';";
-                     
+        
+            sql_update = "UPDATE empleado SET nombre='" + empleado.getNombre()+ "', apellido='" + empleado.getApellido()+ 
+                    "',identificacion='" + empleado.getIdentificacion() + "', cargo='" + empleado.getCargo() +
+                    "',telefono='" + empleado.getTelefono() + "',direccion='" + empleado.getDireccion() + 
+                    "',estado='" + empleado.isEstado() + "',fotografia='" + empleado.getFotografia()+ 
+                    "',correo='" + empleado.getCorreo() + "',fecha_de_nacimiento='" + empleado.getFechaDeNacimiento()+ 
+                    "' WHERE id_empleado= '"+empleado.getIdentificacion()+"';";         
         try{
-                Connection conn= fachada.conectarABD();
+                Connection conn= fachada.conectar_BD();
                 instruccion = conn.createStatement();
                 numFilas = instruccion.executeUpdate(sql_update);
                 fachada.cerrarConexion(conn);     
@@ -118,5 +137,5 @@ public class DaoEmpleado {
             numFilas = -1;   
         }
         return numFilas;
-     }*/
+    }
 }

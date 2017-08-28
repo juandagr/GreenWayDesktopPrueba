@@ -28,8 +28,21 @@ public class ControladorEmpleado {
         this.daoEmpleado = new DaoEmpleado();
     }
     
-    //metodo para realizar el ingreso de un empleado a la base de datos, dados los datos
-    //recibidos desde una interfaz de usuario
+    /**
+     *Metodo para realizar el ingreso de un empleado a la base de datos, dados los datos recibidos desde una interfaz de usuario
+     * @param nombre , 
+     * @param apellido
+     * @param identificacion
+     * @param cargo
+     * @param telefono
+     * @param direccion
+     * @param estado
+     * @param fotografia
+     * @param correo
+     * @param fechaDeNacimiento
+     * @param estado_civil
+     * @return String mensaje
+     */
     public String ingresarEmpleado(String nombre, String apellido, String identificacion, String cargo, String telefono, String direccion, boolean estado, String fotografia, String correo, Date fechaDeNacimiento, String estado_civil){
        
         String mensaje = "Empleado creado exitosamente." ;
@@ -44,8 +57,41 @@ public class ControladorEmpleado {
         return mensaje;
     } 
     
-    //metodo para realizar la consulta de un empleado a la base de datos, este recibe la cedula del empleado que se desea
-    //consultar y devuelve el objeto representando el mismo
+    /**
+     * Metodo para realizar la actualización de un registro de un empleado dada la cedula y con los datos que se le proporciona por medio de la interfaz
+     * @param nombre
+     * @param apellido
+     * @param identificacion
+     * @param cargo
+     * @param telefono
+     * @param direccion
+     * @param estado
+     * @param fotografia
+     * @param correo
+     * @param fechaDeNacimiento
+     * @param estado_civil
+     * @return String mensaje
+     */
+    public String actualizarEmpleado(String nombre, String apellido, String identificacion, String cargo, String telefono, String direccion, boolean estado, String fotografia, String correo, Date fechaDeNacimiento, String estado_civil){
+       
+        
+        String mensaje = "Actualizo un empleado con Exito" ;
+        Empleado empleado = new Empleado(nombre, apellido, identificacion, cargo, telefono, direccion, estado, fotografia, correo, fechaDeNacimiento, estado_civil);
+                                        
+        int filaRegistro = daoEmpleado.actualizarEmpleadoBD(empleado);
+
+        if (filaRegistro == -1) {
+            
+            mensaje = "Fallo la actualizacion del empleaado";
+        }
+        return mensaje;
+    }   
+    
+    /**
+     * metodo para realizar la consulta de un empleado a la base de datos, este recibe la cedula del empleado que se desea consultar y devuelve el objeto representando el mismo
+     * @param idEmpleado
+     * @return Empleado
+     */
     public Empleado consultarEmpleado(String idEmpleado){
         
         Empleado empleado = null;
@@ -85,8 +131,11 @@ public class ControladorEmpleado {
         
     }
     
-     
-    //Metodo para verificar si un empleado ya ha sido registrado en la base de datos
+    /**
+     * Metodo para verificar si un empleado ya ha sido registrado en la base de datos
+     * @param identificacion
+     * @return boolean resultado
+     */
     public boolean empleadoRegistrado(String identificacion){
         boolean resultado = false;
         ResultSet rs = this.daoEmpleado.consultarEmpleadoBD(identificacion);
@@ -105,8 +154,10 @@ public class ControladorEmpleado {
         return resultado;
     }
     
-    //metodo para realizar la consulta de todos los empleados que se encuentran registrados en la base de datos
-    //devuelve una lista con un objeto por cada empleado encontrado
+    /**
+     * Metodo para realizar la consulta de todos los empleados que se encuentran registrados en la base de datos devuelve una lista con un objeto por cada empleado encontrado
+     * @return ArrayList<Empleado>
+     */
     public ArrayList<Empleado> consultarTodosEmpleados(){
         ArrayList<Empleado> empleados = new ArrayList();
         
