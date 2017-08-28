@@ -10,6 +10,7 @@ import Dao.DaoEmpleado;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,5 +103,43 @@ public class ControladorEmpleado {
             Logger.getLogger(ControladorEmpleado.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resultado;
+    }
+    
+    //metodo para realizar la consulta de todos los empleados que se encuentran registrados en la base de datos
+    //devuelve una lista con un objeto por cada empleado encontrado
+    public ArrayList<Empleado> consultarTodosEmpleados(){
+        ArrayList<Empleado> empleados = new ArrayList();
+        
+        ResultSet consulta = this.daoEmpleado.consultarTodosEmpleadosBD();
+        try {
+            //se extraen los registros de la tabla empleados
+            while( consulta.next()){
+                
+                //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
+                String nombre = consulta.getString(1);
+                String apellido = consulta.getString(2);
+                String identificacion = consulta.getString(3);
+                String cargo = consulta.getString(4);
+                String telefono = consulta.getString(5);
+                String direccion = consulta.getString(6);
+                boolean estado = consulta.getBoolean(7);
+                String fotografia = consulta.getString(8);
+                String correo = consulta.getString(9);
+                Date fechaDeNacimiento = consulta.getDate(10);
+                String estado_civil = consulta.getString(11);
+                
+                //se crea el objeto una vez se hayan extraido los datos
+                Empleado empleado = new Empleado(nombre, apellido, identificacion, cargo, telefono, direccion, estado, fotografia, correo, fechaDeNacimiento, estado_civil);
+                empleados.add(empleado);
+  
+            }
+        }
+
+        catch (SQLException ex) {
+
+        }
+        
+        return empleados;
+        
     }
 }

@@ -5,6 +5,12 @@
  */
 package GUI;
 
+import Clases.Empleado;
+import Controlador.ControladorEmpleado;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Daniel
@@ -13,12 +19,53 @@ public class GUI_empleados extends javax.swing.JFrame {
 
     //Atributos
     Gui_VentanaPrincipalGerente gui_gerente;
-    
+    DefaultTableModel modeloItems = new DefaultTableModel(){
+           
+           //sobreescribir el metodo para que las celdas no se puedan editar
+            @Override
+            public boolean isCellEditable (int fila, int columna) {
+                return false;}
+        };
     //Constructor
     public GUI_empleados(Gui_VentanaPrincipalGerente gui_gerente) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.gui_gerente = gui_gerente;
+        modeloItems.addColumn("Identificacion");
+        modeloItems.addColumn("Nombre");
+        modeloItems.addColumn("Apellido");
+        modeloItems.addColumn("Cargo");
+        modeloItems.addColumn("Estado");
+        modeloItems.addColumn("Telefono");
+        
+        buscarEmpleados();
+    }
+    
+    public void buscarEmpleados(){
+        while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
+        jTableEmpleados.setModel(modeloItems);
+        
+        ArrayList<Empleado> empleados = new ControladorEmpleado().consultarTodosEmpleados();
+        
+        for (int i = 0; i < empleados.size(); i++) {
+            // Se crea un array que será una de las filas de la tabla.
+            Object [] fila = new Object[6]; // Hay tres columnas en la tabla
+
+            // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+            fila[0] = empleados.get(i).getIdentificacion();
+            fila[1] = empleados.get(i).getNombre();
+            fila[2] = empleados.get(i).getApellido();
+            fila[3] = empleados.get(i).getCargo();
+            if (empleados.get(i).isEstado()) {
+                fila[4] = "Activo";
+            }else fila[4] = "Inactivo";
+            fila[5] = empleados.get(i).getTelefono();
+
+            // Se añade al modelo la fila completa.
+            modeloItems.addRow(fila);
+            
+        }
+        
     }
 
     /**
@@ -40,9 +87,9 @@ public class GUI_empleados extends javax.swing.JFrame {
         jButtonAgregar1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextFieldCedula = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jTextFieldIdentificacion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,7 +117,7 @@ public class GUI_empleados extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
+                .addComponent(jScrollPane1))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,17 +136,33 @@ public class GUI_empleados extends javax.swing.JFrame {
         jLabel2.setText("Modificar existente");
 
         jButtonAgregar1.setText("Modificar");
+        jButtonAgregar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregar1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Consultar por:");
 
         jLabel4.setText("celuda:");
 
         jButton1.setText("Consultar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jToggleButton1.setText("Salir");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextFieldIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldIdentificacionKeyTyped(evt);
             }
         });
 
@@ -110,30 +173,33 @@ public class GUI_empleados extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jToggleButton1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addGap(10, 10, 10)
+                                .addComponent(jToggleButton1))
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButtonAgregar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextFieldIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonAgregar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButtonAgregar1))))
-                .addContainerGap(18, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1)
+                                    .addComponent(jButtonAgregar1))))
+                        .addGap(0, 180, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,8 +216,8 @@ public class GUI_empleados extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jTextFieldIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -175,6 +241,20 @@ public class GUI_empleados extends javax.swing.JFrame {
         this.gui_gerente.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
+        
+    }//GEN-LAST:event_jButtonAgregar1ActionPerformed
+
+    private void jTextFieldIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldIdentificacionKeyTyped
+        char car=evt.getKeyChar();
+        if(  jTextFieldIdentificacion.getText().length()>=10)evt.consume();
+        if((car<'0' || car>'9') ) evt.consume();
+    }//GEN-LAST:event_jTextFieldIdentificacionKeyTyped
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //Empleado empleado = new Co
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -223,7 +303,7 @@ public class GUI_empleados extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableEmpleados;
-    private javax.swing.JTextField jTextFieldCedula;
+    private javax.swing.JTextField jTextFieldIdentificacion;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }
