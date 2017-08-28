@@ -94,9 +94,9 @@ public class ControladorUsuario {
      * @param identificacion
      * @return String mensaje
      */
-    public String actualizarEmpleado(String nombreUsuario, String password, boolean estado, String identificacion){
+    public String actualizarUsuario(String nombreUsuario, String password, boolean estado, String identificacion){
        
-        String mensaje = "Actualizo un empleado con Exito" ;
+        String mensaje = "Actualizo un usuario con Exito" ;
         Usuario usuario = new Usuario(nombreUsuario, password, estado, identificacion);
         
         int filaRegistro = daoUsuario.actualizarUsuarioBD(usuario);

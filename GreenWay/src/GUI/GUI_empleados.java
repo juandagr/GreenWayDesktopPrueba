@@ -19,6 +19,8 @@ public class GUI_empleados extends javax.swing.JFrame {
 
     //Atributos
     Gui_VentanaPrincipalGerente gui_gerente;
+    
+    
     DefaultTableModel modeloItems = new DefaultTableModel(){
            
            //sobreescribir el metodo para que las celdas no se puedan editar
@@ -297,8 +299,20 @@ public class GUI_empleados extends javax.swing.JFrame {
 
     private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
         
+        
+        String identificacion = this.obtenerIdentificacionSeleccionado();
+        Gui_ModificarEmpleado gui_modificarEmpleado = new Gui_ModificarEmpleado(this,identificacion);  
+        
+        gui_modificarEmpleado.setVisible(true);
+        
+        this.dispose();
     }//GEN-LAST:event_jButtonAgregar1ActionPerformed
 
+    public String obtenerIdentificacionSeleccionado(){
+        String identificacion = String.valueOf(jTableEmpleados.getValueAt(jTableEmpleados.getSelectedRow(), 0));
+        return identificacion;
+    }
+    
     private void jTextFieldIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldIdentificacionKeyTyped
         char car=evt.getKeyChar();
         if(  jTextFieldIdentificacion.getText().length()>=10)evt.consume();

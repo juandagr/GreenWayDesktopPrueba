@@ -115,11 +115,13 @@ public class DaoEmpleado {
         String sql_update;
         
             sql_update = "UPDATE empleado SET nombre='" + empleado.getNombre()+ "', apellido='" + empleado.getApellido()+ 
-                    "',identificacion='" + empleado.getIdentificacion() + "', cargo='" + empleado.getCargo() +
+                    "', cargo='" + empleado.getCargo() +
                     "',telefono='" + empleado.getTelefono() + "',direccion='" + empleado.getDireccion() + 
                     "',estado='" + empleado.isEstado() + "',fotografia='" + empleado.getFotografia()+ 
                     "',correo='" + empleado.getCorreo() + "',fecha_de_nacimiento='" + empleado.getFechaDeNacimiento()+ 
-                    "' WHERE id_empleado= '"+empleado.getIdentificacion()+"';";         
+                    "' WHERE identificacion = '" + empleado.getIdentificacion()+"';";   
+            
+            System.out.println(sql_update);
         try{
                 Connection conn= fachada.conectar_BD();
                 instruccion = conn.createStatement();

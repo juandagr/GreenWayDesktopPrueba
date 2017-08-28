@@ -104,9 +104,9 @@ public class DaoUsuario {
         int numFilas = 0;
         String sql_update;
         
-            sql_update = "UPDATE empleado SET usuario='" + usuario.getUsuario() + "', password='" + usuario.getPassword()+ 
-                    "',estado='" + usuario.getEstado() + "', empleado_identificacion='" + usuario.getIdentificacion() +
-                    "' WHERE id_empleado= '" + usuario.getIdentificacion()+"';";         
+            sql_update = "UPDATE Usuario SET usuario='" + usuario.getUsuario() + "', password='" + usuario.getPassword()+ 
+                    "',estado='" + usuario.getEstado() +
+                    "' WHERE empleado_identificacion = '" + usuario.getIdentificacion()+"';";         
         try{
                 Connection conn= fachada.conectar_BD();
                 instruccion = conn.createStatement();

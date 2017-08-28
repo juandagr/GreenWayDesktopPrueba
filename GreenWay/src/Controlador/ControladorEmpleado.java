@@ -78,7 +78,7 @@ public class ControladorEmpleado {
         String mensaje = "Actualizo un empleado con Exito" ;
         Empleado empleado = new Empleado(nombre, apellido, identificacion, cargo, telefono, direccion, estado, fotografia, correo, fechaDeNacimiento, estado_civil);
                                         
-        int filaRegistro = daoEmpleado.actualizarEmpleadoBD(empleado);
+        int filaRegistro = this.daoEmpleado.actualizarEmpleadoBD(empleado);
 
         if (filaRegistro == -1) {
             
