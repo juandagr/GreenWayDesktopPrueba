@@ -589,6 +589,7 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
         // TODO add your handling code here:
          try{
          this.gui_empleados.setVisible(true);
+         this.gui_empleados.buscarEmpleados();
          this.dispose();
        }catch(Exception e){}
 
