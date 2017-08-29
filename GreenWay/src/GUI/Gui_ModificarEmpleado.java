@@ -24,27 +24,80 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author
  */
-public class Gui_AgregarEmpleado extends javax.swing.JFrame {
+public class Gui_ModificarEmpleado extends javax.swing.JFrame {
 
     //Atributos
     //GUI de la ventana principal del gerente
     GUI_empleados gui_empleados;
     File foto;
+    String identificacionEmpleado;
     
     //Constructor
-    public Gui_AgregarEmpleado(GUI_empleados gui_empleados) {
+    public Gui_ModificarEmpleado(GUI_empleados gui_empleados, String identificacion) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.gui_empleados = gui_empleados;        
-
+        this.identificacionEmpleado = identificacion;
+        this.gui_empleados = gui_empleados; 
+        this.llenarDatos();
     }
-    
+
+    /**
+     * Metodo para llenar los datos de la interfaz automaticamente en base a la cedula seleccionado en la interfaz principal de empleados
+     */
+    public void llenarDatos(){
+        Empleado empleado = new ControladorEmpleado().consultarEmpleado(identificacionEmpleado);
+        Usuario usuario = new ControladorUsuario().consultarUsuario(identificacionEmpleado);
+        
+        this.jTextFieldIdentificacion.setText(empleado.getIdentificacion());
+        this.jTextFieldIdentificacion.setEnabled(false);
+        
+        this.jTextFieldNombre.setText(empleado.getNombre());
+        this.jTextFieldApellidos.setText(empleado.getApellido());
+                
+        if(empleado.getCargo().equalsIgnoreCase("Gerente")){
+            this.jComboBoxCargo.setSelectedIndex(1);
+        }else if (empleado.getCargo().equalsIgnoreCase("Digitador")){
+            this.jComboBoxCargo.setSelectedIndex(2);
+        }else{
+            this.jComboBoxCargo.setSelectedIndex(3);
+        }
+        
+        if(empleado.isEstado() == true){
+            this.jComboBoxEstado.setSelectedIndex(1);
+        }else{
+            this.jComboBoxEstado.setSelectedIndex(2);
+        }
+        
+        if(empleado.getEstado_civil().equalsIgnoreCase("soltero")){
+            this.jComboBoxEstadoCivil.setSelectedIndex(1);
+        }else if(empleado.getEstado_civil().equalsIgnoreCase("Casado")){
+            this.jComboBoxEstadoCivil.setSelectedIndex(2);
+        }else if(empleado.getEstado_civil().equalsIgnoreCase("Viudo")){
+            this.jComboBoxEstadoCivil.setSelectedIndex(3);
+        }else{
+            this.jComboBoxEstadoCivil.setSelectedIndex(4);
+        }
+        
+        this.jTextFieldCelular.setText(empleado.getTelefono());
+        this.jTextFieldDireccion.setText(empleado.getDireccion());
+        this.jTextFieldEmail.setText(empleado.getCorreo());
+        this.jDateChooserNacimiento.setDate(empleado.getFechaDeNacimiento());
+        this.jDateChooserNacimiento.setEnabled(false);
+        this.jTextFieldUsuario.setText(usuario.getUsuario());
+        this.jTextFieldUsuario.setEnabled(false);
+        this.jTextFieldContraseña.setText(usuario.getPassword());
+        
+        ImageIcon icon = new ImageIcon("Empleados/"+jTextFieldIdentificacion.getText()+".png");
+        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(jLabelFoto.getWidth(), jLabelFoto.getHeight(), Image.SCALE_DEFAULT));
+        jLabelFoto.setIcon(icono);
+   }
 
     //metodo para guardar una imagen que representa la foto del empleado
     public String copiarImagen(){
@@ -67,16 +120,16 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
                 out.close();
 
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
                     in.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
                 }catch (NullPointerException ex) {
-                    Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -85,10 +138,13 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
         return ruta;
     }
 
-    //metodo para agregar un empleado a la base de datos
-    public String agregarEmpleado(String id, String nombre, String apellido, String dni, String cargo, String telefono, String direccion, boolean estado, String foto, String email, Date fechaNacimiento, String estadoCivil, String usuario, String contraseña){
+    /**
+     * Metodo para agregar un empleado a la base de datos
+     * @return
+     */
+    public String modificarEmpleado(String id, String nombre, String apellido, String dni, String cargo, String telefono, String direccion, boolean estado, String foto, String email, Date fechaNacimiento, String estadoCivil, String usuario, String contraseña){
         //variable que almacenara el resultado
-        String resultado = "";     
+        String resultado = "";          
         
         //creacion de  controlador para realizar el ingreso del empleado y el usuario, tambien de la clase que valida los campos
         ControladorEmpleado controladorEmpleado = new ControladorEmpleado();
@@ -99,40 +155,20 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
             if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarCargoEmpleado(cargo) && validar.validarEstadoCivilEmpleado(estadoCivil) && (foto != null)) {
                 //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
-                if (controladorEmpleado.empleadoRegistrado(id) == false) {
-                    //se verifica si el nombre de usuario ya se encuentra registrado en la base de datos
-                    if (controladorUsuario.usuarioRegistrado(usuario) == false) {
-                        
-                        resultado = controladorEmpleado.ingresarEmpleado(nombre, apellido, id, cargo, telefono, direccion, estado, foto, email, fechaNacimiento, estadoCivil);
-                        controladorUsuario.ingresarUsuario(usuario, contraseña, estado, id);
-                        
-                        limpiar();
-                        
-                    }else{
-                        
-                        resultado = "El usuario ya se encuentra registrado.";
-                        //JOptionPane.showMessageDialog(null, "El usuario ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
-                        jTextFieldUsuario.setText("");
-                    }
-                    
-                }else{
-                    
-                    resultado = "El empleado ya se encuentra registrado.";
-                    //JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
+                    resultado = controladorEmpleado.actualizarEmpleado(nombre, apellido, id, cargo, telefono, direccion, estado, foto, cargo, fechaNacimiento, estadoCivil);
+                    controladorUsuario.actualizarUsuario(usuario, cargo, estado, id);
                     limpiar();
-                }                
-                
+
             }else{
-                resultado = "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+                resultado = "No se pudo modificar el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
                 //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (NullPointerException ex) {
-            resultado = "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
-            //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+            resultado = "No se pudo modificar el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
             limpiar();
         } catch (Exception ex) {
-            Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return resultado;
@@ -182,7 +218,7 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(51, 0, 255)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 0, 255))); // NOI18N
 
         jLabel1.setText("Identificación:");
 
@@ -364,7 +400,7 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
 
         jButtonagregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/16 (Save).jpg"))); // NOI18N
-        jButtonagregar.setText("agregar");
+        jButtonagregar.setText("Modificar");
         jButtonagregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonagregarActionPerformed(evt);
@@ -555,36 +591,33 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
     private void jButtonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonagregarActionPerformed
         
         // Obtencion de datos de la interfaz
-        String id=jTextFieldIdentificacion.getText().trim();
-        String nombre =jTextFieldNombre.getText().trim();
+        String id = jTextFieldIdentificacion.getText().trim();
+        String nombre = jTextFieldNombre.getText().trim();
         String apellido = jTextFieldApellidos.getText().trim();
-        String cargo=this.jComboBoxCargo.getSelectedItem().toString();
-        String dni=jComboBoxEstado.getSelectedItem().toString();
+        String cargo = this.jComboBoxCargo.getSelectedItem().toString();
+        String dni = jComboBoxEstado.getSelectedItem().toString();
         boolean estado = true;
         if (dni.equalsIgnoreCase("activo")) {
             estado = true;
         }else{
             estado = false;
         }
-        String telefono=jTextFieldCelular.getText().trim();
+        String telefono = jTextFieldCelular.getText().trim();
         String email=jTextFieldEmail.getText().trim();
-        String direccion=jTextFieldDireccion.getText().trim();
+        String direccion = jTextFieldDireccion.getText().trim();
         String estadoCivil = jComboBoxEstadoCivil.getSelectedItem().toString();
         Date fechaNacimiento = jDateChooserNacimiento.getDate();
-        String usuario=jTextFieldUsuario.getText().trim();
+        String usuario = jTextFieldUsuario.getText().trim();
         String contraseña = jTextFieldContraseña.getText().trim();
-        String foto = this.copiarImagen();
+        String foto = this.copiarImagen();     
         
-        String resultado = this.agregarEmpleado(id, nombre, apellido, dni, cargo, telefono, direccion, estado, foto, email, fechaNacimiento, estadoCivil, usuario, contraseña);
-       
-        if (resultado.equalsIgnoreCase("No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
+        String resultado = this.modificarEmpleado(id, nombre, apellido, dni, cargo, telefono, direccion, estado, foto, email, fechaNacimiento, estadoCivil, usuario, contraseña);
+        
+        if (resultado.equalsIgnoreCase("No se pudo modificar el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
             JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("El usuario ya se encuentra registrado.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("El empleado ya se encuentra registrado.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
         }else{
             JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+
         }
             
     }//GEN-LAST:event_jButtonagregarActionPerformed
@@ -593,7 +626,6 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
         // TODO add your handling code here:
          try{
          this.gui_empleados.setVisible(true);
-         this.gui_empleados.buscarEmpleados();
          this.dispose();
        }catch(Exception e){}
 
@@ -631,7 +663,7 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
         this.jTextFieldCelular.setText("");
         this.jTextFieldEmail.setText("");
         this.jTextFieldContraseña.setText("");
-        jTextFieldDireccion.setText("");
+        this.jTextFieldDireccion.setText("");
         jLabelFoto.setIcon(null);
         this.jDateChooserNacimiento.setDate(new Date());
         this.jTextFieldUsuario.setText("");
@@ -702,14 +734,30 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Gui_AgregarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -730,7 +778,7 @@ public class Gui_AgregarEmpleado extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui_AgregarEmpleado(new GUI_empleados(new Gui_VentanaPrincipalGerente(new Gui_login()))).setVisible(true);
+                new Gui_ModificarEmpleado(new GUI_empleados(new Gui_VentanaPrincipalGerente(new Gui_login())), new String()).setVisible(true);
             }
         });
     }
