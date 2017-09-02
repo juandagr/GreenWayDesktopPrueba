@@ -97,6 +97,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon("Empleados/"+jTextFieldIdentificacion.getText()+".png");
         Icon icono = new ImageIcon(icon.getImage().getScaledInstance(jLabelFoto.getWidth(), jLabelFoto.getHeight(), Image.SCALE_DEFAULT));
         jLabelFoto.setIcon(icono);
+        this.foto = new File("Empleados/"+jTextFieldIdentificacion.getText()+".png");
    }
 
     //metodo para guardar una imagen que representa la foto del empleado
@@ -108,30 +109,29 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
             
         }else{
             try {
-                File inFile = new File(foto.toString());
-                ruta="Empleados/"+jTextFieldIdentificacion.getText()+".png";
-                File outFile = new File(ruta);
-                in = new FileInputStream(inFile);
-                FileOutputStream out = new FileOutputStream(outFile);
-                int c;
-                while( (c = in.read() ) != -1)
-                    out.write(c);
-                in.close();
-                out.close();
+                System.err.println(foto.toString());
+                System.err.println("Empleados/"+jTextFieldIdentificacion.getText()+".png");
+                if (foto.toString().equalsIgnoreCase("Empleados\\"+jTextFieldIdentificacion.getText()+".png")) {
+                    ruta="Empleados/"+jTextFieldIdentificacion.getText()+".png";
+                    
+                }else{
+                    File inFile = new File(foto.toString());
+                    ruta="Empleados/"+jTextFieldIdentificacion.getText()+".png";
+                    File outFile = new File(ruta);
+                    in = new FileInputStream(inFile);
+                    FileOutputStream out = new FileOutputStream(outFile);
+                    int c;
+                    while( (c = in.read() ) != -1)
+                        out.write(c);
+                    in.close();
+                    out.close();
+                }
 
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    in.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-                }catch (NullPointerException ex) {
-                    Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            } 
         }
         
         
@@ -155,8 +155,8 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
             if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarCargoEmpleado(cargo) && validar.validarEstadoCivilEmpleado(estadoCivil) && (foto != null)) {
                 //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
-                    resultado = controladorEmpleado.actualizarEmpleado(nombre, apellido, id, cargo, telefono, direccion, estado, foto, cargo, fechaNacimiento, estadoCivil);
-                    controladorUsuario.actualizarUsuario(usuario, cargo, estado, id);
+                    resultado = controladorEmpleado.actualizarEmpleado(nombre, apellido, id, cargo, telefono, direccion, estado, foto, email, fechaNacimiento, estadoCivil);
+                    controladorUsuario.actualizarUsuario(usuario, contraseña, estado, id);
                     limpiar();
 
             }else{
@@ -209,7 +209,6 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jButtonagregar = new javax.swing.JButton();
         jButtonSalir = new javax.swing.JButton();
-        jButtonCancelar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jTextFieldContraseña = new javax.swing.JTextField();
@@ -218,7 +217,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 0, 255))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(51, 0, 255)));
 
         jLabel1.setText("Identificación:");
 
@@ -415,38 +414,25 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
             }
         });
 
-        jButtonCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Wzdelete.jpg"))); // NOI18N
-        jButtonCancelar.setText("Cancelar");
-        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCancelarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButtonagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jButtonagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButtonagregar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonCancelar)
+                    .addComponent(jButtonagregar)
                     .addComponent(jButtonSalir))
-                .addGap(155, 155, 155))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos de usuario"));
@@ -514,7 +500,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(29, 29, 29))
         );
 
@@ -616,7 +602,12 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
         if (resultado.equalsIgnoreCase("No se pudo modificar el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
             JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
         }else{
-            JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+            
+            try{
+                this.dispose();
+                JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+                this.gui_empleados.setVisible(true);
+           }catch(Exception e){}
 
         }
             
@@ -624,18 +615,12 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         // TODO add your handling code here:
-         try{
-         this.gui_empleados.setVisible(true);
-         this.dispose();
+        try{
+            this.gui_empleados.setVisible(true);
+            this.dispose();
        }catch(Exception e){}
 
     }//GEN-LAST:event_jButtonSalirActionPerformed
-
-    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
-        limpiar();
-        habilitar();
-        foto = null;
-    }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void jTextFieldIdentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdentificacionActionPerformed
         // TODO add your handling code here:
@@ -784,7 +769,6 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonSalir;
     private javax.swing.JButton jButtonSeleccionarFoto;
     private javax.swing.JButton jButtonagregar;

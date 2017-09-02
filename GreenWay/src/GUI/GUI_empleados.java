@@ -298,19 +298,30 @@ public class GUI_empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
-        
-        
+
         String identificacion = this.obtenerIdentificacionSeleccionado();
-        Gui_ModificarEmpleado gui_modificarEmpleado = new Gui_ModificarEmpleado(this,identificacion);  
+        if (identificacion.equalsIgnoreCase("No selecciono") == false) {
+            
+            Gui_ModificarEmpleado gui_modificarEmpleado = new Gui_ModificarEmpleado(this,identificacion);  
+
+            gui_modificarEmpleado.setVisible(true);
+
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un empleado para modificar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
-        gui_modificarEmpleado.setVisible(true);
         
-        this.dispose();
     }//GEN-LAST:event_jButtonAgregar1ActionPerformed
 
     public String obtenerIdentificacionSeleccionado(){
-        String identificacion = String.valueOf(jTableEmpleados.getValueAt(jTableEmpleados.getSelectedRow(), 0));
-        return identificacion;
+        try{
+            String identificacion = String.valueOf(jTableEmpleados.getValueAt(jTableEmpleados.getSelectedRow(), 0));
+            return identificacion;
+        }catch(Exception e){
+            return "No selecciono";
+        }
+        
     }
     
     private void jTextFieldIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldIdentificacionKeyTyped
