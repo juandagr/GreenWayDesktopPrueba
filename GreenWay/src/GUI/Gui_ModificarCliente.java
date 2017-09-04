@@ -31,20 +31,20 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author
  */
-public class Gui_ModificarEmpleado extends javax.swing.JFrame {
+public class Gui_ModificarCliente extends javax.swing.JFrame {
 
     //Atributos
     //GUI de la ventana principal del gerente
-    GUI_empleados gui_empleados;
+    GUI_clientes gui_clientes;
     File foto;
     String identificacionEmpleado;
     
     //Constructor
-    public Gui_ModificarEmpleado(GUI_empleados gui_empleados, String identificacion) {
+    public Gui_ModificarCliente(GUI_clientes gui_clientes, String identificacion) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.identificacionEmpleado = identificacion;
-        this.gui_empleados = gui_empleados; 
+        this.gui_clientes = gui_clientes; 
         this.llenarDatos();
     }
 
@@ -128,9 +128,9 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
                 }
 
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Gui_ModificarCliente.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Gui_ModificarCliente.class.getName()).log(Level.SEVERE, null, ex);
             } 
         }
         
@@ -168,7 +168,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
             resultado = "No se pudo modificar el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
             limpiar();
         } catch (Exception ex) {
-            Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Gui_ModificarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return resultado;
@@ -720,14 +720,46 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarEmpleado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_ModificarCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -764,7 +796,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui_ModificarEmpleado(new GUI_empleados(new Gui_VentanaPrincipalGerente(new Gui_login())), new String()).setVisible(true);
+                new Gui_ModificarCliente(new GUI_empleados(new Gui_VentanaPrincipalGerente(new Gui_login())), new String()).setVisible(true);
             }
         });
     }

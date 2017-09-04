@@ -36,6 +36,7 @@ public class ControladorCliente {
      * @param telefono
      * @param direccion
      * @param fotografia
+     * @param correo
      * @param estado
      * @return String mensaje
      */
@@ -85,7 +86,7 @@ public class ControladorCliente {
      * @param idCliente
      * @return Cliente
      */
-    public Cliente consultarEmpleado(String idCliente){
+    public Cliente consultarCliente(String idCliente){
         
         Cliente cliente = null;
         ResultSet consulta = this.daoCliente.consultarClienteBD(idCliente);
@@ -149,12 +150,12 @@ public class ControladorCliente {
      * Metodo para realizar la consulta de todos los clientesque se encuentran registrados en la base de datos devuelve una lista con un objeto por cada cliente encontrado
      * @return ArrayList<Cliente>
      */
-    public ArrayList<Cliente> consultarTodosEmpleados(){
+    public ArrayList<Cliente> consultarTodosClientes(){
         ArrayList<Cliente> clientes = new ArrayList();
         
         ResultSet consulta = this.daoCliente.consultarTodosClientesBD();
         try {
-            //se extraen los registros de la tabla empleados
+            //se extraen los registros de la tabla cliente
             while( consulta.next()){
                 
                 //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
@@ -170,8 +171,8 @@ public class ControladorCliente {
               
                 
                 //se crea el objeto una vez se hayan extraido los datos
-                Cliente empleado = new Cliente(nombre, apellido, identificacion, telefono, direccion, estado, correo, fotografia);
-                clientes.add(empleado);
+                Cliente cliente = new Cliente(nombre, apellido, identificacion, telefono, direccion, estado, correo, fotografia);
+                clientes.add(cliente);
   
             }
         }

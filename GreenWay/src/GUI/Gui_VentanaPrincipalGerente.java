@@ -164,15 +164,12 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 
     private void jButtonClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClientesActionPerformed
-        /*// TODO add your handling code here:
-          // TODO add your handling code here:
-        try{
-         Gui_producto producto =new Gui_producto(this);
-    
-         producto.setVisible(true);
-         this.dispose();
-         
-       }catch(Exception e){}*/
+        
+        GUI_clientes clientes = new GUI_clientes(this);
+        
+        clientes.setVisible(true);
+        
+        this.dispose();
     }//GEN-LAST:event_jButtonClientesActionPerformed
 
     private void jButtonLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLotesActionPerformed
