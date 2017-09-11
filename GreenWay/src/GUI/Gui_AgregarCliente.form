@@ -59,7 +59,7 @@
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="Datos de Empleados">
+                <TitledBorder title="Datos de Cliente">
                   <Color PropertyName="color" blue="ff" green="0" red="33" type="rgb"/>
                 </TitledBorder>
               </Border>

@@ -98,7 +98,7 @@ public class GUI_clientes extends javax.swing.JFrame {
                 resultado = "";
                 
             }else{
-                resultado = "Empleado no encontrado, inténtelo de nuevo.";
+                resultado = "Cliente no encontrado, inténtelo de nuevo.";
             }
         }else{
             resultado = "Por favor ingrese el numero de identificacion.";
@@ -133,9 +133,9 @@ public class GUI_clientes extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel6.setText("Administracion de empleados");
+        jLabel6.setText("Administracion de cliente");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Empleados"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Clientes"));
 
         jTableClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

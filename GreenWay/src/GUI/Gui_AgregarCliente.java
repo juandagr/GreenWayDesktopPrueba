@@ -7,6 +7,7 @@
 package GUI;
 
 import Clases.*;
+import Controlador.ControladorCliente;
 import Controlador.ControladorEmpleado;
 import Controlador.ControladorUsuario;
 import java.awt.Image;
@@ -85,50 +86,38 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
         return ruta;
     }
 
-    //metodo para agregar un empleado a la base de datos
-    public String agregarEmpleado(String id, String nombre, String apellido, String dni, String cargo, String telefono, String direccion, boolean estado, String foto, String email, Date fechaNacimiento, String estadoCivil, String usuario, String contraseña){
+    //metodo para agregar un cliente a la base de datos
+    public String agregarCliente(String nombre, String apellido, String identificacion, String telefono, String direccion, boolean estado, String correo, String fotografia){
         //variable que almacenara el resultado
         String resultado = "";     
         
-        //creacion de  controlador para realizar el ingreso del empleado y el usuario, tambien de la clase que valida los campos
-        ControladorEmpleado controladorEmpleado = new ControladorEmpleado();
-        ControladorUsuario controladorUsuario = new ControladorUsuario();
+        //creacion de  controlador para realizar el ingreso del cliente, tambien de la clase que valida los campos
+        ControladorCliente controladorCliente = new ControladorCliente();
         Validaciones validar = new Validaciones();
         
         try {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
-            if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarCargoEmpleado(cargo) && validar.validarEstadoCivilEmpleado(estadoCivil) && (foto != null)) {
+            if ((verificarCamposVacios() == false) && verificarTipos()) {
                 //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
-                if (controladorEmpleado.empleadoRegistrado(id) == false) {
-                    //se verifica si el nombre de usuario ya se encuentra registrado en la base de datos
-                    if (controladorUsuario.usuarioRegistrado(usuario) == false) {
-                        
-                        resultado = controladorEmpleado.ingresarEmpleado(nombre, apellido, id, cargo, telefono, direccion, estado, foto, email, fechaNacimiento, estadoCivil);
-                        controladorUsuario.ingresarUsuario(usuario, contraseña, estado, id);
-                        
-                        limpiar();
-                        
-                    }else{
-                        
-                        resultado = "El usuario ya se encuentra registrado.";
-                        //JOptionPane.showMessageDialog(null, "El usuario ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
-                        jTextFieldUsuario.setText("");
-                    }
-                    
+                if (controladorCliente.clienteRegistrado(identificacion) == false) {
+
+                    resultado = controladorCliente.ingresarCliente(nombre, apellido, identificacion, telefono, direccion, estado, correo,fotografia);
+                    limpiar();
+
                 }else{
                     
-                    resultado = "El empleado ya se encuentra registrado.";
+                    resultado = "El cliente ya se encuentra registrado.";
                     //JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
                     limpiar();
                 }                
                 
             }else{
-                resultado = "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+                resultado = "No se pudo crear el cliente, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
                 //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (NullPointerException ex) {
-            resultado = "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+            resultado = "No se pudo crear el cliente, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
             //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             limpiar();
         } catch (Exception ex) {
@@ -171,7 +160,7 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(51, 0, 255)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(51, 0, 255)));
 
         jLabel1.setText("Identificación:");
 
@@ -465,7 +454,6 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
         String id=jTextFieldIdentificacion.getText().trim();
         String nombre =jTextFieldNombre.getText().trim();
         String apellido = jTextFieldApellidos.getText().trim();
-        String cargo=this.jComboBoxCargo.getSelectedItem().toString();
         String dni=jComboBoxEstado.getSelectedItem().toString();
         boolean estado = true;
         if (dni.equalsIgnoreCase("activo")) {
@@ -474,21 +462,15 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
             estado = false;
         }
         String telefono=jTextFieldCelular.getText().trim();
-        String email=jTextFieldEmail.getText().trim();
-        String direccion=jTextFieldDireccion.getText().trim();
-        String estadoCivil = jComboBoxEstadoCivil.getSelectedItem().toString();
-        Date fechaNacimiento = jDateChooserNacimiento.getDate();
-        String usuario=jTextFieldUsuario.getText().trim();
-        String contraseña = jTextFieldContraseña.getText().trim();
-        String foto = this.copiarImagen();
+        String correo=jTextFieldEmail.getText().trim();
+        String direccion=jTextFieldDireccion.getText().trim(); 
+        String fotografia = this.copiarImagen();
         
-        String resultado = this.agregarEmpleado(id, nombre, apellido, dni, cargo, telefono, direccion, estado, foto, email, fechaNacimiento, estadoCivil, usuario, contraseña);
+        String resultado = this.agregarCliente( nombre, apellido, id, telefono, direccion, estado, correo, fotografia);
        
-        if (resultado.equalsIgnoreCase("No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
+        if (resultado.equalsIgnoreCase("No se pudo crear el ciente, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
             JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("El usuario ya se encuentra registrado.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("El empleado ya se encuentra registrado.")) {
+        }else if (resultado.equalsIgnoreCase("El ciente ya se encuentra registrado.")) {
             JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
         }else{
             JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
@@ -499,8 +481,8 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         // TODO add your handling code here:
          try{
-         this.gui_empleados.setVisible(true);
-         this.gui_empleados.buscarEmpleados();
+         this.gui_clientes.setVisible(true);
+         this.gui_clientes.buscarClientes();
          this.dispose();
        }catch(Exception e){}
 
@@ -528,17 +510,11 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
         this.jTextFieldIdentificacion.setText("");
         this.jTextFieldNombre.setText("");
         this.jTextFieldApellidos.setText(""); 
-        this.jComboBoxCargo.setSelectedIndex(0);
         this.jComboBoxEstado.setSelectedIndex(0);
-        this.jComboBoxEstadoCivil.setSelectedIndex(0);
         this.jTextFieldCelular.setText("");
         this.jTextFieldEmail.setText("");
-        this.jTextFieldContraseña.setText("");
         jTextFieldDireccion.setText("");
         jLabelFoto.setIcon(null);
-        this.jDateChooserNacimiento.setDate(new Date());
-        this.jTextFieldUsuario.setText("");
-
     }
      
     //Metodo para habilitar los campos de la interfaz grafica de usuario y asignar sus estado inicial 
@@ -546,16 +522,11 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
         this.jTextFieldIdentificacion.setEnabled(true);
         this.jTextFieldNombre.setEnabled(true);
         this.jTextFieldApellidos.setEnabled(true); 
-        this.jComboBoxCargo.setEnabled(true);
         this.jComboBoxEstado.setEnabled(true);
-        this.jComboBoxEstadoCivil.setEnabled(true);
         this.jTextFieldCelular.setEnabled(true);
         this.jTextFieldEmail.setEnabled(true);
         this.jTextFieldDireccion.setEnabled(true);
-        this.jTextFieldContraseña.setEnabled(true);
-        this.jDateChooserNacimiento.setEnabled(true);
-        this.jDateChooserNacimiento.setDate(new Date());
-        this.jTextFieldUsuario.setEditable(true);
+
     }
      
      //metodo encargado de verificar que los campos obligatorios para crear un empleado
@@ -564,10 +535,8 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
          boolean var =false;
          
          if (jTextFieldIdentificacion.getText().equalsIgnoreCase("") || jTextFieldNombre.getText().equalsIgnoreCase("") ||
-                 jTextFieldApellidos.getText().equalsIgnoreCase("") || jComboBoxCargo.getSelectedItem().toString().equalsIgnoreCase("Seleccione...") ||
-                 jComboBoxEstado.getSelectedItem().toString().equalsIgnoreCase("Seleccione...") || jTextFieldContraseña.getText().equalsIgnoreCase("") ||
-                 jComboBoxEstadoCivil.getSelectedItem().toString().equalsIgnoreCase("Seleccione...") || jTextFieldUsuario.getText().equalsIgnoreCase("") ||
-                 jTextFieldCelular.getText().equalsIgnoreCase("") || jTextFieldDireccion.getText().equalsIgnoreCase("") || jTextFieldEmail.getText().equalsIgnoreCase("")) {
+                 jTextFieldApellidos.getText().equalsIgnoreCase("") || jComboBoxEstado.getSelectedItem().toString().equalsIgnoreCase("Seleccione...") ||
+                 jTextFieldCelular.getText().equalsIgnoreCase("") || jTextFieldDireccion.getText().equalsIgnoreCase("")) {
              
              var = true;             
          }
@@ -649,7 +618,7 @@ public class Gui_AgregarCliente extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui_AgregarCliente(new GUI_empleados(new Gui_VentanaPrincipalGerente(new Gui_login()))).setVisible(true);
+                new Gui_AgregarCliente(new GUI_clientes(new Gui_VentanaPrincipalGerente(new Gui_login()))).setVisible(true);
             }
         });
     }
