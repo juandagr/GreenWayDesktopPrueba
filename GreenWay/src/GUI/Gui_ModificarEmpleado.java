@@ -207,7 +207,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jComboBoxEstadoCivil = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
-        jButtonagregar = new javax.swing.JButton();
+        jButtonModificar = new javax.swing.JButton();
         jButtonSalir = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -217,7 +217,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(51, 0, 255)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Empleados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 0, 255))); // NOI18N
 
         jLabel1.setText("Identificación:");
 
@@ -398,11 +398,11 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
 
-        jButtonagregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/16 (Save).jpg"))); // NOI18N
-        jButtonagregar.setText("Modificar");
-        jButtonagregar.addActionListener(new java.awt.event.ActionListener() {
+        jButtonModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/16 (Save).jpg"))); // NOI18N
+        jButtonModificar.setText("Modificar");
+        jButtonModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonagregarActionPerformed(evt);
+                jButtonModificarActionPerformed(evt);
             }
         });
 
@@ -420,7 +420,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -430,7 +430,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonagregar)
+                    .addComponent(jButtonModificar)
                     .addComponent(jButtonSalir))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -574,7 +574,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
          }
     }//GEN-LAST:event_jButtonSeleccionarFotoActionPerformed
 
-    private void jButtonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonagregarActionPerformed
+    private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
         
         // Obtencion de datos de la interfaz
         String id = jTextFieldIdentificacion.getText().trim();
@@ -611,7 +611,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
 
         }
             
-    }//GEN-LAST:event_jButtonagregarActionPerformed
+    }//GEN-LAST:event_jButtonModificarActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
         // TODO add your handling code here:
@@ -770,9 +770,9 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonModificar;
     private javax.swing.JButton jButtonSalir;
     private javax.swing.JButton jButtonSeleccionarFoto;
-    private javax.swing.JButton jButtonagregar;
     private javax.swing.JComboBox jComboBoxCargo;
     private javax.swing.JComboBox jComboBoxEstado;
     private javax.swing.JComboBox jComboBoxEstadoCivil;
