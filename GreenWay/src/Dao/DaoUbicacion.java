@@ -33,7 +33,7 @@ public class DaoUbicacion {
      * @param ubicacion
      * @return 
      */
-    public int ingresarCultivoBD(Ubicacion ubicacion) {
+    public int ingresarUbicacionBD(Ubicacion ubicacion) {
         
         int numFilas;
         String consulta = "INSERT INTO ubicacion VALUES ('" + ubicacion.getId_ubicacion() + "','" + ubicacion.getDepartamento()

@@ -19,6 +19,19 @@ public class Validaciones {
          return (cadena.matches("[+-]?\\d*(\\.\\d+)?") && cadena.equals("")==false);
     }
     
+    //metodo para validar si el dato leido es un numero
+    public boolean isString(String cadena){
+        boolean var = true;
+        try{
+            Integer.parseInt(cadena);
+            var = false;
+        }catch(NumberFormatException e){
+            var = true;
+        }
+        
+        return var;
+    }
+    
     //metodo para validar que el cargo de un empleado este dentro de las posibles opciones correctas
     public boolean validarCargoEmpleado(String cargo){
         boolean var = false;
@@ -32,7 +45,7 @@ public class Validaciones {
     public boolean validarEstadoCivilEmpleado(String estadoCivil){
         boolean var = false;
         if (estadoCivil.equalsIgnoreCase("soltero") || estadoCivil.equalsIgnoreCase("casado") ||
-                estadoCivil.equalsIgnoreCase("viudo") ||estadoCivil.equalsIgnoreCase("divorciado")) {
+                estadoCivil.equalsIgnoreCase("viudo") ||estadoCivil.equalsIgnoreCase("divorciado")||estadoCivil.equalsIgnoreCase("union libre")) {
             var = true;
         }
         return var;

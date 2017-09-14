@@ -105,9 +105,9 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         jPanel1.add(jButtonCultivos);
         jButtonCultivos.setBounds(30, 200, 130, 130);
 
-        jLabel6.setText("Cultivos");
+        jLabel6.setText("Cultivos y Ubicaciones");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(60, 330, 90, 14);
+        jLabel6.setBounds(40, 330, 110, 14);
 
         jButtonItems.setBackground(new java.awt.Color(255, 255, 255));
         jButtonItems.addActionListener(new java.awt.event.ActionListener() {
@@ -187,15 +187,19 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonLotesActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-        /*this.setVisible(false); 
+        this.setVisible(false); 
         
-        Gui_otros gui_Otros = new Gui_otros(this);
+        Gui_Otros gui_Otros = new Gui_Otros(this);
         
-        gui_Otros.setVisible(true); */
+        gui_Otros.setVisible(true); 
     }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonCultivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCultivosActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        
+        Gui_CultivosYUbicaciones cyU = new Gui_CultivosYUbicaciones(this);
+        
+        cyU.setVisible(true);
     }//GEN-LAST:event_jButtonCultivosActionPerformed
 
     private void jButtonItemsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonItemsActionPerformed
