@@ -447,6 +447,7 @@ public class Gui_ModificarCliente extends javax.swing.JFrame {
             try{
                 this.dispose();
                 JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+                this.gui_clientes.buscarClientes();
                 this.gui_clientes.setVisible(true);
            }catch(Exception e){}
         
