@@ -8,6 +8,7 @@ package GUI;
 import Clases.Empleado;
 import Clases.Validaciones;
 import Controlador.ControladorEmpleado;
+import Controlador.ControladorUbicacion;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -120,6 +121,39 @@ public class GUI_Ubicaciones extends javax.swing.JFrame {
         
         return resultado;
     }
+    
+    /**
+     * Metodo para agregar una ubicacion a la base de datos
+     * @param departamento
+     * @param municipio
+     * @param vereda
+     * @return
+     */
+    public String ingresarUbicacion(String departamento,String municipio,String vereda){
+        String resultado = "";
+        
+        //creacion de  controlador para realizar el ingreso de la ubicacion, tambien de la clase que valida los campos
+        ControladorUbicacion controlador = new ControladorUbicacion();
+        Validaciones validaciones = new Validaciones();
+        
+        //se valida que los datos ingresados sean String, pues no se aceptan numeros
+        if (validaciones.isString(departamento) && validaciones.isString(municipio) && validaciones.isString(vereda)) {
+            //se valida que almenos el dato del departamento y del municipio no esten vacios
+            if (this.verificarCamposVacios(departamento, municipio)) {
+                
+                
+            }else{
+                
+            }
+        }else{
+            System.err.println("no es string");
+        }
+        
+        return resultado;
+    }
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -255,10 +289,8 @@ public class GUI_Ubicaciones extends javax.swing.JFrame {
         String departamento = JOptionPane.showInputDialog("Ingrese el departamento de la nueva ubicacion: ");
         String municipio = JOptionPane.showInputDialog("Ingrese el municipio de la nueva ubicacion: ");
         String vereda = JOptionPane.showInputDialog("Ingrese la vereda de la nueva ubicacion: ");
+        Validaciones validaciones = new Validaciones();
         
-        if (verificarTipos(departamento, municipio, vereda)) {
-            System.err.println("entro");
-        }
         
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
@@ -293,33 +325,17 @@ public class GUI_Ubicaciones extends javax.swing.JFrame {
 
      //metodo encargado de verificar que los campos obligatorios para crear un empleado
      //no se encuentren vacios, pues asi no se puede crear el empleado
-     public boolean verificarCamposVacios(String departamento,String municipio,String vereda){
+     public boolean verificarCamposVacios(String departamento,String municipio){
          boolean var =true;
          
-         if (departamento.equalsIgnoreCase("") || municipio.equalsIgnoreCase("") || vereda.equalsIgnoreCase("")) {
+         if (departamento.equalsIgnoreCase("") || municipio.equalsIgnoreCase("")) {
              
              var = false;             
          }
          
          return var;
      }
-     
-     //metodo encargado de verificar que los campos obligatorios para crear una ubicacion
-     //sean de tipo String
-     public boolean verificarTipos(Object departamento,Object municipio,Object vereda){
-         
-         boolean var =true;
-         Validaciones validar = new Validaciones();
-         try{
-            Integer.parseInt(String.valueOf(departamento));
-            Integer.parseInt(String.valueOf(municipio));
-            Integer.parseInt(String.valueOf(vereda));
-         }catch(Exception e){
-             var =false;
-         }
-         
-         return var;
-     }
+
      
     /**
      * @param args the command line arguments
