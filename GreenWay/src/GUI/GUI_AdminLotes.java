@@ -6,20 +6,26 @@
 package GUI;
 
 import Clases.Cliente;
+import Clases.Lote;
 import Controlador.ControladorCliente;
+import Controlador.ControladorLote;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
  * @author Daniel
  */
-public class GUI_clientes extends javax.swing.JFrame {
+public class GUI_AdminLotes extends javax.swing.JFrame {
 
     //Atributos
-    Gui_VentanaPrincipalGerente gui_gerente;
-    
+    Gui_Lotes gui_lotes;
+    private TableRowSorter trsFiltro;
     
     DefaultTableModel modeloItems = new DefaultTableModel(){
            
@@ -29,39 +35,39 @@ public class GUI_clientes extends javax.swing.JFrame {
                 return false;}
         };
     //Constructor
-    public GUI_clientes(Gui_VentanaPrincipalGerente gui_gerente) {
+    public GUI_AdminLotes(Gui_Lotes gui_lotes) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.gui_gerente = gui_gerente;
-        modeloItems.addColumn("Identificacion");
-        modeloItems.addColumn("Nombre");
-        modeloItems.addColumn("Apellido");
-        modeloItems.addColumn("Estado");
-        modeloItems.addColumn("Telefono");
+        this.gui_lotes = gui_lotes;
+        modeloItems.addColumn("Cliente");
+        modeloItems.addColumn("Cultivo");
+        modeloItems.addColumn("Area");
+        modeloItems.addColumn("Numero de plantas");
+        modeloItems.addColumn("Costo x hora");
+        modeloItems.addColumn("Ubicacion");
         
-        buscarClientes();
+        buscarLotes();
     }
     
-    // metodo para buscar los clientes que estan registrados en la base de datos y mostrar sus datos
+    // metodo para buscar los lotes que estan registrados en la base de datos y mostrar sus datos
     // en pantalla por medio de una tabla
-    public void buscarClientes(){
+    public void buscarLotes(){
         while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
-        jTableClientes.setModel(modeloItems);
+        jTableLotes.setModel(modeloItems);
         
-        ArrayList<Cliente> clientes = new ControladorCliente().consultarTodosClientes();
+        ArrayList<Lote> lotes = new ControladorLote().consultarTodosLotes();
         
-        for (int i = 0; i < clientes.size(); i++) {
+        for (int i = 0; i < lotes.size(); i++) {
             // Se crea un array que será una de las filas de la tabla.
             Object [] fila = new Object[6]; // Hay tres columnas en la tabla
 
             // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-            fila[0] = clientes.get(i).getIdentificacion();
-            fila[1] = clientes.get(i).getNombre();
-            fila[2] = clientes.get(i).getApellido();
-            if (clientes.get(i).getEstado()) {
-                fila[3] = "Activo";
-            }else fila[3] = "Inactivo";
-            fila[4] = clientes.get(i).getTelefono();
+            fila[0] = lotes.get(i).getCliente_identificacion();
+            fila[1] = lotes.get(i).getCultivo_identificador();
+            fila[2] = lotes.get(i).getArea();
+            fila[3] = lotes.get(i).getNumero_plantas();
+            fila[4] = lotes.get(i).getCosto_por_hora();
+            fila[5] = lotes.get(i).getUbicacion_id_ubicacion();
 
             // Se añade al modelo la fila completa.
             modeloItems.addRow(fila);
@@ -70,43 +76,19 @@ public class GUI_clientes extends javax.swing.JFrame {
         
     }
 
-    //metodo para buscar y mostrar la informacion de un solo empleado por medio de su identificacion
-    public String buscarClientePorId(){
-        String resultado = "";
-        if (jTextFieldIdentificacion.getText().trim().equalsIgnoreCase("") == false) {
-            
-            Cliente cliente = new ControladorCliente().consultarCliente(jTextFieldIdentificacion.getText().trim());
-            
-            if (cliente != null) {
-                
-                while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
-                jTableClientes.setModel(modeloItems);
-
-                // Se crea un array que será una de las filas de la tabla.
-                Object [] fila = new Object[6]; // Hay tres columnas en la tabla
-
-                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-                fila[0] = cliente.getIdentificacion();
-                fila[1] = cliente.getNombre();
-                fila[2] = cliente.getApellido();
-                if (cliente.getEstado()) {
-                    fila[3] = "Activo";
-                }else fila[3] = "Inactivo";
-                fila[4] = cliente.getTelefono();
-
-                // Se añade al modelo la fila completa.
-                modeloItems.addRow(fila);
-                
-                resultado = "";
-                
-            }else{
-                resultado = "Cliente no encontrado, inténtelo de nuevo.";
-            }
-        }else{
-            resultado = "Por favor ingrese el numero de identificacion.";
+    //filtro para realizar las busquedas
+    public void filtro() {
+        int columnaABuscar = 0;
+        if (jComboBoxBusqueda.getSelectedItem() == "cliente") {
+            columnaABuscar = 0;
         }
-        
-        return resultado;
+        if (jComboBoxBusqueda.getSelectedItem().toString() == "cultivo") {
+            columnaABuscar = 1;
+        }
+        if (jComboBoxBusqueda.getSelectedItem() == "ubicacion") {
+            columnaABuscar = 5;
+        }
+        trsFiltro.setRowFilter(RowFilter.regexFilter(jTextFieldBusqueda.getText(), columnaABuscar));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -120,26 +102,24 @@ public class GUI_clientes extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableClientes = new javax.swing.JTable();
+        jTableLotes = new javax.swing.JTable();
         jButtonAgregar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButtonAgregar1 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
-        jTextFieldIdentificacion = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jButtonMostrar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jComboBoxBusqueda = new javax.swing.JComboBox();
+        jTextFieldBusqueda = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel6.setText("Administracion de cliente");
+        jLabel6.setText("Administracion de lotes");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Clientes"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Lotes"));
 
-        jTableClientes.setModel(new javax.swing.table.DefaultTableModel(
+        jTableLotes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -150,7 +130,7 @@ public class GUI_clientes extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTableClientes);
+        jScrollPane1.setViewportView(jTableLotes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -158,7 +138,7 @@ public class GUI_clientes extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,15 +163,6 @@ public class GUI_clientes extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Consultar por identificacion:");
-
-        jButton1.setText("Consultar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         jToggleButton1.setText("Salir");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,18 +170,13 @@ public class GUI_clientes extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldIdentificacion.addKeyListener(new java.awt.event.KeyAdapter() {
+        jLabel3.setText("Consultar por:");
+
+        jComboBoxBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "cliente", "cultivo", "ubicacion" }));
+
+        jTextFieldBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextFieldIdentificacionKeyTyped(evt);
-            }
-        });
-
-        jLabel5.setText("Mostrar todos");
-
-        jButtonMostrar.setText("Mostrar");
-        jButtonMostrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonMostrarActionPerformed(evt);
+                jTextFieldBusquedaKeyTyped(evt);
             }
         });
 
@@ -225,30 +191,24 @@ public class GUI_clientes extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addComponent(jToggleButton1))
                             .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonAgregar)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel2))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jTextFieldIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButtonAgregar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(14, 14, 14)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonMostrar)))
-                        .addGap(0, 36, Short.MAX_VALUE)))
+                                .addComponent(jButtonAgregar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -261,14 +221,12 @@ public class GUI_clientes extends javax.swing.JFrame {
                     .addComponent(jButtonAgregar)
                     .addComponent(jLabel1)
                     .addComponent(jButtonAgregar1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel5)
-                    .addComponent(jButtonMostrar))
-                .addGap(6, 6, 6)
+                    .addComponent(jLabel2))
+                .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jButton1)
-                    .addComponent(jTextFieldIdentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -281,21 +239,21 @@ public class GUI_clientes extends javax.swing.JFrame {
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
         
-        Gui_AgregarCliente gui_agregarCliente =new Gui_AgregarCliente(this);
+        GUI_AgregarLote gui_agregarLote = new GUI_AgregarLote(this);
     
-        gui_agregarCliente.setVisible(true);
+        gui_agregarLote.setVisible(true);
 
         this.dispose();
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        this.gui_gerente.setVisible(true);
+        this.gui_lotes.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
 
-        String identificacion = this.obtenerIdentificacionSeleccionado();
+       /* String identificacion = this.obtenerIdentificacionSeleccionado();
         if (identificacion.equalsIgnoreCase("No selecciono") == false) {
             
             Gui_ModificarCliente gui_modificarCliente = new Gui_ModificarCliente(this,identificacion);  
@@ -305,14 +263,29 @@ public class GUI_clientes extends javax.swing.JFrame {
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un cliente para modificar", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        }*/
         
         
     }//GEN-LAST:event_jButtonAgregar1ActionPerformed
 
+    private void jTextFieldBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBusquedaKeyTyped
+        // TODO add your handling code here:
+        jTextFieldBusqueda.addKeyListener(new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                String cadena = (jTextFieldBusqueda.getText());
+                jTextFieldBusqueda.setText(cadena);
+                repaint();
+                filtro();
+            }
+        });
+        trsFiltro = new TableRowSorter(jTableLotes.getModel());
+        jTableLotes.setRowSorter(trsFiltro);
+
+    }//GEN-LAST:event_jTextFieldBusquedaKeyTyped
+
     public String obtenerIdentificacionSeleccionado(){
         try{
-            String identificacion = String.valueOf(jTableClientes.getValueAt(jTableClientes.getSelectedRow(), 0));
+            String identificacion = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
             return identificacion;
         }catch(Exception e){
             return "No selecciono";
@@ -320,27 +293,6 @@ public class GUI_clientes extends javax.swing.JFrame {
         
     }
     
-    private void jTextFieldIdentificacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldIdentificacionKeyTyped
-        char car=evt.getKeyChar();
-        if(  jTextFieldIdentificacion.getText().length()>=10)evt.consume();
-        if((car<'0' || car>'9') ) evt.consume();
-    }//GEN-LAST:event_jTextFieldIdentificacionKeyTyped
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        String resultado = this.buscarClientePorId();
-        if (resultado.equalsIgnoreCase("Cliente no encontrado, inténtelo de nuevo.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("Por favor ingrese el numero de identificacion.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
-        }            
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButtonMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMostrarActionPerformed
-        this.buscarClientes();
-    }//GEN-LAST:event_jButtonMostrarActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -358,39 +310,39 @@ public class GUI_clientes extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI_clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI_clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI_clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI_clientes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_clientes(new Gui_VentanaPrincipalGerente(new Gui_login())).setVisible(true);
+                new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login()))).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAgregar;
     private javax.swing.JButton jButtonAgregar1;
-    private javax.swing.JButton jButtonMostrar;
+    private javax.swing.JComboBox jComboBoxBusqueda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableClientes;
-    private javax.swing.JTextField jTextFieldIdentificacion;
+    private javax.swing.JTable jTableLotes;
+    private javax.swing.JTextField jTextFieldBusqueda;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }

@@ -89,7 +89,7 @@ public class Gui_ModificarEmpleado extends javax.swing.JFrame {
         this.jTextFieldDireccion.setText(empleado.getDireccion());
         this.jTextFieldEmail.setText(empleado.getCorreo());
         this.jDateChooserNacimiento.setDate(empleado.getFechaDeNacimiento());
-        this.jDateChooserNacimiento.setEnabled(false);
+        this.jDateChooserNacimiento.setEnabled(true);
         this.jTextFieldUsuario.setText(usuario.getUsuario());
         this.jTextFieldUsuario.setEnabled(false);
         this.jTextFieldContraseña.setText(usuario.getPassword());

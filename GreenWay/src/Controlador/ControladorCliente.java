@@ -184,4 +184,49 @@ public class ControladorCliente {
         return clientes;
         
     }
+    
+    /**
+     * Metodo para realizar la consulta de todos los clientesque se encuentran registrados en la base de datos y estan activos, devuelve una lista con un objeto por cada cliente encontrado
+     * @return ArrayList<Cliente>
+     */
+    public ArrayList<Cliente> consultarClientesActivos(){
+        ArrayList<Cliente> clientes = new ArrayList();
+        
+        ResultSet consulta = this.daoCliente.consultarTodosClientesBD();
+        try {
+            //se extraen los registros de la tabla cliente
+            while( consulta.next()){
+                
+                //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
+                String nombre = consulta.getString(1);
+                String apellido = consulta.getString(2);
+                String identificacion = consulta.getString(3);
+                String telefono = consulta.getString(4);
+                String direccion = consulta.getString(5);
+                boolean estado = consulta.getBoolean(6);
+                String correo = consulta.getString(7);
+                String fotografia = consulta.getString(8);
+                
+              
+                
+                //se crea el objeto una vez se hayan extraido los datos
+                Cliente cliente = new Cliente(nombre, apellido, identificacion, telefono, direccion, estado, correo, fotografia);
+                
+                //se agrega el cliente si este se encuentra activo en el sistema
+                if (cliente.getEstado() == false) {
+                    
+                }else{
+                    clientes.add(cliente);
+                }
+  
+            }
+        }
+
+        catch (SQLException ex) {
+
+        }
+        
+        return clientes;
+        
+    }
 }

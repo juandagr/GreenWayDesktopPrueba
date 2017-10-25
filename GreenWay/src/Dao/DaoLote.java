@@ -5,7 +5,7 @@
  */
 package Dao;
 
-import Clases.Ubicacion;
+import Clases.Lote;
 import Conexion.Fachada;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,28 +16,28 @@ import java.sql.Statement;
  *
  * @author Daniel
  */
-public class DaoUbicacion {
-    
+public class DaoLote {
     //Atributos
     Fachada fachada;
     ResultSet respuesta;
     Statement instruccion;
     
     //Constructor
-    public DaoUbicacion() {
-        fachada = new Fachada();
+    public DaoLote() {
+        fachada = new Fachada();        
     }
     
     /**
-     *metodo encargado de ingresar una ubicacion a la base de datos en la tabla ubicacion, el metodo recribe una ubicacion y lo guarda en la base de datos
-     * @param ubicacion
+     *metodo encargado de ingresar un Lote a la base de datos en la tabla lote, el metodo recribe un lote y lo guarda en la base de datos
+     * @param lote
      * @return 
      */
-    public int ingresarUbicacionBD(Ubicacion ubicacion) {
+    public int ingresarLoteBD(Lote lote) {
         
         int numFilas;
-        String consulta = "INSERT INTO ubicacion VALUES ('" + ubicacion.getId_ubicacion() + "','" + ubicacion.getDepartamento()
-                        + "','" + ubicacion.getMunicipio()+ "','" + ubicacion.getVereda() + "');" ;
+        String consulta = "INSERT INTO lote VALUES ('" + lote.getCliente_identificacion() + "','" + lote.getCultivo_identificador() + "','" + lote.getIdentificador()
+                        + "','" + lote.getArea() + "','" + lote.getNumero_plantas() + "','" + lote.getCosto_por_hora() + "','"
+                        + lote.getUbicacion_id_ubicacion() + "');" ;
         try {
                 Connection con = fachada.conectar_BD();
                 instruccion = con.createStatement();
@@ -46,26 +46,26 @@ public class DaoUbicacion {
                 
         } catch (SQLException sqle) {
             
-            System.out.println("Error de Sql al conectar en ubicacion \n" + sqle);
+            System.out.println("Error de Sql al conectar en lote \n" + sqle);
             numFilas = -1;
 
         } catch (Exception e) {
             
-            System.out.println("Ocurrió cualquier otra excepcion en ubicacion" + e);
+            System.out.println("Ocurrió cualquier otra excepcion en lote" + e);
             numFilas = -1; 
         }
         return numFilas;
     }
     
     /**
-     *  Metodo para consultar una ubicacion en la base de datos, la busqueda se realiza por medio del id de la ubicacion (id_ubicacion)
-     * @param idUbicacion
+     *  Metodo para consultar un lote en la base de datos, la busqueda se realiza por medio del id del lote (identificador)
+     * @param identificador
      * @return
      */
-    public ResultSet consultarUbicacionBD(String idUbicacion){
+    public ResultSet consultarLoteBD(String identificador){
         
         String sql_select;
-        sql_select="SELECT * FROM ubicacion WHERE id_ubicacion ='"+idUbicacion+"';";
+        sql_select="SELECT * FROM lote WHERE identificador ='"+identificador+"';";
         
         try{
             Connection conn= fachada.conectar_BD();
@@ -81,13 +81,13 @@ public class DaoUbicacion {
     }
     
     /**
-     * Metodo para consultar todas las ubicaciones que se encuentran registrados en la base de datos 
+     * Metodo para consultar todos los lotes que se encuentran registrados en la base de datos 
      * @return
      */
-    public ResultSet consultarTodasUbicacionesBD(){
+    public ResultSet consultarTodosLoteBD(){
         
         String sql_select;
-        sql_select="SELECT DISTINCT * FROM ubicacion;";
+        sql_select="SELECT DISTINCT * FROM lote;";
         try{
             Connection conn= fachada.conectar_BD();
             instruccion = conn.createStatement();
@@ -102,18 +102,18 @@ public class DaoUbicacion {
     }
     
     /**
-     *  Metodo para realizar la actualización de una ubicacion en la base de datos
-     * @param ubicacion
+     *  Metodo para realizar la actualización de un lote en la base de datos
+     * @param lote
      * @return
      */
-    public int actualizarUbicacionBD(Ubicacion ubicacion){
+    public int actualizarLoteBD(Lote lote){
         
         int numFilas = 0;
         String sql_update;
-        String id_ubicacionNueva = ubicacion.getDepartamento() + "-" + ubicacion.getMunicipio() + "-" + ubicacion.getVereda();
-            sql_update = "UPDATE ubicacion SET id_ubicacion='" + id_ubicacionNueva + "', departamento='" + ubicacion.getDepartamento()+ 
-                    "',municipio='" + ubicacion.getMunicipio()+ "',vereda='" + ubicacion.getVereda()+                   
-                    "' WHERE id_ubicacion = '" + ubicacion.getId_ubicacion()+"';";   
+        sql_update = "UPDATE lote SET cliente_identificacion='" + lote.getCliente_identificacion()+ "', cultivo_identificador='" + lote.getCultivo_identificador()+ 
+                    "',identificador='" + lote.getIdentificador() + "',area='" + lote.getArea() + 
+                    "',numero_plantas='" + lote.getNumero_plantas() + "',costo_por_hora='" + lote.getCosto_por_hora()
+                    +  "' WHERE ubicacion_id_ubicacion = '" + lote.getUbicacion_id_ubicacion()+"';";   
             
             System.out.println(sql_update);
         try{
@@ -134,5 +134,4 @@ public class DaoUbicacion {
         }
         return numFilas;
     }
-
 }

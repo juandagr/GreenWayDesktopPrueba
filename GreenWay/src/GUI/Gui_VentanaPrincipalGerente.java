@@ -48,7 +48,6 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         jLabelFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Ventana Principal SG_REST");
 
         jPanel1.setLayout(null);
 
@@ -107,7 +106,7 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
 
         jLabel6.setText("Cultivos y Ubicaciones");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(40, 330, 110, 14);
+        jLabel6.setBounds(40, 330, 130, 14);
 
         jButtonItems.setBackground(new java.awt.Color(255, 255, 255));
         jButtonItems.addActionListener(new java.awt.event.ActionListener() {
@@ -173,17 +172,11 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonClientesActionPerformed
 
     private void jButtonLotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLotesActionPerformed
-        /*// TODO add your handling code here:
-          // TODO add your handling code here:
-        try{
-         Gui_VerReportes reportes = new Gui_VerReportes(this);
-    
-         reportes.setVisible(true);
-         this.dispose();
-         
-       }catch(Exception e){
-       System.out.println(e);}*/
+        Gui_Lotes lotes = new Gui_Lotes(this);
         
+        lotes.setVisible(true);
+        
+        this.dispose();        
     }//GEN-LAST:event_jButtonLotesActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
