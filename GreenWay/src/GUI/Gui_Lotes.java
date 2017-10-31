@@ -114,11 +114,11 @@ public class Gui_Lotes extends javax.swing.JFrame {
     private void jButtonCultivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCultivosActionPerformed
         // TODO add your handling code here:
 
-        //GUI_Cultivos gui_cultivos = new GUI_Cultivos(this);
+        /*GUI_InfoLotes info = new GUI_InfoLotes(this);
 
-        //gui_cultivos.setVisible(true);
+        info.setVisible(true);
 
-        //this.dispose();
+        this.dispose*/
     }//GEN-LAST:event_jButtonCultivosActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
