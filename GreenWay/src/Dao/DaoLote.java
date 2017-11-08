@@ -102,6 +102,27 @@ public class DaoLote {
     }
     
     /**
+     * Metodo para consultar todos los lotes que se encuentran registrados a un cliente en la base de datos 
+     * @return
+     */
+    public ResultSet consultarLotesClienteBD(String cliente){
+        
+        String sql_select;
+        sql_select="SELECT DISTINCT * FROM lote WHERE cliente_identificacion = '"+cliente+"';";
+        try{
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        return respuesta; 
+    
+    }
+    
+    /**
      *  Metodo para realizar la actualización de un lote en la base de datos
      * @param lote
      * @return

@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Dao.DaoCostosOperacionales;
 import Dao.DaoItemsComercializacion;
 import Dao.DaoItemsCostosOperacionales;
 import Dao.DaoItemsInversion;
@@ -21,6 +22,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GUI_InfoCostosLote extends javax.swing.JFrame {
 
+    String loteID = null;
+    String cliente = null;
+    Gui_InfoLotes gui_infoLotes = null;
+    
     String[] subCategoriasInversion = {"APS", "Equipos y maquinaria"};
     String[] subCategoriasCostosOperacionales = {"Mano de obra", "Insecticidas-acaricidas", "Fungicidas", "Herbicidas", "Coadyuvantes", "Fertilizantes foliares", "Fertilizantes edaficos", "Otros gastos-imprevistos"};
     
@@ -34,34 +39,58 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
     /**
      * Creates new form GUI_InfoCostosLote
      */
-    public GUI_InfoCostosLote() {
+    public GUI_InfoCostosLote(Gui_InfoLotes gui_infoLotes) {
         initComponents();
-        modeloItems.addColumn("Labores");modeloItems.addColumn("Lunes");modeloItems.addColumn("Martes");
-        modeloItems.addColumn("Miercoles");modeloItems.addColumn("Jueves");modeloItems.addColumn("Viernes");
-        modeloItems.addColumn("Sabado");modeloItems.addColumn("Domingo");modeloItems.addColumn("Horas");
+        this.gui_infoLotes=gui_infoLotes;
+        
+        modeloItems.addColumn("Labores");modeloItems.addColumn("lunes");modeloItems.addColumn("martes");
+        modeloItems.addColumn("miercoles");modeloItems.addColumn("jueves");modeloItems.addColumn("viernes");
+        modeloItems.addColumn("sabado");modeloItems.addColumn("domingo");
         jTableLabores9.setModel(modeloItems);
         
-        modeloProductos.addColumn("Producto");modeloProductos.addColumn("Lunes");modeloProductos.addColumn("Martes");
-        modeloProductos.addColumn("Miercoles");modeloProductos.addColumn("Jueves");modeloProductos.addColumn("Viernes");
-        modeloProductos.addColumn("Sabado");modeloProductos.addColumn("Domingo");modeloProductos.addColumn("Presentacion");
+        modeloProductos.addColumn("producto");modeloProductos.addColumn("lunes");modeloProductos.addColumn("martes");
+        modeloProductos.addColumn("miercoles");modeloProductos.addColumn("jueves");modeloProductos.addColumn("viernes");
+        modeloProductos.addColumn("sabado");modeloProductos.addColumn("domingo");modeloProductos.addColumn("Presentacion");
         modeloProductos.addColumn("Costo Producto");modeloProductos.addColumn("Vol utilizado");
         jTableProductos.setModel(modeloProductos);
         
-        modeloOtros.addColumn("Otro");modeloOtros.addColumn("Lunes");modeloOtros.addColumn("Martes");
-        modeloOtros.addColumn("Miercoles");modeloOtros.addColumn("Jueves");modeloOtros.addColumn("Viernes");
-        modeloOtros.addColumn("Sabado");modeloOtros.addColumn("Domingo");modeloOtros.addColumn("Valor");
+        modeloOtros.addColumn("Otro");modeloOtros.addColumn("lunes");modeloOtros.addColumn("martes");
+        modeloOtros.addColumn("miercoles");modeloOtros.addColumn("jueves");modeloOtros.addColumn("viernes");
+        modeloOtros.addColumn("sabado");modeloOtros.addColumn("domingo");modeloOtros.addColumn("Valor");
         jTableOtros9.setModel(modeloOtros);
         
-        modeloComercializacion.addColumn("Comercializacion");modeloComercializacion.addColumn("Lunes");modeloComercializacion.addColumn("Martes");
-        modeloComercializacion.addColumn("Miercoles");modeloComercializacion.addColumn("Jueves");modeloComercializacion.addColumn("Viernes");
-        modeloComercializacion.addColumn("Sabado");modeloComercializacion.addColumn("Domingo");modeloComercializacion.addColumn("Valor");
+        modeloComercializacion.addColumn("Comercializacion");modeloComercializacion.addColumn("lunes");modeloComercializacion.addColumn("martes");
+        modeloComercializacion.addColumn("miercoles");modeloComercializacion.addColumn("jueves");modeloComercializacion.addColumn("viernes");
+        modeloComercializacion.addColumn("sabado");modeloComercializacion.addColumn("domingo");modeloComercializacion.addColumn("valor");
         jTableComercializacion.setModel(modeloComercializacion);
         
-        modeloInversion.addColumn("Inversion");modeloInversion.addColumn("Lunes");modeloInversion.addColumn("Martes");
-        modeloInversion.addColumn("Miercoles");modeloInversion.addColumn("Jueves");modeloInversion.addColumn("Viernes");
-        modeloInversion.addColumn("Sabado");modeloInversion.addColumn("Domingo");modeloInversion.addColumn("Valor");
+        modeloInversion.addColumn("Inversion");modeloInversion.addColumn("lunes");modeloInversion.addColumn("martes");
+        modeloInversion.addColumn("miercoles");modeloInversion.addColumn("jueves");modeloInversion.addColumn("viernes");
+        modeloInversion.addColumn("sabado");modeloInversion.addColumn("domingo");modeloInversion.addColumn("Valor");
         jTableInversion.setModel(modeloInversion);
+        
+        this.jTextFieldLote.setText(this.gui_infoLotes.gui_adminLotes.loteID);
+        this.jTextFieldLote.setEditable(false);
+        this.jTextFieldCedula.setText(this.gui_infoLotes.gui_adminLotes.cliente);
+        this.jTextFieldCedula.setEditable(false);
     }
+
+    public void setLoteID(String loteID) {
+        this.loteID = loteID;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getLoteID() {
+        return loteID;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+    
     
     //metodos para realizar las consultas de los items predeterminados ***********************
     public void consultarItemsInversion(){
@@ -149,6 +178,22 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         
     }
 
+    
+    public void registrarInfoCostos(){
+        Dao.DaoCostosOperacionales dao = new DaoCostosOperacionales();
+        System.out.println(jTableLabores9.getRowCount());
+        for (int i = 0; i < jTableLabores9.getRowCount(); i++) {
+            for (int j = 1; j < 8; j++) {
+                if (String.valueOf(jTableLabores9.getValueAt(i, j)).equalsIgnoreCase("null")) {  
+                }else{
+                    int horas = Integer.parseInt(String.valueOf(jTableLabores9.getValueAt(i, j)));
+                    dao.ingresarcostosOperacionalesBD(jTextFieldLote.getText(), String.valueOf(jTableLabores9.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableLabores9.getColumnName(j), horas);
+
+                }
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,8 +209,6 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         jTextFieldAño = new javax.swing.JTextField();
         jTextFieldCedula = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextFieldValorFacturado = new javax.swing.JTextField();
         jTextFieldLote = new javax.swing.JTextField();
         jComboBoxItem = new javax.swing.JComboBox();
         jComboBoxSubCategoria = new javax.swing.JComboBox();
@@ -204,8 +247,6 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         jLabel2.setText("Año:");
 
         jLabel3.setText("Identificador Lote:");
-
-        jLabel4.setText("Valor Facturado:");
 
         jComboBoxSubCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccione una subcategoria" }));
         jComboBoxSubCategoria.addItemListener(new java.awt.event.ItemListener() {
@@ -410,10 +451,20 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         );
 
         jButton1.setText("Agregar Registros");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
 
         jButton3.setText("Salir");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Semana:");
 
@@ -452,12 +503,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                                     .addComponent(jLabel5))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(40, 40, 40)
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jTextFieldValorFacturado, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(4, 4, 4)
@@ -480,19 +526,17 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(jTextFieldValorFacturado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextFieldAño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel5)
-                                .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2)
+                                .addComponent(jTextFieldAño, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -668,6 +712,16 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_jButtonComercializacionActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.registrarInfoCostos();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.gui_infoLotes.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -698,7 +752,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_InfoCostosLote().setVisible(true);
+                new GUI_InfoCostosLote(new Gui_InfoLotes(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login()))))).setVisible(true);
             }
         });
     }
@@ -718,7 +772,6 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -738,6 +791,5 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldCedula;
     private javax.swing.JTextField jTextFieldLote;
     private javax.swing.JTextField jTextFieldSemana;
-    private javax.swing.JTextField jTextFieldValorFacturado;
     // End of variables declaration//GEN-END:variables
 }

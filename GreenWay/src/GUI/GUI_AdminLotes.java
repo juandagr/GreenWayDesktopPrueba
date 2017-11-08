@@ -26,6 +26,9 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
     //Atributos
     Gui_Lotes gui_lotes;
     private TableRowSorter trsFiltro;
+    String loteID = null;
+    String cliente = null;
+    ArrayList<String> idLotes = new ArrayList();
     
     DefaultTableModel modeloItems = new DefaultTableModel(){
            
@@ -68,6 +71,8 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
             fila[3] = lotes.get(i).getNumero_plantas();
             fila[4] = lotes.get(i).getCosto_por_hora();
             fila[5] = lotes.get(i).getUbicacion_id_ubicacion();
+            
+            this.idLotes.add(lotes.get(i).getIdentificador());
 
             // Se añade al modelo la fila completa.
             modeloItems.addRow(fila);
@@ -111,6 +116,10 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBoxBusqueda = new javax.swing.JComboBox();
         jTextFieldBusqueda = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jButtonRegistros = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jButtonRegistros1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -138,7 +147,7 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE))
+                .addComponent(jScrollPane1))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,6 +189,24 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setText("Registros:");
+
+        jButtonRegistros.setText("Registros");
+        jButtonRegistros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRegistrosActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Costo semanal:");
+
+        jButtonRegistros1.setText("Costo");
+        jButtonRegistros1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRegistros1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -189,13 +216,7 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(10, 10, 10)
                                 .addComponent(jToggleButton1))
@@ -207,7 +228,21 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jButtonAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonRegistros, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButtonRegistros1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -221,17 +256,23 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
                     .addComponent(jButtonAgregar)
                     .addComponent(jLabel1)
                     .addComponent(jButtonAgregar1)
-                    .addComponent(jLabel2))
-                .addGap(9, 9, 9)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonRegistros)
+                        .addComponent(jLabel4)))
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonRegistros1)
+                        .addComponent(jLabel5)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton1)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -282,6 +323,39 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
         jTableLotes.setRowSorter(trsFiltro);
 
     }//GEN-LAST:event_jTextFieldBusquedaKeyTyped
+
+    private void jButtonRegistrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistrosActionPerformed
+        String cliente = this.obtenerIdentificacionSeleccionado();
+        
+        if (cliente.equalsIgnoreCase("No selecciono") == false) {
+            
+            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+            this.cliente = cliente;
+            Gui_InfoLotes info = new Gui_InfoLotes(this);
+            info.setVisible(true);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        
+    }//GEN-LAST:event_jButtonRegistrosActionPerformed
+
+    private void jButtonRegistros1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegistros1ActionPerformed
+        String cliente = this.obtenerIdentificacionSeleccionado();
+        
+        if (cliente.equalsIgnoreCase("No selecciono") == false) {
+            
+            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+            this.cliente = cliente;
+            GUI_CostoSemanal costo = new GUI_CostoSemanal(this);
+            costo.setVisible(true);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonRegistros1ActionPerformed
 
     public String obtenerIdentificacionSeleccionado(){
         try{
@@ -334,10 +408,14 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAgregar;
     private javax.swing.JButton jButtonAgregar1;
+    private javax.swing.JButton jButtonRegistros;
+    private javax.swing.JButton jButtonRegistros1;
     private javax.swing.JComboBox jComboBoxBusqueda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

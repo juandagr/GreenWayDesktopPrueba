@@ -118,6 +118,36 @@ public class ControladorLote {
     }
     
     /**
+     * metodo para realizar la consulta de los lotes de un cliente en la base de datos, este recibe el id del cliente y devuelve una lista con los lotes de el cliente
+     * @param identificador
+     * @return Cultivo
+     */
+    public ArrayList<String> consultarLotesCliente(String cliente){
+        
+        ArrayList<String> lotes = new ArrayList();
+        ResultSet consulta = this.daoLote.consultarLotesClienteBD(cliente);
+
+        try {
+            //se pregunta si el resultset no esta vacio, es decir si consulto algo
+            while( consulta.next()){
+                //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
+                String id = consulta.getString(3);
+                //se crea el objeto una vez se hayan extraido los datos
+                lotes.add(id);
+  
+            }
+
+        }
+
+        catch (SQLException ex) {
+
+        }
+        
+        return lotes;
+        
+    }
+    
+    /**
      * Metodo para verificar si un lote ya ha sido registrado en la base de datos
      * @param identificador
      * @return boolean resultado
