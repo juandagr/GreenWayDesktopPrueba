@@ -7,6 +7,7 @@ package GUI;
 
 import Controlador.ControladorLote;
 import Dao.DaoCostosOperacionales;
+import Dao.DaoValorFacturado;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,6 +34,23 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
         this.jTextFieldCedula.setEditable(false);
     }
 
+    public boolean valorRegistrado(String loteId, String anio, String semana){
+        boolean resultado = false;
+        ResultSet rs = new DaoValorFacturado().consultarValorFacturadoBD(loteId, anio, semana);
+        
+        try {
+            if (rs.next()) {
+                resultado = true;
+
+            }else{
+
+                resultado = false;
+            }
+        } catch (SQLException ex) {
+            //Logger.getLogger(ControladorCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -96,6 +114,11 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
         });
 
         jButtonGuardarValor.setText("Guardar");
+        jButtonGuardarValor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGuardarValorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,12 +162,13 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -152,14 +176,15 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonBuscar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextFieldValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel6)
                         .addComponent(jButtonBuscar1)
-                        .addComponent(jButtonGuardarValor)))
+                        .addComponent(jButtonGuardarValor))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextFieldHoras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -167,27 +192,34 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        ArrayList<String> lotes = new ControladorLote().consultarLotesCliente(jTextFieldCedula.getText());
+        if ((jTextFieldAño.getText().equalsIgnoreCase("") 
+                || jTextFieldSemana.getText().equalsIgnoreCase("")) == false) {
+         
+            ArrayList<String> lotes = new ControladorLote().consultarLotesCliente(jTextFieldCedula.getText());
         
-        String año = jTextFieldAño.getText();
-        String semana = jTextFieldSemana.getText();
-        int horas = 0;
-        if (año.equalsIgnoreCase("") || semana.equalsIgnoreCase("")) {
-            JOptionPane.showMessageDialog(null, "Llene los campos obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            String año = jTextFieldAño.getText();
+            String semana = jTextFieldSemana.getText();
+            int horas = 0;
+            if (año.equalsIgnoreCase("") || semana.equalsIgnoreCase("")) {
+                JOptionPane.showMessageDialog(null, "Llene los campos obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            }else{
+                for (int i = 0; i < lotes.size(); i++) {
+                    ResultSet rs = new DaoCostosOperacionales().consultarCostosOperacionalesxSemanaBD(lotes.get(i), año, semana);
+                    try {
+                        while(rs.next()){
+                            horas += rs.getInt(6);
+                            jTextFieldHoras.setText(String.valueOf(horas));
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(GUI_CostoSemanal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }
+
+            }
         }else{
-            for (int i = 0; i < lotes.size(); i++) {
-                ResultSet rs = new DaoCostosOperacionales().consultarCostosOperacionalesxSemanaBD(lotes.get(i), año, semana);
-                try {
-                    while(rs.next()){
-                        horas += rs.getInt(6);
-                        jTextFieldHoras.setText(String.valueOf(horas));
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(GUI_CostoSemanal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            }
-            
+            JOptionPane.showMessageDialog(null, "Elija un año y una semana", "Error!", JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jTextFieldHorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHorasActionPerformed
@@ -202,6 +234,28 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
         this.gui_AdminLotes.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButtonBuscar1ActionPerformed
+
+    private void jButtonGuardarValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarValorActionPerformed
+        if (jTextFieldAño.getText().equalsIgnoreCase("") || jTextFieldHoras.getText().equalsIgnoreCase("") || jTextFieldAño.getText().equalsIgnoreCase("")
+                || jTextFieldSemana.getText().equalsIgnoreCase("") || jTextFieldValor.getText().equalsIgnoreCase("")) {
+            JOptionPane.showMessageDialog(null, "Llene los datos obligatorios", "Error!", JOptionPane.ERROR_MESSAGE);
+        }else{
+            String loteId = jTextFieldCedula.getText();
+            String anio = jTextFieldAño.getText();
+            String semana = jTextFieldSemana.getText();
+            double valor = Double.parseDouble(jTextFieldValor.getText());
+            int horas = Integer.parseInt(jTextFieldHoras.getText());
+            double valorHora = valor/horas;
+            
+            if (this.valorRegistrado(loteId, anio, semana)) {
+                new DaoValorFacturado().actualizarHistoriaClinicaBD(loteId, anio, semana, horas, valor, valorHora);
+                JOptionPane.showMessageDialog(null, "Valor registrado exitosamente!", "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                new DaoValorFacturado().ingresarValorFacturadoBD(loteId, anio, semana, horas, valor, valorHora);
+                JOptionPane.showMessageDialog(null, "Valor registrado exitosamente!", "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButtonGuardarValorActionPerformed
 
     /**
      * @param args the command line arguments

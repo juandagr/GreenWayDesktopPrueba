@@ -5,6 +5,7 @@
  */
 package Dao;
 
+import Clases.Archivo;
 import Conexion.Fachada;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class DaoItemsComercializacion {
     public int ingresarItem(String item){
         int numFilas = 0;
         String consulta = "INSERT INTO items_de_comercializacion (item) VALUES ('" + item + "');";
-        
+        //new Archivo().guardarEnArchivo("C:\\Users\\Daniel\\Documents\\NetBeansProjects\\GreenWayDesktop\\GreenWay\\src\\imagenes\\items.txt", consulta);
         try {
                 Connection con = fachada.conectar_BD();
                 instruccion = con.createStatement();

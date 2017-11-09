@@ -26,7 +26,7 @@ public class DaoItemsInversion {
     public int ingresarItem(String subCategoria, String item){
         int numFilas = 0;
         String consulta = "INSERT INTO items_de_inversion (categoria, item) VALUES ('" + subCategoria + "','" + item + "');";
-        
+        //new Archivo().guardarEnArchivo("C:\\Users\\Daniel\\Documents\\NetBeansProjects\\GreenWayDesktop\\GreenWay\\src\\imagenes\\items.txt", consulta);
         try {
                 Connection con = fachada.conectar_BD();
                 instruccion = con.createStatement();

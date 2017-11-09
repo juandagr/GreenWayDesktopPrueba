@@ -5,7 +5,12 @@
  */
 package GUI;
 
+import Clases.Validaciones;
+import Dao.DaoCostosComercializacion;
+import Dao.DaoCostosInversion;
 import Dao.DaoCostosOperacionales;
+import Dao.DaoCostosOperacionalesOtros;
+import Dao.DaoCostosOperacionalesProducto;
 import Dao.DaoItemsComercializacion;
 import Dao.DaoItemsCostosOperacionales;
 import Dao.DaoItemsInversion;
@@ -56,7 +61,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         
         modeloOtros.addColumn("Otro");modeloOtros.addColumn("lunes");modeloOtros.addColumn("martes");
         modeloOtros.addColumn("miercoles");modeloOtros.addColumn("jueves");modeloOtros.addColumn("viernes");
-        modeloOtros.addColumn("sabado");modeloOtros.addColumn("domingo");modeloOtros.addColumn("Valor");
+        modeloOtros.addColumn("sabado");modeloOtros.addColumn("domingo");
         jTableOtros9.setModel(modeloOtros);
         
         modeloComercializacion.addColumn("Comercializacion");modeloComercializacion.addColumn("lunes");modeloComercializacion.addColumn("martes");
@@ -66,7 +71,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         
         modeloInversion.addColumn("Inversion");modeloInversion.addColumn("lunes");modeloInversion.addColumn("martes");
         modeloInversion.addColumn("miercoles");modeloInversion.addColumn("jueves");modeloInversion.addColumn("viernes");
-        modeloInversion.addColumn("sabado");modeloInversion.addColumn("domingo");modeloInversion.addColumn("Valor");
+        modeloInversion.addColumn("sabado");modeloInversion.addColumn("domingo");
         jTableInversion.setModel(modeloInversion);
         
         this.jTextFieldLote.setText(this.gui_infoLotes.gui_adminLotes.loteID);
@@ -184,10 +189,69 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         System.out.println(jTableLabores9.getRowCount());
         for (int i = 0; i < jTableLabores9.getRowCount(); i++) {
             for (int j = 1; j < 8; j++) {
-                if (String.valueOf(jTableLabores9.getValueAt(i, j)).equalsIgnoreCase("null")) {  
+                if (String.valueOf(jTableLabores9.getValueAt(i, j)).equalsIgnoreCase("null") || (new Validaciones().isNumeric(String.valueOf(jTableLabores9.getValueAt(i, j))) == false)) {  
                 }else{
                     int horas = Integer.parseInt(String.valueOf(jTableLabores9.getValueAt(i, j)));
                     dao.ingresarcostosOperacionalesBD(jTextFieldLote.getText(), String.valueOf(jTableLabores9.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableLabores9.getColumnName(j), horas);
+
+                }
+            }
+        }
+    }
+    
+    /*public void registrarInfoCostosProducto(){
+        Dao.DaoCostosOperacionalesProducto dao = new DaoCostosOperacionalesProducto();
+        System.out.println(jTableProductos.getRowCount());
+        for (int i = 0; i < jTableProductos.getRowCount(); i++) {
+            for (int j = 1; j < 8; j++) {
+                if (String.valueOf(jTableProductos.getValueAt(i, j)).equalsIgnoreCase("null")) {  
+                }else{
+                    int Producto = Integer.parseInt(String.valueOf(jTableProductos.getValueAt(i, j)));
+                    dao.ingresarcostosOperacionalesBD(jTextFieldLote.getText(), String.valueOf(jTableProductos.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableProductos.getColumnName(j), horas);
+
+                }
+            }
+        }
+    }*/
+    
+    public void registrarInfoCostosInversion(){
+        Dao.DaoCostosInversion dao = new DaoCostosInversion();
+        System.out.println(jTableInversion.getRowCount());
+        for (int i = 0; i < jTableInversion.getRowCount(); i++) {
+            for (int j = 1; j < 8; j++) {
+                if (String.valueOf(jTableInversion.getValueAt(i, j)).equalsIgnoreCase("null")|| (new Validaciones().isNumeric(String.valueOf(jTableInversion.getValueAt(i, j))) == false)) {  
+                }else{
+                    int valor = Integer.parseInt(String.valueOf(jTableInversion.getValueAt(i, j)));
+                    dao.ingresarcostosInversionBD(jTextFieldLote.getText(), String.valueOf(jTableInversion.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableLabores9.getColumnName(j), valor);
+
+                }
+            }
+        }
+    }
+    
+    public void registrarInfoCostosComercializacion(){
+        Dao.DaoCostosComercializacion dao = new DaoCostosComercializacion();
+        for (int i = 0; i < jTableComercializacion.getRowCount(); i++) {
+            for (int j = 1; j < 8; j++) {
+                if (String.valueOf(jTableComercializacion.getValueAt(i, j)).equalsIgnoreCase("null")|| (new Validaciones().isNumeric(String.valueOf(jTableComercializacion.getValueAt(i, j))) == false)) {  
+                }else{
+                    int valor = Integer.parseInt(String.valueOf(jTableComercializacion.getValueAt(i, j)));
+                    dao.ingresarCostosComercializacionBD(jTextFieldLote.getText(), String.valueOf(jTableComercializacion.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableComercializacion.getColumnName(j), valor);
+
+                }
+            }
+        }
+    }
+    
+    public void registrarInfoCostosOtros(){
+        Dao.DaoCostosOperacionalesOtros dao = new DaoCostosOperacionalesOtros();
+        System.out.println(jTableOtros9.getRowCount());
+        for (int i = 0; i < jTableOtros9.getRowCount(); i++) {
+            for (int j = 1; j < 8; j++) {
+                if (String.valueOf(jTableOtros9.getValueAt(i, j)).equalsIgnoreCase("null")|| (new Validaciones().isNumeric(String.valueOf(jTableOtros9.getValueAt(i, j))) == false)) {  
+                }else{
+                    int horas = Integer.parseInt(String.valueOf(jTableOtros9.getValueAt(i, j)));
+                    dao.ingresarcostosOperacionalesBD(jTextFieldLote.getText(), String.valueOf(jTableOtros9.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableOtros9.getColumnName(j), horas);
 
                 }
             }
@@ -245,6 +309,12 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         jLabel1.setText("Cedula cliente:");
 
         jLabel2.setText("Año:");
+
+        jTextFieldAño.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldAñoKeyTyped(evt);
+            }
+        });
 
         jLabel3.setText("Identificador Lote:");
 
@@ -467,6 +537,12 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         });
 
         jLabel5.setText("Semana:");
+
+        jTextFieldSemana.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldSemanaKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -713,7 +789,16 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonComercializacionActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.registrarInfoCostos();
+        if (jTextFieldAño.getText().equalsIgnoreCase("") || jTextFieldSemana.getText().equalsIgnoreCase("")) {
+            JOptionPane.showMessageDialog(null, "Llene los campos obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+        }else{
+            this.registrarInfoCostos();
+            this.registrarInfoCostosInversion();
+            this.registrarInfoCostosComercializacion();
+            this.registrarInfoCostosOtros();
+        }
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -721,6 +806,18 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextFieldAñoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldAñoKeyTyped
+        char car=evt.getKeyChar();
+        if(  jTextFieldAño.getText().length()>=10)evt.consume();
+        if((car<'0' || car>'9') ) evt.consume();
+    }//GEN-LAST:event_jTextFieldAñoKeyTyped
+
+    private void jTextFieldSemanaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSemanaKeyTyped
+        char car=evt.getKeyChar();
+        if(  jTextFieldSemana.getText().length()>=10)evt.consume();
+        if((car<'0' || car>'9') ) evt.consume();
+    }//GEN-LAST:event_jTextFieldSemanaKeyTyped
 
     /**
      * @param args the command line arguments

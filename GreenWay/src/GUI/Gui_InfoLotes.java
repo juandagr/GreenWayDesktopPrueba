@@ -18,7 +18,7 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
      */
     public Gui_InfoLotes(GUI_AdminLotes gui_adminLotes) {
         this.gui_adminLotes = gui_adminLotes;
-        this.setLocation(250, 150);
+        this.setLocation(400, 150);
 
         initComponents();
     }
@@ -194,11 +194,11 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
     private void jButtonCultivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCultivosActionPerformed
         // TODO add your handling code here:
 
-        /*GUI_InfoLotes info = new GUI_InfoLotes(this);
+        GUI_HistoriaClinica hc = new GUI_HistoriaClinica(this);
 
-        info.setVisible(true);
+        hc.setVisible(true);
 
-        this.dispose*/
+        this.dispose();
     }//GEN-LAST:event_jButtonCultivosActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
