@@ -183,11 +183,11 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
 
     private void jButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEmpleadosActionPerformed
         
-        /*GUI_AdminLotes admin = new GUI_AdminLotes(this);
+        GUI_HistorialAplicacion ha = new GUI_HistorialAplicacion(this);
 
-        admin.setVisible(true);
+        ha.setVisible(true);
 
-        this.dispose();*/
+        this.dispose();
 
     }//GEN-LAST:event_jButtonEmpleadosActionPerformed
 

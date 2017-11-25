@@ -5,12 +5,8 @@
  */
 package GUI;
 
-import Clases.Cliente;
-import Clases.HistoriaClinica;
-import Clases.Lote;
-import Controlador.ControladorCliente;
-import Controlador.ControladorHistoriaClinica;
-import Controlador.ControladorLote;
+import Clases.HistorialAplicacion;
+import Controlador.ControladorHistorialAplicacion;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Daniel
  */
-public class GUI_HistoriaClinica extends javax.swing.JFrame {
+public class GUI_HistorialAplicacion extends javax.swing.JFrame {
 
     //Atributos
     Gui_InfoLotes gui_infoLotes;
@@ -40,7 +36,7 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
                 return false;}
         };
     //Constructor
-    public GUI_HistoriaClinica(Gui_InfoLotes gui_infoLotes) {
+    public GUI_HistorialAplicacion(Gui_InfoLotes gui_infoLotes) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.gui_infoLotes = gui_infoLotes;
@@ -48,30 +44,36 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
         modeloItems.addColumn("Año");
         modeloItems.addColumn("Semana");
         modeloItems.addColumn("Dia");
-        modeloItems.addColumn("Descripcion");
+        modeloItems.addColumn("Objetivo biologico");
+        modeloItems.addColumn("Producto utilizado");
+        modeloItems.addColumn("Dosis por litro");
+        modeloItems.addColumn("Volumen utilizado");
         
         this.loteID = this.gui_infoLotes.gui_adminLotes.loteID;
-        buscarHistorias();
+        buscarHistoriales();
     }
     
     // metodo para buscar los lotes que estan registrados en la base de datos y mostrar sus datos
     // en pantalla por medio de una tabla
-    public void buscarHistorias(){
+    public void buscarHistoriales(){
         while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
         jTableLotes.setModel(modeloItems);
         
-        ArrayList<HistoriaClinica> historias = new ControladorHistoriaClinica().consultarHistoriasxLote(loteID);
+        ArrayList<HistorialAplicacion> historiales = new ControladorHistorialAplicacion().consultarHistorialessxLote(loteID);
         
-        for (int i = 0; i < historias.size(); i++) {
+        for (int i = 0; i < historiales.size(); i++) {
             // Se crea un array que será una de las filas de la tabla.
-            Object [] fila = new Object[6]; // Hay tres columnas en la tabla
+            Object [] fila = new Object[8]; // Hay tres columnas en la tabla
 
             // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-            fila[0] = historias.get(i).getLote_identificador();
-            fila[1] = historias.get(i).getAnio();
-            fila[2] = historias.get(i).getSemana();
-            fila[3] = historias.get(i).getDia();
-            fila[4] = historias.get(i).getDescripcion();
+            fila[0] = historiales.get(i).getLote_identificador();
+            fila[1] = historiales.get(i).getAnio();
+            fila[2] = historiales.get(i).getSemana();
+            fila[3] = historiales.get(i).getDia();
+            fila[4] = historiales.get(i).getObjetivoBiologico();
+            fila[5] = historiales.get(i).getProducto_utilizado();
+            fila[6] = historiales.get(i).getDosis_por_litro();
+            fila[7] = historiales.get(i).getVolumen_utilizado();
             
             // Se añade al modelo la fila completa.
             modeloItems.addRow(fila);
@@ -126,7 +128,7 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel6.setText("Administracion de Historias clinicas");
+        jLabel6.setText("Administracion de Historiales de aplicacion");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Historias clinicas"));
 
@@ -266,7 +268,7 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
         
-        Gui_AgregarHistoriaClinica historia = new Gui_AgregarHistoriaClinica(this);
+        Gui_AgregarHistorialAplicacion historia = new Gui_AgregarHistorialAplicacion(this);
     
         historia.setVisible(true);
 
@@ -286,18 +288,19 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
             String anio = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 1));
             String semana = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 2));
             String dia = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 3));
+
             
             if (this.obtenerIdentificacionSeleccionado().equalsIgnoreCase("No selecciono") == false) {
- 
-                Gui_ModificarHistoriaClinica modificar = new Gui_ModificarHistoriaClinica(this, loteId, anio, semana, dia);
+
+                Gui_ModificarHistorialAplicacion modificar = new Gui_ModificarHistorialAplicacion(this, loteId, anio, semana, dia);
                 modificar.setVisible(true);
 
                 this.dispose();
             }else{
-                JOptionPane.showMessageDialog(null, "Seleccione una historia clinica para modificar", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Seleccione un historial de aplicacion para modificar", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Seleccione una historia clinica para modificar", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Seleccione un historial de aplicacion para modificar", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
         
@@ -359,14 +362,22 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_HistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_HistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_HistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_HistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -379,7 +390,7 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_HistoriaClinica(null).setVisible(true);
+                new GUI_HistorialAplicacion(null).setVisible(true);
             }
         });
     }

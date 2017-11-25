@@ -9,6 +9,7 @@ package GUI;
 import Clases.*;
 import Controlador.ControladorEmpleado;
 import Controlador.ControladorHistoriaClinica;
+import Controlador.ControladorHistorialAplicacion;
 import Controlador.ControladorUsuario;
 import java.awt.Image;
 import java.io.File;
@@ -31,74 +32,65 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author
  */
-public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
+public class Gui_AgregarHistorialAplicacion extends javax.swing.JFrame {
 
     //Atributos
     //GUI de la ventana principal del gerente
-    GUI_HistoriaClinica gui_historiaClinica;
+    GUI_HistorialAplicacion gui_historiaClinica;
     
     //Constructor
-    public Gui_ModificarHistoriaClinica(GUI_HistoriaClinica gui_historiaClinica, String loteId, String anio, String semana, String dia) {
+    public Gui_AgregarHistorialAplicacion(GUI_HistorialAplicacion gui_historiaClinica) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.gui_historiaClinica = gui_historiaClinica;        
 
         this.jTextFieldLote.setText(this.gui_historiaClinica.gui_infoLotes.gui_adminLotes.loteID);
         this.jTextFieldLote.setEditable(false);
-        
-        this.llenarDatos(loteId, anio, semana, dia);
-    }
-    
-    public void llenarDatos(String loteId, String anio, String semana, String dia){
-        HistoriaClinica hs = new ControladorHistoriaClinica().consultarHistoriaClinica(loteId, anio, semana, dia);
-        
-        this.jTextFieldSemana.setText(hs.getSemana()); 
-        this.jTextFieldDia.setText(hs.getDia()); 
-        this.jTextArea1.setText(hs.getDescripcion()); 
-        this.jTextFieldAño.setText(hs.getAnio()); 
-        this.jTextFieldSemana.setEditable(false);
-        this.jTextFieldDia.setEditable(false);
-        this.jTextArea1.setEditable(true);
-        this.jTextFieldAño.setEditable(false);
     }
 
 
     //metodo para agregar un empleado a la base de datos
-    public String modificarHistoria(String loteId, String anio, String semana, String dia, String descripcion){
+    public String agregarHistorial(String Lote_identificador, String id_historial, String anio, String semana, String dia, String objetivoBiologico, String producto_utilizado, double dosis_por_litro, double volumen_utilizado){
         //variable que almacenara el resultado
         String resultado = "";     
         
         //creacion de  controlador para realizar el ingreso del empleado y el usuario, tambien de la clase que valida los campos
-        ControladorHistoriaClinica controladorHistoria = new ControladorHistoriaClinica();
+        ControladorHistorialAplicacion controladorHistorial = new ControladorHistorialAplicacion();
         Validaciones validar = new Validaciones();
         
         try {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
-            if ((verificarCamposVacios() == false) && verificarTipos()&& validar.validarDia(dia)) {
+            if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarDia(dia)) {
                 //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
-                if (controladorHistoria.HistoriaRegistrada(loteId, anio, semana, dia)) {
+                if (controladorHistorial.HistorialAplicacionRegistrado(dia, id_historial, anio, semana, dia) == false) {
                     
-                    resultado = controladorHistoria.actualizarHistoriaClinica(loteId, anio, semana, dia, descripcion);                        
-                    limpiar();
+                    if ((jTextAreaObjetivo.getText().length() < 21) && (jTextFieldProductoUtilizado.getText().length() < 21)) {
+                        
+                        resultado = controladorHistorial.ingresarHistorialAplicacion(Lote_identificador, id_historial, anio, semana, dia, objetivoBiologico, producto_utilizado, dosis_por_litro, volumen_utilizado);
+                        limpiar();
+                    
+                    }else{
+                        resultado = "El objetivo biologico y el producto utilizado, deben tener menos de 20 letras.";
+                    }
                     
                 }else{
                     
-                    resultado = "la historia clinica no se encuentra registrado.";
+                    resultado = "El historial de aplicacion ya se encuentra registrado.";
                     //JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
                     limpiar();
                 }                
                 
             }else{
-                resultado = "No se pudo modificar la historia clinica, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+                resultado = "No se pudo crear el historial de aplicacion, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
                 //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (NullPointerException ex) {
-            resultado = "No se pudo modificar la historia clinica, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+            resultado = "No se pudo crear el historial de aplicacion, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
             //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             limpiar();
         } catch (Exception ex) {
-            Logger.getLogger(Gui_ModificarHistoriaClinica.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Gui_AgregarHistorialAplicacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return resultado;
@@ -123,8 +115,14 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jTextFieldDia = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextAreaObjetivo = new javax.swing.JTextArea();
         jLabel14 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldProductoUtilizado = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jTextFieldDosis = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jTextFieldVolumen = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jButtonagregar = new javax.swing.JButton();
         jButtonSalir = new javax.swing.JButton();
@@ -132,7 +130,7 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Historia clinica", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(51, 0, 255)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos de Historial de aplicacion", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, null, new java.awt.Color(51, 0, 255)));
 
         jLabel1.setText("Lote:");
 
@@ -171,11 +169,35 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextAreaObjetivo.setColumns(20);
+        jTextAreaObjetivo.setRows(5);
+        jScrollPane1.setViewportView(jTextAreaObjetivo);
 
-        jLabel14.setText("Descripcion:");
+        jLabel14.setText("Objetivo biologico");
+
+        jLabel4.setText("Producto utilizado: ");
+
+        jTextFieldProductoUtilizado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldProductoUtilizadoKeyTyped(evt);
+            }
+        });
+
+        jLabel5.setText("Dosis por litro:");
+
+        jTextFieldDosis.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldDosisKeyTyped(evt);
+            }
+        });
+
+        jLabel6.setText("Volumen utilizado:");
+
+        jTextFieldVolumen.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldVolumenKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -183,11 +205,7 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(203, 203, 203)
-                        .addComponent(jLabel14)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -196,13 +214,31 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
                             .addComponent(jLabel13))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldAño, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldDia, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldDia, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldAño, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(203, 203, 203)
+                        .addComponent(jLabel14))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldProductoUtilizado, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldDosis, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,7 +246,6 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
                 .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,14 +261,25 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(jTextFieldDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 112, Short.MAX_VALUE))))
+                            .addComponent(jTextFieldDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextFieldProductoUtilizado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextFieldDosis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextFieldVolumen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Opciones"));
 
         jButtonagregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/16 (Save).jpg"))); // NOI18N
-        jButtonagregar.setText("Actualizar");
+        jButtonagregar.setText("agregar");
         jButtonagregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonagregarActionPerformed(evt);
@@ -263,9 +309,9 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButtonagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -285,13 +331,11 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(567, 567, 567))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(668, 668, 668))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,7 +343,7 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.getAccessibleContext().setAccessibleName("");
@@ -308,7 +352,7 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 701, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -318,43 +362,35 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldAñoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldAñoKeyTyped
-        // TODO add your handling code here:
-        char car=evt.getKeyChar();
-        if(  jTextFieldAño.getText().length()>=10)evt.consume();
-        if((car<'0' || car>'9') ) evt.consume();
-    }//GEN-LAST:event_jTextFieldAñoKeyTyped
-
-    private void jTextFieldSemanaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSemanaKeyTyped
-        char car=evt.getKeyChar();
-        if(  jTextFieldSemana.getText().length()>=10)evt.consume();
-        if((car<'0' || car>'9') ) evt.consume();
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldSemanaKeyTyped
-
     private void jButtonagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonagregarActionPerformed
         
-        // Obtencion de datos de la interfaz
-        String lote=jTextFieldLote.getText().trim();
-        String anio =jTextFieldAño.getText().trim();
-        String semana = jTextFieldSemana.getText().trim();
-        String dia = jTextFieldDia.getText().trim();
-        String descripcion = jTextArea1.getText().trim();
-        
-        String resultado = this.modificarHistoria(lote, anio, semana, dia, descripcion);
-       
-        if (resultado.equalsIgnoreCase("No se pudo modificar la historia clinica, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("la historia clinica no se encuentra registrado.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("No se pudo modificar la historia clinica, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
+        if (verificarTipos()) {
+            // Obtencion de datos de la interfaz
+            String lote=jTextFieldLote.getText().trim();
+            String anio =jTextFieldAño.getText().trim();
+            String semana = jTextFieldSemana.getText().trim();
+            String dia = jTextFieldDia.getText().trim();
+            String objetivo_biologico = jTextAreaObjetivo.getText().trim();
+            String producto_utilizado = jTextFieldProductoUtilizado.getText().trim();
+            double dosis_por_litro = Double.parseDouble(jTextFieldDosis.getText().trim());
+            double volumen_utilizado = Double.parseDouble(jTextFieldVolumen.getText().trim());
+            String id_historial = lote+"-"+anio+"-"+semana+"-"+dia;
+
+            String resultado = this.agregarHistorial(lote, id_historial, anio, semana, dia, objetivo_biologico, producto_utilizado, dosis_por_litro, volumen_utilizado);
+
+            if (resultado.equalsIgnoreCase("No se pudo crear el historial de aplicacion, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
+                JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
+            }else if (resultado.equalsIgnoreCase("El historial de aplicacion ya se encuentra registrado.")) {
+                JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
+            }else if (resultado.equalsIgnoreCase("El objetivo biologico y el producto utilizado, deben tener menos de 20 letras.")) {
+                JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
+            }else {
+                JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+            }
         }else{
-            JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
-            this.gui_historiaClinica.buscarHistorias();
-            this.gui_historiaClinica.setVisible(true);
-            this.dispose();
+            JOptionPane.showMessageDialog(null,  "Por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error!", JOptionPane.ERROR_MESSAGE);
         }
+        
             
     }//GEN-LAST:event_jButtonagregarActionPerformed
 
@@ -362,7 +398,7 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         // TODO add your handling code here:
          try{
          this.gui_historiaClinica.setVisible(true);
-         this.gui_historiaClinica.buscarHistorias();
+         this.gui_historiaClinica.buscarHistoriales();
          this.dispose();
        }catch(Exception e){}
 
@@ -373,9 +409,9 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         habilitar();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
-    private void jTextFieldLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldLoteActionPerformed
+    private void jTextFieldDiaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDiaKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldLoteActionPerformed
+    }//GEN-LAST:event_jTextFieldDiaKeyTyped
 
     private void jTextFieldLoteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldLoteKeyTyped
         // TODO add your handling code here:
@@ -384,16 +420,45 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         if((car<'0' || car>'9') ) evt.consume();
     }//GEN-LAST:event_jTextFieldLoteKeyTyped
 
-    private void jTextFieldDiaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDiaKeyTyped
+    private void jTextFieldLoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldLoteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldDiaKeyTyped
+    }//GEN-LAST:event_jTextFieldLoteActionPerformed
+
+    private void jTextFieldSemanaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSemanaKeyTyped
+        char car=evt.getKeyChar();
+        if(  jTextFieldSemana.getText().length()>=10)evt.consume();
+        if((car<'0' || car>'9') ) evt.consume();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldSemanaKeyTyped
+
+    private void jTextFieldAñoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldAñoKeyTyped
+        // TODO add your handling code here:
+        char car=evt.getKeyChar();
+        if(  jTextFieldAño.getText().length()>=10)evt.consume();
+        if((car<'0' || car>'9') ) evt.consume();
+    }//GEN-LAST:event_jTextFieldAñoKeyTyped
+
+    private void jTextFieldProductoUtilizadoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldProductoUtilizadoKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldProductoUtilizadoKeyTyped
+
+    private void jTextFieldDosisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldDosisKeyTyped
+        
+    }//GEN-LAST:event_jTextFieldDosisKeyTyped
+
+    private void jTextFieldVolumenKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldVolumenKeyTyped
+        
+    }//GEN-LAST:event_jTextFieldVolumenKeyTyped
 
     //Metodo para limpiar los campos de la interfaz grafica de usuario y devolverlos a su estado inicial
     public void limpiar(){
         this.jTextFieldAño.setText("");
         this.jTextFieldSemana.setText(""); 
         this.jTextFieldDia.setText(""); 
-        this.jTextArea1.setText(""); 
+        this.jTextAreaObjetivo.setText(""); 
+        this.jTextFieldDosis.setText(""); 
+        this.jTextFieldProductoUtilizado.setText(""); 
+        this.jTextFieldVolumen.setText(""); 
 
     }
      
@@ -402,7 +467,10 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         this.jTextFieldAño.setEnabled(true);
         this.jTextFieldSemana.setEnabled(true); 
         this.jTextFieldDia.setEnabled(true); 
-        this.jTextArea1.setEnabled(true); 
+        this.jTextAreaObjetivo.setEnabled(true); 
+        this.jTextFieldDosis.setEnabled(true);  
+        this.jTextFieldProductoUtilizado.setEnabled(true); 
+        this.jTextFieldVolumen.setEnabled(true); 
 
     }
      
@@ -412,7 +480,8 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
          boolean var =false;
          
          if (jTextFieldLote.getText().equalsIgnoreCase("") || jTextFieldAño.getText().equalsIgnoreCase("") ||
-                 jTextFieldSemana.getText().equalsIgnoreCase("") || jTextFieldDia.getText().equalsIgnoreCase("") || jTextArea1.getText().equalsIgnoreCase("")) {
+                 jTextFieldSemana.getText().equalsIgnoreCase("") || jTextFieldDia.getText().equalsIgnoreCase("") || jTextAreaObjetivo.getText().equalsIgnoreCase("")
+                 || jTextFieldDosis.getText().equalsIgnoreCase("")|| jTextFieldProductoUtilizado.getText().equalsIgnoreCase("")|| jTextFieldVolumen.getText().equalsIgnoreCase("")) {
              
              var = true;             
          }
@@ -427,7 +496,8 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
          boolean var =false;
          Validaciones validar = new Validaciones();
          
-         if (validar.isNumeric(jTextFieldAño.getText().trim()) && validar.isNumeric(jTextFieldSemana.getText().trim())) {
+         if (validar.isNumeric(jTextFieldAño.getText().trim()) && validar.isNumeric(jTextFieldSemana.getText().trim())
+                 && validar.isNumeric(jTextFieldDosis.getText().trim())&& validar.isNumeric(jTextFieldVolumen.getText().trim())) {
             var = true;             
          }
          
@@ -450,13 +520,13 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarHistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_AgregarHistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarHistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_AgregarHistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarHistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_AgregarHistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Gui_ModificarHistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_AgregarHistorialAplicacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -526,7 +596,7 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui_ModificarHistoriaClinica(new GUI_HistoriaClinica(new Gui_InfoLotes(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login()))))), null, null, null, null).setVisible(true);
+                new Gui_AgregarHistorialAplicacion(null).setVisible(true);
             }
         });
     }
@@ -540,14 +610,20 @@ public class Gui_ModificarHistoriaClinica extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextAreaObjetivo;
     private javax.swing.JTextField jTextFieldAño;
     private javax.swing.JTextField jTextFieldDia;
+    private javax.swing.JTextField jTextFieldDosis;
     private javax.swing.JTextField jTextFieldLote;
+    private javax.swing.JTextField jTextFieldProductoUtilizado;
     private javax.swing.JTextField jTextFieldSemana;
+    private javax.swing.JTextField jTextFieldVolumen;
     // End of variables declaration//GEN-END:variables
 }

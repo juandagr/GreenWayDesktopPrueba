@@ -66,7 +66,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         
         modeloComercializacion.addColumn("Comercializacion");modeloComercializacion.addColumn("lunes");modeloComercializacion.addColumn("martes");
         modeloComercializacion.addColumn("miercoles");modeloComercializacion.addColumn("jueves");modeloComercializacion.addColumn("viernes");
-        modeloComercializacion.addColumn("sabado");modeloComercializacion.addColumn("domingo");modeloComercializacion.addColumn("valor");
+        modeloComercializacion.addColumn("sabado");modeloComercializacion.addColumn("domingo");
         jTableComercializacion.setModel(modeloComercializacion);
         
         modeloInversion.addColumn("Inversion");modeloInversion.addColumn("lunes");modeloInversion.addColumn("martes");

@@ -60,7 +60,7 @@ public class Gui_AgregarHistoriaClinica extends javax.swing.JFrame {
         
         try {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
-            if ((verificarCamposVacios() == false) && verificarTipos()) {
+            if ((verificarCamposVacios() == false) && verificarTipos()&& validar.validarDia(dia)) {
                 //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
                 if (controladorHistoria.HistoriaRegistrada(loteId, anio, semana, dia) == false) {
                     

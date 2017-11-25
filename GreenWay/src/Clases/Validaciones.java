@@ -51,4 +51,14 @@ public class Validaciones {
         return var;
     }
     
+    //metodo para validar que el dia de la semana este dentro de las posibles opciones correctas
+    public boolean validarDia(String estadoCivil){
+        boolean var = false;
+        if (estadoCivil.equalsIgnoreCase("lunes") || estadoCivil.equalsIgnoreCase("martes") ||
+                estadoCivil.equalsIgnoreCase("miercoles") ||estadoCivil.equalsIgnoreCase("jueves")||estadoCivil.equalsIgnoreCase("viernes")
+                ||estadoCivil.equalsIgnoreCase("sabado")||estadoCivil.equalsIgnoreCase("domingo")) {
+            var = true;
+        }
+        return var;
+    }
 }

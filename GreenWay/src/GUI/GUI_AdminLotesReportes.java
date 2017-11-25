@@ -6,14 +6,13 @@
 package GUI;
 
 import Clases.Cliente;
-import Clases.HistoriaClinica;
 import Clases.Lote;
 import Controlador.ControladorCliente;
-import Controlador.ControladorHistoriaClinica;
 import Controlador.ControladorLote;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -23,14 +22,14 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Daniel
  */
-public class GUI_HistoriaClinica extends javax.swing.JFrame {
+public class GUI_AdminLotesReportes extends javax.swing.JFrame {
 
     //Atributos
-    Gui_InfoLotes gui_infoLotes;
-    private TableRowSorter trsFiltro1;
-    private TableRowSorter trsFiltro2;
+    Gui_Reportes admin;
+    private TableRowSorter trsFiltro;
     String loteID = null;
     String cliente = null;
+    ArrayList<String> idLotes = new ArrayList();
     
     DefaultTableModel modeloItems = new DefaultTableModel(){
            
@@ -40,39 +39,42 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
                 return false;}
         };
     //Constructor
-    public GUI_HistoriaClinica(Gui_InfoLotes gui_infoLotes) {
+    public GUI_AdminLotesReportes(Gui_Reportes admin) {
         initComponents();
         this.setLocationRelativeTo(null);
-        this.gui_infoLotes = gui_infoLotes;
-        modeloItems.addColumn("Lote");
-        modeloItems.addColumn("Año");
-        modeloItems.addColumn("Semana");
-        modeloItems.addColumn("Dia");
-        modeloItems.addColumn("Descripcion");
+        this.admin = admin;
+        modeloItems.addColumn("Cliente");
+        modeloItems.addColumn("Cultivo");
+        modeloItems.addColumn("Area");
+        modeloItems.addColumn("Numero de plantas");
+        modeloItems.addColumn("Costo x hora");
+        modeloItems.addColumn("Ubicacion");
         
-        this.loteID = this.gui_infoLotes.gui_adminLotes.loteID;
-        buscarHistorias();
+        buscarLotes();
     }
     
     // metodo para buscar los lotes que estan registrados en la base de datos y mostrar sus datos
     // en pantalla por medio de una tabla
-    public void buscarHistorias(){
+    public void buscarLotes(){
         while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
         jTableLotes.setModel(modeloItems);
         
-        ArrayList<HistoriaClinica> historias = new ControladorHistoriaClinica().consultarHistoriasxLote(loteID);
+        ArrayList<Lote> lotes = new ControladorLote().consultarTodosLotes();
         
-        for (int i = 0; i < historias.size(); i++) {
+        for (int i = 0; i < lotes.size(); i++) {
             // Se crea un array que será una de las filas de la tabla.
             Object [] fila = new Object[6]; // Hay tres columnas en la tabla
 
             // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-            fila[0] = historias.get(i).getLote_identificador();
-            fila[1] = historias.get(i).getAnio();
-            fila[2] = historias.get(i).getSemana();
-            fila[3] = historias.get(i).getDia();
-            fila[4] = historias.get(i).getDescripcion();
+            fila[0] = lotes.get(i).getCliente_identificacion();
+            fila[1] = lotes.get(i).getCultivo_identificador();
+            fila[2] = lotes.get(i).getArea();
+            fila[3] = lotes.get(i).getNumero_plantas();
+            fila[4] = lotes.get(i).getCosto_por_hora();
+            fila[5] = lotes.get(i).getUbicacion_id_ubicacion();
             
+            this.idLotes.add(lotes.get(i).getIdentificador());
+
             // Se añade al modelo la fila completa.
             modeloItems.addRow(fila);
             
@@ -81,23 +83,18 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
     }
 
     //filtro para realizar las busquedas
-    public void filtro1() {
+    public void filtro() {
         int columnaABuscar = 0;
-        if (jComboBoxBusqueda.getSelectedItem() == "Año") {
+        if (jComboBoxBusqueda.getSelectedItem() == "cliente") {
+            columnaABuscar = 0;
+        }
+        if (jComboBoxBusqueda.getSelectedItem().toString() == "cultivo") {
             columnaABuscar = 1;
         }
-        
-        trsFiltro1.setRowFilter(RowFilter.regexFilter(jTextFieldBusqueda.getText(), 1));
+        if (jComboBoxBusqueda.getSelectedItem() == "ubicacion") {
+            columnaABuscar = 5;
         }
-    
-    //filtro para realizar las busquedas
-    public void filtro2() {
-        int columnaABuscar = 0;
-        if (jComboBoxBusqueda.getSelectedItem() == "Semana") {
-            columnaABuscar = 2;
-        }
-
-        trsFiltro2.setRowFilter(RowFilter.regexFilter(jTextFieldBusqueda1.getText(), 2));
+        trsFiltro.setRowFilter(RowFilter.regexFilter(jTextFieldBusqueda.getText(), columnaABuscar));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -114,21 +111,17 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
         jTableLotes = new javax.swing.JTable();
         jButtonAgregar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jButtonAgregar1 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxBusqueda = new javax.swing.JComboBox();
         jTextFieldBusqueda = new javax.swing.JTextField();
-        jComboBoxBusqueda1 = new javax.swing.JComboBox();
-        jTextFieldBusqueda1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel6.setText("Administracion de Historias clinicas");
+        jLabel6.setText("Administracion de lotes");
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Historias clinicas"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Lotes"));
 
         jTableLotes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -149,30 +142,21 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE))
+                .addComponent(jScrollPane1))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
         );
 
-        jButtonAgregar.setText("Agregar");
+        jButtonAgregar.setText("Reporte");
         jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAgregarActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Agregar nuevo:");
-
-        jLabel2.setText("Modificar existente:");
-
-        jButtonAgregar1.setText("Modificar");
-        jButtonAgregar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAgregar1ActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Generar reportes:");
 
         jToggleButton1.setText("Salir");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -183,19 +167,11 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
 
         jLabel3.setText("Consultar por:");
 
-        jComboBoxBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Año" }));
+        jComboBoxBusqueda.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "cliente", "cultivo", "ubicacion" }));
 
         jTextFieldBusqueda.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextFieldBusquedaKeyTyped(evt);
-            }
-        });
-
-        jComboBoxBusqueda1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semana" }));
-
-        jTextFieldBusqueda1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextFieldBusqueda1KeyTyped(evt);
             }
         });
 
@@ -216,22 +192,14 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonAgregar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButtonAgregar))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBoxBusqueda1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldBusqueda1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 195, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -242,18 +210,12 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAgregar)
-                    .addComponent(jLabel1)
-                    .addComponent(jButtonAgregar1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel1))
                 .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextFieldBusqueda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBoxBusqueda1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -265,43 +227,28 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
+        String cliente = this.obtenerIdentificacionSeleccionado();
         
-        Gui_AgregarHistoriaClinica historia = new Gui_AgregarHistoriaClinica(this);
-    
-        historia.setVisible(true);
-
-        this.dispose();
-    }//GEN-LAST:event_jButtonAgregarActionPerformed
-
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        this.gui_infoLotes.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
-    private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
-
-        try{
-            String loteId = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
-        
-            String anio = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 1));
-            String semana = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 2));
-            String dia = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 3));
+        if (cliente.equalsIgnoreCase("No selecciono") == false) {
             
-            if (this.obtenerIdentificacionSeleccionado().equalsIgnoreCase("No selecciono") == false) {
- 
-                Gui_ModificarHistoriaClinica modificar = new Gui_ModificarHistoriaClinica(this, loteId, anio, semana, dia);
-                modificar.setVisible(true);
-
-                this.dispose();
-            }else{
-                JOptionPane.showMessageDialog(null, "Seleccione una historia clinica para modificar", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Seleccione una historia clinica para modificar", "Error", JOptionPane.ERROR_MESSAGE);
+            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+            this.cliente = cliente;
+            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+            StringTokenizer st = new StringTokenizer(mesAño, " ");
+            String año = st.nextToken();
+            String mes = st.nextToken();
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
         
-    }//GEN-LAST:event_jButtonAgregar1ActionPerformed
+    }//GEN-LAST:event_jButtonAgregarActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        this.admin.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jTextFieldBusquedaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBusquedaKeyTyped
         // TODO add your handling code here:
@@ -310,27 +257,13 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
                 String cadena = (jTextFieldBusqueda.getText());
                 jTextFieldBusqueda.setText(cadena);
                 repaint();
-                filtro1();
+                filtro();
             }
         });
-        trsFiltro1 = new TableRowSorter(jTableLotes.getModel());
-        jTableLotes.setRowSorter(trsFiltro1);
+        trsFiltro = new TableRowSorter(jTableLotes.getModel());
+        jTableLotes.setRowSorter(trsFiltro);
 
     }//GEN-LAST:event_jTextFieldBusquedaKeyTyped
-
-    private void jTextFieldBusqueda1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldBusqueda1KeyTyped
-        // TODO add your handling code here:
-        jTextFieldBusqueda1.addKeyListener(new KeyAdapter() {
-            public void keyReleased(final KeyEvent e) {
-                String cadena = (jTextFieldBusqueda1.getText());
-                jTextFieldBusqueda1.setText(cadena);
-                repaint();
-                filtro2();
-            }
-        });
-        trsFiltro2 = new TableRowSorter(jTableLotes.getModel());
-        jTableLotes.setRowSorter(trsFiltro2);
-    }//GEN-LAST:event_jTextFieldBusqueda1KeyTyped
 
     public String obtenerIdentificacionSeleccionado(){
         try{
@@ -359,13 +292,13 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotesReportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotesReportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotesReportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI_HistoriaClinica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_AdminLotesReportes.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -379,25 +312,21 @@ public class GUI_HistoriaClinica extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_HistoriaClinica(null).setVisible(true);
+                new GUI_AdminLotesReportes(null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAgregar;
-    private javax.swing.JButton jButtonAgregar1;
     private javax.swing.JComboBox jComboBoxBusqueda;
-    private javax.swing.JComboBox jComboBoxBusqueda1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableLotes;
     private javax.swing.JTextField jTextFieldBusqueda;
-    private javax.swing.JTextField jTextFieldBusqueda1;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }
