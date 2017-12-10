@@ -218,6 +218,8 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
             }
         }else{
             JOptionPane.showMessageDialog(null, "Elija un año y una semana", "Error!", JOptionPane.ERROR_MESSAGE);
+            jTextFieldHoras.setText("");
+            jTextFieldValor.setText("");
         }
         
     }//GEN-LAST:event_jButtonBuscarActionPerformed

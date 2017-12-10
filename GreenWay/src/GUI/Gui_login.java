@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import Clases.Reportes;
 import Clases.Validaciones;
 
 
@@ -178,6 +179,8 @@ public class Gui_login extends javax.swing.JFrame {
     private void jButtonIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIngresarActionPerformed
         String usuario=jTextFieldIdentificacion.getText();
         String password = jPassword.getText();
+        
+        Reportes reportes = new Reportes();
         
         Gui_VentanaPrincipalGerente principalGenrente = new Gui_VentanaPrincipalGerente(this);
         principalGenrente.setVisible(true);

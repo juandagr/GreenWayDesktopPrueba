@@ -56,7 +56,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         modeloProductos.addColumn("producto");modeloProductos.addColumn("lunes");modeloProductos.addColumn("martes");
         modeloProductos.addColumn("miercoles");modeloProductos.addColumn("jueves");modeloProductos.addColumn("viernes");
         modeloProductos.addColumn("sabado");modeloProductos.addColumn("domingo");modeloProductos.addColumn("Presentacion");
-        modeloProductos.addColumn("Costo Producto");modeloProductos.addColumn("Vol utilizado");
+        modeloProductos.addColumn("Costo Producto");
         jTableProductos.setModel(modeloProductos);
         
         modeloOtros.addColumn("Otro");modeloOtros.addColumn("lunes");modeloOtros.addColumn("martes");
@@ -199,20 +199,23 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         }
     }
     
-    /*public void registrarInfoCostosProducto(){
+    public void registrarInfoCostosProducto(){
         Dao.DaoCostosOperacionalesProducto dao = new DaoCostosOperacionalesProducto();
         System.out.println(jTableProductos.getRowCount());
         for (int i = 0; i < jTableProductos.getRowCount(); i++) {
             for (int j = 1; j < 8; j++) {
                 if (String.valueOf(jTableProductos.getValueAt(i, j)).equalsIgnoreCase("null")) {  
                 }else{
-                    int Producto = Integer.parseInt(String.valueOf(jTableProductos.getValueAt(i, j)));
-                    dao.ingresarcostosOperacionalesBD(jTextFieldLote.getText(), String.valueOf(jTableProductos.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableProductos.getColumnName(j), horas);
+                    double volumen_gastado = Double.parseDouble(String.valueOf(jTableProductos.getValueAt(i, j)));
+                    double presentacion = Double.parseDouble(String.valueOf(jTableProductos.getValueAt(i, 8)));
+                    double costo_producto = Double.parseDouble(String.valueOf(jTableProductos.getValueAt(i, 9)));
+                    double costo_final = (volumen_gastado * costo_producto) / presentacion;
+                    dao.ingresarcostosOperacionalesProductoBD(jTextFieldLote.getText(), String.valueOf(jTableProductos.getValueAt(i, 0)), jTextFieldAño.getText(), jTextFieldSemana.getText(), jTableProductos.getColumnName(j), costo_producto, presentacion, volumen_gastado, costo_final);
 
                 }
             }
         }
-    }*/
+    }
     
     public void registrarInfoCostosInversion(){
         Dao.DaoCostosInversion dao = new DaoCostosInversion();
@@ -796,6 +799,16 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
             this.registrarInfoCostosInversion();
             this.registrarInfoCostosComercializacion();
             this.registrarInfoCostosOtros();
+            this.registrarInfoCostosProducto();
+            
+            while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
+            while(modeloProductos.getRowCount()>0)modeloProductos.removeRow(0);
+            while(modeloOtros.getRowCount()>0)modeloOtros.removeRow(0);
+            while(modeloInversion.getRowCount()>0)modeloInversion.removeRow(0);
+            while(modeloComercializacion.getRowCount()>0)modeloComercializacion.removeRow(0);
+            jTextFieldAño.setText("");
+            jTextFieldSemana.setText("");
+            
         }
         
         

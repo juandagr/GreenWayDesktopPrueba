@@ -7,16 +7,33 @@ package GUI;
 
 import Clases.Cliente;
 import Clases.Lote;
+import Clases.Reportes;
+import Conexion.Fachada;
 import Controlador.ControladorCliente;
 import Controlador.ControladorLote;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -237,6 +254,32 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
             StringTokenizer st = new StringTokenizer(mesAño, " ");
             String año = st.nextToken();
             String mes = st.nextToken();
+            double c1 = new Reportes().costoOperacionalxMes(loteID,cliente, año, mes);
+            double c2 = new Reportes().costoComercializacionxMes(loteID,cliente, año, mes);
+            double c3 = new Reportes().costoInversionxMes(loteID,cliente, año, mes);
+            
+            try {
+                String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+                Map parametros = new HashMap();
+                parametros.put("cliente", cliente);parametros.put("costoComercializacion", c2);
+                parametros.put("costoInversion", c3);parametros.put("costoOperacional", c1);
+                parametros.put("fecha", new Date());parametros.put("lote", loteID);
+                parametros.put("totalCostos", (c1+c2+c3));
+ 
+                //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper"));
+                JasperPrint jasperPrint = JasperFillManager.fillReport(rutaInforme, parametros, new Fachada().conectar_BD());
+                JasperViewer ventana = new JasperViewer(jasperPrint, false);
+                ventana.setVisible(true);
+                //JRExporter exporter = new JRPdfExporter();
+                //exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
+                //exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("reportePDF.pdf"));
+                //exporter.exportReport();
+            
+            } catch (JRException ex) {
+                Logger.getLogger(GUI_AdminLotesReportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+       
             
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);

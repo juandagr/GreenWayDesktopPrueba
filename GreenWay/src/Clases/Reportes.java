@@ -5,8 +5,14 @@
  */
 package Clases;
 
+import Dao.DaoCostosComercializacion;
+import Dao.DaoCostosInversion;
 import Dao.DaoCostosOperacionales;
+import Dao.DaoValorFacturado;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,16 +23,87 @@ public class Reportes {
     public Reportes() {
     }
     
-    public void costoOperacionalxMes(String loteid, String anio, String mes){
+    public double costoOperacionalxMes(String loteid, String cliente, String anio, String mes){
         
         int semanaInicial = this.determinarSemanaInicial(mes);
         int duracion = this.determinarDuracion(mes);
+        int semanaFinal = semanaInicial + duracion;
         double costoOperacional = 0;
+        double[] ValorHora = new double[duracion];
+        int[] horasSemana = new int[duracion];
         
-        for (int i = semanaInicial; i <= duracion; i++) {
-            ResultSet rs = new DaoCostosOperacionales().consultarCostosOperacionalesxSemanaBD(loteid, anio, mes);
-            //double 
+        try{
+            for (int i = semanaInicial; i < semanaFinal; i++) {
+                ResultSet rs = new DaoValorFacturado().consultarValorFacturadoBD(cliente, anio, String.valueOf(i));
+                if( rs.next()){
+                    ValorHora[i-semanaInicial] = rs.getDouble(6);
+                }else{
+                    ValorHora[i-semanaInicial] = 0;
+                }
+            }
+        }catch (SQLException ex) {
+                Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        /****************************************************************************/
+        
+        for (int i = semanaInicial; i < semanaFinal; i++) {
+
+            horasSemana[i-semanaInicial] = this.horasLaboradasxSemana(loteid, anio, String.valueOf(i));
+
         }
+        
+        /****************************************************************************/
+        //multiplicaciones
+        for (int i = semanaInicial; i < semanaFinal; i++) {
+
+            costoOperacional += horasSemana[i-semanaInicial] * ValorHora[i-semanaInicial] ;
+            
+        }
+        return costoOperacional;
+    }
+    
+    public double costoComercializacionxMes(String loteid, String cliente, String anio, String mes){
+        
+        int semanaInicial = this.determinarSemanaInicial(mes);
+        int duracion = this.determinarDuracion(mes);
+        int semanaFinal = semanaInicial + duracion;
+        double costoComer = 0;
+        
+        try{
+            for (int i = semanaInicial; i < semanaFinal; i++) {
+                ResultSet rs = new DaoCostosComercializacion().consultarCostosComercializacionxSemanaBD(loteid, anio, String.valueOf(i));
+                while( rs.next()){
+                    costoComer += rs.getDouble(6);
+                }
+            }
+        }catch (SQLException ex) {
+                Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
+        return costoComer;
+    }
+    
+    public double costoInversionxMes(String loteid, String cliente, String anio, String mes){
+        
+        int semanaInicial = this.determinarSemanaInicial(mes);
+        int duracion = this.determinarDuracion(mes);
+        int semanaFinal = semanaInicial + duracion;
+        double costoInver = 0;
+        
+        try{
+            for (int i = semanaInicial; i < semanaFinal; i++) {
+                ResultSet rs = new DaoCostosInversion().consultarCostosInversionxSemanaBD(loteid, anio, String.valueOf(i));
+                while( rs.next()){
+                    costoInver += rs.getDouble(6);
+                }
+            }
+        }catch (SQLException ex) {
+                Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        return costoInver;
     }
     
     public int determinarSemanaInicial(String mes){
@@ -119,5 +196,18 @@ public class Reportes {
         }
         
         return semanaInicial;
+    }
+    
+    public int horasLaboradasxSemana(String loteid, String anio, String semana){
+        int horas = 0;
+        try {
+            ResultSet rs = new DaoCostosOperacionales().consultarCostosOperacionalesxSemanaBD(loteid, anio, semana);
+            while( rs.next()){
+                horas += rs.getInt(6);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return horas;
     }
 }

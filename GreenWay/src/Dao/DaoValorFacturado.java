@@ -56,7 +56,6 @@ public class DaoValorFacturado {
         
         String sql_select;
         sql_select="SELECT DISTINCT * FROM valor_facturado_semana WHERE Cliente_identificacion ='"+loteId+ "' AND anio ='" +anio+ "' AND semana ='"+semana+ "';";
-        
         try{
             Connection conn= fachada.conectar_BD();
             instruccion = conn.createStatement();

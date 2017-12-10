@@ -46,7 +46,6 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
         modeloItems.addColumn("Cultivo");
         modeloItems.addColumn("Area");
         modeloItems.addColumn("Numero de plantas");
-        modeloItems.addColumn("Costo x hora");
         modeloItems.addColumn("Ubicacion");
         
         buscarLotes();
@@ -69,8 +68,7 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
             fila[1] = lotes.get(i).getCultivo_identificador();
             fila[2] = lotes.get(i).getArea();
             fila[3] = lotes.get(i).getNumero_plantas();
-            fila[4] = lotes.get(i).getCosto_por_hora();
-            fila[5] = lotes.get(i).getUbicacion_id_ubicacion();
+            fila[4] = lotes.get(i).getUbicacion_id_ubicacion();
             
             this.idLotes.add(lotes.get(i).getIdentificador());
 

@@ -71,7 +71,6 @@ public class DaoCostosOperacionales {
         
         String sql_select;
         sql_select="SELECT DISTINCT * FROM costos_operacionales WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio+ "' AND semana ='"+semana+"';";
-        
         try{
             Connection conn= fachada.conectar_BD();
             instruccion = conn.createStatement();
