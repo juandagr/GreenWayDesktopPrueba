@@ -49,6 +49,7 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jButtonSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-15.png"))); // NOI18N
         jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSalirActionPerformed(evt);
@@ -57,6 +58,7 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Historia clinica y aplicacion"));
 
+        jButtonEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-13.png"))); // NOI18N
         jButtonEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEmpleadosActionPerformed(evt);
@@ -65,6 +67,7 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
 
         jLabel5.setText("Historial de aplicacion");
 
+        jButtonCultivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-14.png"))); // NOI18N
         jButtonCultivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCultivosActionPerformed(evt);
@@ -106,6 +109,7 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Informacion de Costos"));
 
+        jButtonEmpleados1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-11.png"))); // NOI18N
         jButtonEmpleados1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEmpleados1ActionPerformed(evt);
@@ -114,6 +118,7 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
 
         jLabel7.setText("Ingresar info");
 
+        jButtonCultivos1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-12.png"))); // NOI18N
         jButtonCultivos1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCultivos1ActionPerformed(evt);
@@ -157,6 +162,7 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
 
         jLabel9.setText("Produccion");
 
+        jButtonProduccion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-04.png"))); // NOI18N
         jButtonProduccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonProduccionActionPerformed(evt);

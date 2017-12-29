@@ -51,6 +51,7 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
+        jButtonLotes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-04.png"))); // NOI18N
         jButtonLotes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonLotesActionPerformed(evt);
@@ -59,6 +60,7 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         jPanel1.add(jButtonLotes);
         jButtonLotes.setBounds(370, 50, 130, 130);
 
+        jButtonEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-01.png"))); // NOI18N
         jButtonEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEmpleadosActionPerformed(evt);
@@ -68,13 +70,14 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         jButtonEmpleados.setBounds(30, 50, 130, 130);
 
         jButtonClientes.setBackground(new java.awt.Color(255, 255, 255));
+        jButtonClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-02.png"))); // NOI18N
         jButtonClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonClientesActionPerformed(evt);
             }
         });
         jPanel1.add(jButtonClientes);
-        jButtonClientes.setBounds(200, 50, 140, 130);
+        jButtonClientes.setBounds(210, 50, 130, 130);
 
         jLabel3.setText("Lotes");
         jPanel1.add(jLabel3);
@@ -88,6 +91,7 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         jPanel1.add(jLabel5);
         jLabel5.setBounds(60, 180, 90, 14);
 
+        jButtonSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-15.png"))); // NOI18N
         jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSalirActionPerformed(evt);
@@ -96,6 +100,7 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         jPanel1.add(jButtonSalir);
         jButtonSalir.setBounds(510, 10, 60, 60);
 
+        jButtonCultivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-05.png"))); // NOI18N
         jButtonCultivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCultivosActionPerformed(evt);
@@ -109,18 +114,20 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         jLabel6.setBounds(40, 330, 130, 14);
 
         jButtonItems.setBackground(new java.awt.Color(255, 255, 255));
+        jButtonItems.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-06.png"))); // NOI18N
         jButtonItems.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonItemsActionPerformed(evt);
             }
         });
         jPanel1.add(jButtonItems);
-        jButtonItems.setBounds(200, 200, 140, 130);
+        jButtonItems.setBounds(210, 200, 130, 130);
 
         jLabel2.setText("Items desplegables");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(220, 330, 110, 14);
 
+        jButtonReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-09.png"))); // NOI18N
         jButtonReportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonReportesActionPerformed(evt);

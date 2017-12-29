@@ -25,7 +25,7 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Daniel
  */
-public class GUI_AgregarLote extends javax.swing.JFrame {
+public class GUI_ModificarLote extends javax.swing.JFrame {
 
     //Atributos
     GUI_AdminLotes admin;
@@ -46,7 +46,7 @@ public class GUI_AgregarLote extends javax.swing.JFrame {
                 return false;}
         };;
     //Constructor
-    public GUI_AgregarLote(GUI_AdminLotes admin) {
+    public GUI_ModificarLote(GUI_AdminLotes admin) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.admin = admin;
@@ -456,21 +456,23 @@ public class GUI_AgregarLote extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI_AgregarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI_AgregarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI_AgregarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI_AgregarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_AgregarLote(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login())))).setVisible(true);
+                new GUI_ModificarLote(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login())))).setVisible(true);
             }
         });
     }

@@ -38,6 +38,7 @@ public class Gui_Lotes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jButtonEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-04.png"))); // NOI18N
         jButtonEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEmpleadosActionPerformed(evt);
@@ -46,6 +47,7 @@ public class Gui_Lotes extends javax.swing.JFrame {
 
         jLabel5.setText("Administrar lotes");
 
+        jButtonSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-15.png"))); // NOI18N
         jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSalirActionPerformed(evt);

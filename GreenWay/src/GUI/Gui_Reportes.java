@@ -40,6 +40,7 @@ public class Gui_Reportes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jButtonEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-09.png"))); // NOI18N
         jButtonEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonEmpleadosActionPerformed(evt);
@@ -48,6 +49,7 @@ public class Gui_Reportes extends javax.swing.JFrame {
 
         jLabel5.setText("Reporte lote");
 
+        jButtonCultivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-10.png"))); // NOI18N
         jButtonCultivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCultivosActionPerformed(evt);
@@ -56,6 +58,7 @@ public class Gui_Reportes extends javax.swing.JFrame {
 
         jLabel6.setText("Reporte general");
 
+        jButtonSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/Iconos daniel-15.png"))); // NOI18N
         jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSalirActionPerformed(evt);
