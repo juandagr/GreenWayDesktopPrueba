@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Daniel
  */
-public class GUI_InfoCostosLote extends javax.swing.JFrame {
+public class GUI_ModificarInfoCostosLote extends javax.swing.JFrame {
 
     String loteID = null;
     String cliente = null;
@@ -44,7 +44,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
     /**
      * Creates new form GUI_InfoCostosLote
      */
-    public GUI_InfoCostosLote(Gui_InfoLotes gui_infoLotes) {
+    public GUI_ModificarInfoCostosLote(Gui_InfoLotes gui_infoLotes) {
         initComponents();
         this.gui_infoLotes=gui_infoLotes;
         
@@ -303,6 +303,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldSemana = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -547,6 +548,13 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Buscar");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -570,29 +578,33 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(4, 4, 4)
+                                        .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jComboBoxSubCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jComboBoxItem, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(jLabel2))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextFieldAño, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(43, 43, 43)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel5))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldAño, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(43, 43, 43)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldSemana, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBoxSubCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jComboBoxItem, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(jButton4)
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -605,7 +617,8 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldLote, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
@@ -829,7 +842,6 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
             jTextFieldAño.setText("");
             jTextFieldSemana.setText("");
             
-            JOptionPane.showMessageDialog(null, "Registros agregados exitosamente!", "!Exito!", JOptionPane.INFORMATION_MESSAGE);
         }
         
         
@@ -853,6 +865,154 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         if((car<'0' || car>'9') ) evt.consume();
     }//GEN-LAST:event_jTextFieldSemanaKeyTyped
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
+        while(modeloProductos.getRowCount()>0)modeloProductos.removeRow(0);
+        while(modeloOtros.getRowCount()>0)modeloOtros.removeRow(0);
+        while(modeloInversion.getRowCount()>0)modeloInversion.removeRow(0);
+        while(modeloComercializacion.getRowCount()>0)modeloComercializacion.removeRow(0);
+        
+        String cedula = jTextFieldCedula.getText().trim();
+        String lote = jTextFieldLote.getText().trim();
+        String año = jTextFieldAño.getText().trim();
+        String semana = jTextFieldSemana.getText().trim();
+        
+        //llenar comercializacion
+        ResultSet comer = new DaoCostosComercializacion().consultarCostosComercializacionxSemanaBD(lote, año, semana);
+        try {
+            //se pregunta si el resultset no esta vacio, es decir si consulto algo
+            while( comer.next()){
+                // Se crea un array que será una de las filas de la tabla.
+                Object [] fila = new Object[9]; // Hay tres columnas en la tabla
+
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                fila[0] = comer.getString(1); 
+                double valor = comer.getDouble(6);
+                String dia = comer.getString(5);
+                if (dia.equalsIgnoreCase("lunes")) {
+                    fila[1] = valor;
+                }
+                if (dia.equalsIgnoreCase("martes")) {
+                    fila[2] = valor;
+                }
+                if (dia.equalsIgnoreCase("miercoles")) {
+                    fila[3] = valor;
+                }
+                if (dia.equalsIgnoreCase("jueves")) {
+                    fila[4] = valor;
+                }
+                if (dia.equalsIgnoreCase("viernes")) {
+                    fila[5] = valor;
+                }
+                if (dia.equalsIgnoreCase("sabado")) {
+                    fila[6] = valor;
+                }
+                if (dia.equalsIgnoreCase("domingo")) {
+                    fila[7] = valor;
+                }
+
+                // Se añade al modelo la fila completa.
+                modeloComercializacion.addRow(fila);;
+  
+            }
+
+        }
+        catch (SQLException ex) {
+
+        }
+        
+        //llenar inversion ********************************************************************************************
+        ResultSet inv = new DaoCostosInversion().consultarCostosInversionxSemanaBD(lote, año, semana);
+        try {
+            //se pregunta si el resultset no esta vacio, es decir si consulto algo
+            while( inv.next()){
+                // Se crea un array que será una de las filas de la tabla.
+                Object [] fila = new Object[9]; // Hay tres columnas en la tabla
+
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                fila[0] = inv.getString(1); 
+                double valor = inv.getDouble(6);
+                String dia = inv.getString(5);
+                if (dia.equalsIgnoreCase("lunes")) {
+                    fila[1] = valor;
+                }
+                if (dia.equalsIgnoreCase("martes")) {
+                    fila[2] = valor;
+                }
+                if (dia.equalsIgnoreCase("miercoles")) {
+                    fila[3] = valor;
+                }
+                if (dia.equalsIgnoreCase("jueves")) {
+                    fila[4] = valor;
+                }
+                if (dia.equalsIgnoreCase("viernes")) {
+                    fila[5] = valor;
+                }
+                if (dia.equalsIgnoreCase("sabado")) {
+                    fila[6] = valor;
+                }
+                if (dia.equalsIgnoreCase("domingo")) {
+                    fila[7] = valor;
+                }
+
+                // Se añade al modelo la fila completa.
+                modeloInversion.addRow(fila);
+  
+            }
+
+        }
+        catch (SQLException ex) {
+
+        }
+        
+        //llenar operacionales
+        //llenar producto ********************************************************************************************
+        ResultSet pro = new DaoCostosOperacionalesProducto().consultarCostosOperacionalesProductoxSemanaBD(lote, año, semana);
+        try {
+            //se pregunta si el resultset no esta vacio, es decir si consulto algo
+            while( pro.next()){
+                // Se crea un array que será una de las filas de la tabla.
+                Object [] fila = new Object[9]; // Hay tres columnas en la tabla
+
+                // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+                fila[0] = pro.getString(1); 
+                fila[8] = pro.getString(7); 
+                fila[9] = pro.getString(6); 
+                double valor = pro.getDouble(8);
+                String dia = pro.getString(5);
+                if (dia.equalsIgnoreCase("lunes")) {
+                    fila[1] = valor;
+                }
+                if (dia.equalsIgnoreCase("martes")) {
+                    fila[2] = valor;
+                }
+                if (dia.equalsIgnoreCase("miercoles")) {
+                    fila[3] = valor;
+                }
+                if (dia.equalsIgnoreCase("jueves")) {
+                    fila[4] = valor;
+                }
+                if (dia.equalsIgnoreCase("viernes")) {
+                    fila[5] = valor;
+                }
+                if (dia.equalsIgnoreCase("sabado")) {
+                    fila[6] = valor;
+                }
+                if (dia.equalsIgnoreCase("domingo")) {
+                    fila[7] = valor;
+                }
+
+                // Se añade al modelo la fila completa.
+                modeloProductos.addRow(fila);
+  
+            }
+
+        }
+        catch (SQLException ex) {
+
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -870,20 +1030,21 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI_InfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarInfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI_InfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarInfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI_InfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarInfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI_InfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI_ModificarInfoCostosLote.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_InfoCostosLote(new Gui_InfoLotes(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login()))))).setVisible(true);
+                new GUI_ModificarInfoCostosLote(new Gui_InfoLotes(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login()))))).setVisible(true);
             }
         });
     }
@@ -892,6 +1053,7 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonComercializacion;
     private javax.swing.JButton jButtonInversion;
     private javax.swing.JButton jButtonLabor;

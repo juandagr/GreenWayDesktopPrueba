@@ -73,7 +73,7 @@ public class DaoCostosOperacionalesProducto {
     public ResultSet consultarCostosOperacionalesProductoxSemanaBD(String loteId, String anio, String semana){
         
         String sql_select;
-        sql_select="SELECT DISTINCT * FROM costos_operacionales WHERE Lote_identificador ='"+loteId+"' AND anio ='" +anio+ "' AND semana ='"+semana+"';";
+        sql_select="SELECT DISTINCT * FROM costos_operacionales_producto WHERE Lote_identificador ='"+loteId+"' AND anio ='" +anio+ "' AND semana ='"+semana+"';";
         
         try{
             Connection conn= fachada.conectar_BD();
@@ -126,6 +126,30 @@ public class DaoCostosOperacionalesProducto {
             
             System.out.println("Ocurrió cualquier otra excepcion en programa"+e);
             numFilas = -1;   
+        }
+        return numFilas;
+    }
+    
+    public int eliminarCostosProductoBD(String loteId, String item, String anio, String semana) {
+        
+        int numFilas;
+        String consulta = "DELETE FROM costos_operacionales_producto  WHERE Lote_identificador ='"+loteId+ "' AND items_de_inversion_item ='"+item 
+                + "' AND anio ='" +anio+ "' AND semana ='"+semana+"';";   
+        try {
+                Connection con = fachada.conectar_BD();
+                instruccion = con.createStatement();
+                numFilas = instruccion.executeUpdate(consulta);
+                fachada.cerrarConexion(con);
+                
+        } catch (SQLException sqle) {
+            
+            System.out.println("Error de Sql al conectar en costos operacionales \n" + sqle);
+            numFilas = -1;
+
+        } catch (Exception e) {
+            
+            System.out.println("Ocurrió cualquier otra excepcion en costos operacionales" + e);
+            numFilas = -1; 
         }
         return numFilas;
     }

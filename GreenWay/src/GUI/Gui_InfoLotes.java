@@ -259,7 +259,9 @@ public class Gui_InfoLotes extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonEmpleados1ActionPerformed
 
     private void jButtonCultivos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCultivos1ActionPerformed
-        // TODO add your handling code here:
+        GUI_ConsultarYEliminarInfoCostosLote costos = new GUI_ConsultarYEliminarInfoCostosLote(this);
+        costos.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButtonCultivos1ActionPerformed
 
     private void jButtonProduccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonProduccionActionPerformed
