@@ -5,14 +5,33 @@
  */
 package Clases;
 
+import Controlador.ControladorCliente;
 import Dao.DaoCostosComercializacion;
 import Dao.DaoCostosInversion;
 import Dao.DaoCostosOperacionales;
+import Dao.DaoProduccion;
 import Dao.DaoValorFacturado;
+import java.awt.Frame;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -104,6 +123,45 @@ public class Reportes {
             }
         
         return costoInver;
+    }
+    
+    public Double[] produccionxMes(String loteid, String cliente, String anio, String mes){
+        
+        int semanaInicial = this.determinarSemanaInicial(mes);
+        int duracion = this.determinarDuracion(mes);
+        int semanaFinal = semanaInicial + duracion;
+        Double[] produccion = new Double[4];
+        for (int i = 0; i < 3; i++) {
+            produccion[i] = 0.0;
+        }
+        
+        try{
+            for (int i = semanaInicial; i < semanaFinal; i++) {
+                ResultSet rs = new DaoProduccion().consultarProduccionsxSemanaBD(loteid, anio, String.valueOf(i));
+                while( rs.next()){
+                    produccion[0] = rs.getDouble(5);
+                    produccion[1] = rs.getDouble(6);
+                    produccion[2] = rs.getDouble(7);
+                    produccion[3] = rs.getDouble(5)+rs.getDouble(6)+rs.getDouble(7);
+                }
+            }
+        }catch (SQLException ex) {
+                Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
+        return produccion;
+    }
+    
+    public ArrayList<Integer> determinarSemnas(String mes){
+        int semanaInicial = this.determinarSemanaInicial(mes);
+        int duracion = this.determinarDuracion(mes);
+        int semanaFinal = semanaInicial + duracion;
+        ArrayList<Integer> semanas = new ArrayList();
+        for (int i = semanaInicial; i < semanaFinal; i++) {
+               semanas.add(i);
+        }
+        return semanas;
     }
     
     public int determinarSemanaInicial(String mes){
@@ -209,5 +267,128 @@ public class Reportes {
             Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
         }
         return horas;
+    }
+    
+    //generar reporte de ejemplo
+    public void generarReporte(){
+        
+        try {
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
+            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reportpr.jrxml");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, new Conexion.Fachada().conectar_BD());
+            JasperViewer view = new JasperViewer(jasperPrint, false);
+                view.setTitle("Reporte");
+                view.setExtendedState(Frame.MAXIMIZED_BOTH);
+                view.setVisible(true);
+            
+            JRExporter exporter = new JRPdfExporter();
+            
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("Reportes/reportePDF.pdf"));
+            exporter.exportReport(); 
+            JasperExportManager.exportReportToPdfFile( jasperPrint, "Reportes/reporteePDF.pdf");
+            
+        } catch (JRException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //reporte basico
+    public void generarReporteBasico(Map parametros){
+        
+        try {
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
+            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteBasico.jrxml");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new Conexion.Fachada().conectar_BD());
+            JasperViewer view = new JasperViewer(jasperPrint, false);
+                view.setTitle("Reporte Basico");
+                view.setExtendedState(Frame.MAXIMIZED_BOTH);
+                view.setVisible(true);
+            
+            //JRExporter exporter = new JRPdfExporter();
+            
+            //exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            //exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("Reportes/reportePDF.pdf"));
+            //exporter.exportReport(); 
+            //JasperExportManager.exportReportToPdfFile( jasperPrint, "Reportes/reporteePDF.pdf");
+            
+        } catch (JRException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //reporte de inversion
+    public void generarReporteInversion(Map parametros, List<CostosInversion> listaCostos){
+        
+        try {
+            
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
+            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteInv.jrxml");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
+            JasperViewer view = new JasperViewer(jasperPrint, false);
+                view.setTitle("Reporte Basico");
+                view.setExtendedState(Frame.MAXIMIZED_BOTH);
+                view.setVisible(true);
+            
+            //JRExporter exporter = new JRPdfExporter();
+            
+            //exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            //exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("Reportes/reportePDF.pdf"));
+            //exporter.exportReport(); 
+            //JasperExportManager.exportReportToPdfFile( jasperPrint, "Reportes/reporteePDF.pdf");
+            
+        } catch (JRException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //reporte de comercializacion
+    public void generarReporteComercializacion(Map parametros, List<CostosInversion> listaCostos){
+        
+        try {
+            
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
+            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteComer.jrxml");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
+            JasperViewer view = new JasperViewer(jasperPrint, false);
+                view.setTitle("Reporte Basico");
+                view.setExtendedState(Frame.MAXIMIZED_BOTH);
+                view.setVisible(true);
+            
+            //JRExporter exporter = new JRPdfExporter();
+            
+            //exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            //exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("Reportes/reportePDF.pdf"));
+            //exporter.exportReport(); 
+            //JasperExportManager.exportReportToPdfFile( jasperPrint, "Reportes/reporteePDF.pdf");
+            
+        } catch (JRException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //reporte de costos operacionales
+    public void generarReporteCoostosOperacionales(Map parametros, List<CostosInversion> listaCostos){
+        
+        try {
+            
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
+            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteOper.jrxml");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
+            JasperViewer view = new JasperViewer(jasperPrint, false);
+                view.setTitle("Reporte Basico");
+                view.setExtendedState(Frame.MAXIMIZED_BOTH);
+                view.setVisible(true);
+            
+            //JRExporter exporter = new JRPdfExporter();
+            
+            //exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            //exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("Reportes/reportePDF.pdf"));
+            //exporter.exportReport(); 
+            //JasperExportManager.exportReportToPdfFile( jasperPrint, "Reportes/reporteePDF.pdf");
+            
+        } catch (JRException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

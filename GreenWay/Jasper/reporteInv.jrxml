@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInv" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab7622d0-0bb4-40b2-a37d-0c3a16b2c26e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="232"/>
+	<parameter name="fondo" class="java.io.InputStream"/>
+	<field name="valor" class="java.lang.Double"/>
+	<field name="item" class="java.lang.String"/>
+	<background>
+		<band height="802" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="555" height="802" uuid="42ee7c48-d3d5-437a-b14b-1883316c4da8"/>
+				<imageExpression><![CDATA[$P{fondo}]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="10" y="117" width="542" height="338" forecolor="#FFFFFF" uuid="6fe71e3d-d7ba-4cf4-ada8-fa9cdf354d43"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="323" y="677" width="219" height="76" forecolor="#FFFFFF" uuid="e52f6f03-49f9-4025-9835-950f4014c030"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="433" y="10" width="119" height="34" forecolor="#FFFFFF" uuid="1d86876c-fa56-4630-ad46-7f7fec4e58dc"/>
+			</rectangle>
+		</band>
+	</background>
+	<title>
+		<band height="316" splitType="Stretch">
+			<pie3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="137" y="140" width="274" height="166" uuid="e409261b-0131-4a2b-9725-5ed99490cdf1"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{item}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+			<staticText>
+				<reportElement x="190" y="110" width="221" height="20" uuid="1dd79cf7-4220-4c56-85d0-1218a6d18ab3"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSTOS DE INVERSION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="152" y="0" width="100" height="20" uuid="51cb6e8e-f272-492d-936d-b257cb265614"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INVERSION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="0" width="100" height="20" uuid="3f269a41-7914-4307-8570-552c7b868d7b"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="311" y="0" width="100" height="20" uuid="df237df0-0239-4ed8-a021-f97715632ea1"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="152" y="0" width="100" height="20" uuid="66ad5e7f-13cd-41eb-a0d9-d19434448946"/>
+				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

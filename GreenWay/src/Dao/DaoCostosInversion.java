@@ -5,11 +5,14 @@
  */
 package Dao;
 
+import Clases.CostosInversion;
 import Conexion.Fachada;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -145,6 +148,44 @@ public class DaoCostosInversion {
             numFilas = -1; 
         }
         return numFilas;
+    }
+    
+    public List<CostosInversion> consultarCostosInversionxMesBD(String loteId, String anio, String s1,String s2,String s3,String s4,String s5 ){
+        
+        String sql_select;
+        sql_select="SELECT  items_de_inversion_item, SUM(valor) AS valor FROM costos_inversion WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio
+                + "' AND (semana ='"+s1+ "' OR semana ='"+s2+ "' OR semana ='"+s3+ "' OR semana ='"+s4+ "' OR semana ='"+s5+"') GROUP BY items_de_inversion_item"+";";
+        try{
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        
+        List<CostosInversion> costos = new ArrayList();
+        try {
+            //se extraen los registros de la tabla cliente
+            while( respuesta.next()){
+                
+                //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
+
+                String item = respuesta.getString(1);
+                Double valor = respuesta.getDouble(2);           
+                //se crea el objeto una vez se hayan extraido los datos
+                CostosInversion c = new CostosInversion(item, valor);
+                costos.add(c);
+  
+            }
+        }
+
+        catch (SQLException ex) {
+
+        }
+    
+        return costos;
     }
 }
 

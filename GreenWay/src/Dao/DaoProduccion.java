@@ -144,4 +144,21 @@ public class DaoProduccion {
         }
         return numFilas;
     }
+    
+    public ResultSet consultarProduccionsxSemanaBD(String loteId, String anio, String semana){
+        
+        String sql_select;
+        sql_select="SELECT DISTINCT * FROM produccion WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio+ "' AND semana ='"+semana+"';";
+        try{
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        return respuesta; 
+    
+    }
 }

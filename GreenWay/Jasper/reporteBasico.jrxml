@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ce2e2a9a-4c89-4b5b-a594-f1dfe35c5fcc">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#008000">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFFFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#008000">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFFFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#008000">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFFFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="bde677fa-2f7a-4201-a7dc-5cbd415c5a18"/>
+	<subDataset name="New Dataset 1" uuid="fe084229-5a94-46ff-9cdc-fad0b66df1c4"/>
+	<subDataset name="Table Dataset 2" uuid="aaabfb59-d635-4789-a234-859d5616db3d"/>
+	<subDataset name="DATAteST" uuid="a8afa6e2-1133-40ea-b9c3-5c39fa932434">
+		<queryString language="SQL">
+			<![CDATA[SELECT produccion.lote_identificador,SUM(produccion.selecta) AS SELECTA,SUM(produccion.corriente) AS CORRIENTE,SUM(produccion.industrial) AS INDUSTRIAL
+FROM produccion
+WHERE produccion.lote_identificador = '1111-a-Huila-Tarqui-Vereda' AND produccion.anio = '2017' AND produccion.semana = '1'
+												OR  produccion.semana = '2' OR  produccion.semana = '3'
+												OR  produccion.semana = '4' OR  produccion.semana = '5'
+GROUP BY produccion.lote_identificador;]]>
+		</queryString>
+		<field name="lote_identificador" class="java.lang.String"/>
+		<field name="selecta" class="java.math.BigDecimal"/>
+		<field name="corriente" class="java.math.BigDecimal"/>
+		<field name="industrial" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="cliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="lote" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="costoOperacional" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="costoInversion" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="costoComercializacion" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalCostos" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="selecta" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="corriente" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="industrial" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalProduccion" class="java.lang.Double">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ubicacion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fondo" class="java.io.InputStream"/>
+	<parameter name="blarga" class="java.io.InputStream"/>
+	<parameter name="bcorta" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[SELECT
+     cliente."nombre" AS cliente_nombre,
+     cliente."apellido" AS cliente_apellido,
+     cliente."identificacion" AS cliente_identificacion,
+     cliente."telefono" AS cliente_telefono,
+     cliente."direccion" AS cliente_direccion,
+     cliente."correo" AS cliente_correo,
+     lote."cliente_identificacion" AS lote_cliente_identificacion,
+     lote."cultivo_identificador" AS lote_cultivo_identificador,
+     lote."identificador" AS lote_identificador,
+     lote."area" AS lote_area,
+     lote."numero_plantas" AS lote_numero_plantas,
+     ubicacion."departamento" AS ubicacion_departamento,
+     ubicacion."municipio" AS ubicacion_municipio,
+     ubicacion."vereda" AS ubicacion_vereda
+FROM
+     "public"."cliente" cliente INNER JOIN "public"."lote" lote ON cliente."identificacion" = lote."cliente_identificacion"
+     INNER JOIN "public"."ubicacion" ubicacion ON lote."ubicacion_id_ubicacion" = ubicacion."id_ubicacion"
+WHERE
+     cliente."identificacion" = $P{cliente}
+ AND lote."identificador" = $P{lote}	]]>
+	</queryString>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="cliente_apellido" class="java.lang.String"/>
+	<field name="cliente_identificacion" class="java.lang.String"/>
+	<field name="cliente_telefono" class="java.lang.String"/>
+	<field name="cliente_direccion" class="java.lang.String"/>
+	<field name="cliente_correo" class="java.lang.String"/>
+	<field name="lote_cliente_identificacion" class="java.lang.String"/>
+	<field name="lote_cultivo_identificador" class="java.lang.String"/>
+	<field name="lote_identificador" class="java.lang.String"/>
+	<field name="lote_area" class="java.math.BigDecimal"/>
+	<field name="lote_numero_plantas" class="java.lang.Integer"/>
+	<field name="ubicacion_departamento" class="java.lang.String"/>
+	<field name="ubicacion_municipio" class="java.lang.String"/>
+	<field name="ubicacion_vereda" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.String"/>
+	<variable name="variable2" class="java.lang.String"/>
+	<variable name="variable3" class="java.lang.String"/>
+	<background>
+		<band height="802" splitType="Stretch">
+			<image isUsingCache="true">
+				<reportElement x="0" y="0" width="555" height="802" uuid="b9720210-6a6b-4775-99d9-bd092a1e61c8"/>
+				<imageExpression><![CDATA[$P{fondo}]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="423" y="15" width="114" height="27" forecolor="#FFFFFF" uuid="21ba5ce5-4100-4ece-81b5-b78fd8b26fb8"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="313" y="674" width="219" height="76" forecolor="#FFFFFF" uuid="2e42dbfe-833d-475b-a9e0-7d902ad69687"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="14" y="125" width="528" height="320" forecolor="#FFFFFF" uuid="ee953c9c-5360-4597-9dd6-19a464efa976"/>
+			</rectangle>
+		</band>
+	</background>
+	<title>
+		<band height="101" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="2f01c5a2-ae4d-4314-9fd3-85c84986bf20"/>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="667" splitType="Stretch">
+			<image isUsingCache="true">
+				<reportElement x="292" y="265" width="263" height="179" uuid="b1011285-08cc-4da5-a460-0a2219d36aa2"/>
+				<imageExpression><![CDATA[$P{bcorta}]]></imageExpression>
+			</image>
+			<image isUsingCache="true">
+				<reportElement x="0" y="455" width="282" height="190" uuid="d4e0a420-086d-41f9-bb2b-8cc9040ca667"/>
+				<imageExpression><![CDATA[$P{bcorta}]]></imageExpression>
+			</image>
+			<image isUsingCache="true">
+				<reportElement x="0" y="265" width="282" height="190" uuid="2cbe3052-611e-4369-b06f-6a805bd2f912"/>
+				<imageExpression><![CDATA[$P{bcorta}]]></imageExpression>
+			</image>
+			<image isUsingCache="true">
+				<reportElement x="0" y="144" width="555" height="102" uuid="8381b995-8b56-4a12-9b14-bf9088bac095"/>
+				<imageExpression><![CDATA[$P{blarga}]]></imageExpression>
+			</image>
+			<image isUsingCache="true">
+				<reportElement x="0" y="13" width="555" height="106" uuid="aa55faa1-aa8f-477b-a7ac-37c56b6ee505"/>
+				<imageExpression><![CDATA[$P{blarga}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="14" y="48" width="76" height="20" uuid="9d7848c9-535b-4487-aa34-5c9ec5fd7f97"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="48" width="51" height="20" uuid="6ebd523e-7034-4b21-8f7f-8ab03f2914bc"/>
+				<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="153" y="48" width="48" height="20" uuid="dbdfffa5-01b2-452f-8849-58c413285f98"/>
+				<textFieldExpression><![CDATA[$F{cliente_apellido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="78" width="76" height="20" uuid="1aaca670-591e-4fc1-8deb-7e7558be4f1b"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CORREO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="48" width="96" height="20" uuid="b6a65dbf-b051-48bd-b841-0fdab82e70aa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="78" width="96" height="20" uuid="cf574c9d-1569-4c0a-95fe-7f2485b9ad52"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="78" width="100" height="20" uuid="e596df3c-57f9-4f79-8df0-486db73a4955"/>
+				<textFieldExpression><![CDATA[$F{cliente_correo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="405" y="78" width="100" height="20" uuid="0998838e-ea15-4065-b72f-fabeade64e45"/>
+				<textFieldExpression><![CDATA[$F{cliente_telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="201" y="144" width="150" height="20" forecolor="#FFFFFF" uuid="5983f7c5-2738-4741-8e7a-c3d7592ab465"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL LOTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="202" width="76" height="20" uuid="5dfd087e-15d0-4bd3-b08a-4932086d4df5"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AREA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="172" width="76" height="20" uuid="faa51f6a-482b-4353-9f45-118f80411006"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CULTIVO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="172" width="114" height="20" uuid="00b6c5eb-c2c8-4f1a-8805-3b6992805029"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[# DE PLANTAS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="202" width="96" height="20" uuid="2cebaa40-9f7d-424f-bed9-2d507a7ecc7c"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UBICACION:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="101" y="172" width="100" height="20" uuid="da06dcd0-c9d2-4f5e-a6e8-81044fbc7ade"/>
+				<textFieldExpression><![CDATA[$F{lote_cultivo_identificador}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="423" y="202" width="100" height="20" uuid="81a22860-1447-4b8b-89d8-41ef17bb5500"/>
+				<textFieldExpression><![CDATA[$F{ubicacion_departamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="423" y="172" width="100" height="20" uuid="b0f40ea3-8963-4542-8220-6e36dd7d087c"/>
+				<textFieldExpression><![CDATA[$F{lote_numero_plantas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="202" width="100" height="20" uuid="9a6aa805-f90d-40b3-a3f6-7b7ef102a2c4"/>
+				<textFieldExpression><![CDATA[$F{lote_area}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="201" y="13" width="150" height="20" forecolor="#FFFFFF" uuid="7f4e8f12-efc1-4ecf-9afb-2aeca55af446"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL CLIENTE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="405" y="48" width="100" height="20" uuid="facbee68-b68a-44d0-b598-3e15afa991ea"/>
+				<textFieldExpression><![CDATA[$F{cliente_direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="265" width="150" height="20" forecolor="#FFFFFF" uuid="0aea12e6-cbfa-40eb-9e23-9d04046d0655"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL COSTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="297" width="128" height="20" uuid="5f364343-d8af-4a58-bb99-a7d906de2e28"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERACIONALES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="327" width="128" height="20" uuid="e4cdf0c7-46ea-417c-afa2-a131ccd62025"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INVERSION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="359" width="150" height="20" uuid="361f459d-ee48-4a2a-b71f-ae9c9193a82c"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMERCIALIZACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="397" width="128" height="20" uuid="5a193105-c116-4a29-8d2d-96720577be2e"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="171" y="297" width="100" height="20" uuid="cac52ef3-3129-43a7-8b9e-a416ec7592b7"/>
+				<textFieldExpression><![CDATA[$P{costoOperacional}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="327" width="100" height="20" uuid="f96ffb4a-f8bc-4ec4-b8b7-04df0961c38a"/>
+				<textFieldExpression><![CDATA[$P{costoInversion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="359" width="100" height="20" uuid="4c08e108-b7f6-4ab3-8f2d-37b1b2f42f53"/>
+				<textFieldExpression><![CDATA[$P{costoComercializacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="397" width="100" height="20" uuid="caaf4f72-d178-4862-897e-755a7c329f18"/>
+				<textFieldExpression><![CDATA[$P{totalCostos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="313" y="265" width="164" height="20" forecolor="#FFFFFF" uuid="5adb580a-d7e8-4c00-8833-0009c8b093c3"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[GRÁFICO DE COSTOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="587" width="128" height="20" uuid="8a1c0a16-1593-4ec2-8e9e-130fee746aa2"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="517" width="128" height="20" uuid="aca16fb0-986b-4e27-bce9-8b7cf7759444"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CORRIENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="549" width="150" height="20" uuid="019a26bd-75f8-4d16-a223-143d58942cc2"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INDUSTRIAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="487" width="128" height="20" uuid="ac93ed63-46b5-4abd-8539-ed08783673ac"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SELECTA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="455" width="174" height="20" forecolor="#FFFFFF" uuid="1a9c15c1-4df9-473a-ba7f-68b0098e4f81"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DE PRODUCCION]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="171" y="487" width="100" height="20" uuid="4c05f1fc-2b10-4a79-8322-280cbfbc3a25"/>
+				<textFieldExpression><![CDATA[$P{selecta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="517" width="100" height="20" uuid="0a6928ac-e132-4192-bce2-fd2fec7411f1"/>
+				<textFieldExpression><![CDATA[$P{corriente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="549" width="100" height="20" uuid="4b266a07-ae0f-4c41-b39b-6eb9b234d4be"/>
+				<textFieldExpression><![CDATA[$P{industrial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="587" width="100" height="20" uuid="fa0c6110-b964-4bb2-be78-f984f8eedec6"/>
+				<textFieldExpression><![CDATA[$P{totalProduccion}]]></textFieldExpression>
+			</textField>
+			<image isUsingCache="true">
+				<reportElement x="292" y="455" width="263" height="190" uuid="1177acf4-05b7-48a6-b857-d6a7f330362e"/>
+				<imageExpression><![CDATA[$P{bcorta}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="313" y="455" width="192" height="20" forecolor="#FFFFFF" uuid="ef6bad0e-6ff4-425c-b04f-19e2d4d528d5"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[GRÁFICO DE PRODUCCION]]></text>
+			</staticText>
+			<pieChart>
+				<chart>
+					<reportElement x="323" y="317" width="200" height="100" uuid="1f83bacf-50b7-4361-82f8-90607111448f"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="DATAteST" uuid="939f5192-56e3-4d2a-aa87-c6f824465629"/>
+					</dataset>
+					<keyExpression><![CDATA[$F{selecta}]]></keyExpression>
+					<valueExpression><![CDATA[$F{selecta}]]></valueExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="1" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

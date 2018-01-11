@@ -5,11 +5,14 @@
  */
 package Dao;
 
+import Clases.CostosInversion;
 import Conexion.Fachada;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -144,6 +147,24 @@ public class DaoCostosOperacionales {
             numFilas = -1; 
         }
         return numFilas;
+    }
+    
+    public ResultSet consultarCostosOperacionalesxMesBD(String loteId, String anio, String s1,String s2,String s3,String s4,String s5 ){
+        
+        String sql_select;
+        sql_select="SELECT  items_de_inversion_item, semana, SUM(horas) AS horas FROM costos_operacionales WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio
+                + "' AND (semana ='"+s1+ "' OR semana ='"+s2+ "' OR semana ='"+s3+ "' OR semana ='"+s4+ "' OR semana ='"+s5+"') GROUP BY items_de_inversion_item, semana"+";";
+        try{System.err.println(sql_select);
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        
+        return respuesta;
     }
 }
 

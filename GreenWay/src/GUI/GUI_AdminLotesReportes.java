@@ -6,17 +6,27 @@
 package GUI;
 
 import Clases.Cliente;
+import Clases.CostosInversion;
 import Clases.Lote;
 import Clases.Reportes;
 import Conexion.Fachada;
 import Controlador.ControladorCliente;
 import Controlador.ControladorLote;
+import Dao.DaoCostosComercializacion;
+import Dao.DaoCostosInversion;
+import Dao.DaoCostosOperacionales;
+import Dao.DaoCostosOperacionalesOtros;
+import Dao.DaoCostosOperacionalesProducto;
+import Dao.DaoValorFacturado;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -64,7 +74,6 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         modeloItems.addColumn("Cultivo");
         modeloItems.addColumn("Area");
         modeloItems.addColumn("Numero de plantas");
-        modeloItems.addColumn("Costo x hora");
         modeloItems.addColumn("Ubicacion");
         
         buscarLotes();
@@ -80,15 +89,14 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         
         for (int i = 0; i < lotes.size(); i++) {
             // Se crea un array que será una de las filas de la tabla.
-            Object [] fila = new Object[6]; // Hay tres columnas en la tabla
+            Object [] fila = new Object[5]; // Hay tres columnas en la tabla
 
             // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
             fila[0] = lotes.get(i).getCliente_identificacion();
             fila[1] = lotes.get(i).getCultivo_identificador();
             fila[2] = lotes.get(i).getArea();
             fila[3] = lotes.get(i).getNumero_plantas();
-            fila[4] = lotes.get(i).getCosto_por_hora();
-            fila[5] = lotes.get(i).getUbicacion_id_ubicacion();
+            fila[4] = lotes.get(i).getUbicacion_id_ubicacion();
             
             this.idLotes.add(lotes.get(i).getIdentificador());
 
@@ -113,6 +121,45 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         }
         trsFiltro.setRowFilter(RowFilter.regexFilter(jTextFieldBusqueda.getText(), columnaABuscar));
     }
+    
+    public List valorOperacionalxSemana(String loteID, String anio, String mes){
+        Reportes reportes = new Reportes();
+        ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+        
+        ResultSet consulta = new DaoCostosOperacionales().consultarCostosOperacionalesxMesBD(loteID, anio, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+        List costos = new ArrayList();
+        
+        try {
+            //se extraen los registros de la tabla cliente
+            while( consulta.next()){
+                
+                //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
+
+                String item = consulta.getString(1);
+                String semana = consulta.getString(2);           
+                int horas = consulta.getInt(3);           
+                Double valor = 0.0;
+                
+                ResultSet rs = new DaoValorFacturado().consultarValorFacturadoBD(cliente, anio, semana);
+                if( rs.next()){
+                    valor = rs.getDouble(6);
+                }else{
+                    valor = 0.0;
+                }
+                
+                //se crea el objeto una vez se hayan extraido los datos
+                CostosInversion c = new CostosInversion(item, valor);
+                costos.add(c);
+  
+            }
+        }
+
+        catch (SQLException ex) {
+
+        }
+        
+        return costos;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -132,6 +179,9 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBoxBusqueda = new javax.swing.JComboBox();
         jTextFieldBusqueda = new javax.swing.JTextField();
+        jButtonAgregar1 = new javax.swing.JButton();
+        jButtonAgregar2 = new javax.swing.JButton();
+        jButtonAgregar3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -159,14 +209,14 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
         );
 
-        jButtonAgregar.setText("Reporte");
+        jButtonAgregar.setText("Reporte General");
         jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAgregarActionPerformed(evt);
@@ -192,6 +242,27 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
             }
         });
 
+        jButtonAgregar1.setText("Reporte Inversion");
+        jButtonAgregar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregar1ActionPerformed(evt);
+            }
+        });
+
+        jButtonAgregar2.setText("Reporte Comercializacion");
+        jButtonAgregar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregar2ActionPerformed(evt);
+            }
+        });
+
+        jButtonAgregar3.setText("Reporte Costos Operacionales");
+        jButtonAgregar3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregar3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,16 +278,23 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
                                 .addComponent(jToggleButton1))
                             .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonAgregar))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(18, 18, 18)
                                 .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 195, Short.MAX_VALUE)))
+                                .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonAgregar3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonAgregar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonAgregar1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButtonAgregar2)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -227,17 +305,21 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAgregar)
-                    .addComponent(jLabel1))
-                .addGap(8, 8, 8)
+                    .addComponent(jLabel1)
+                    .addComponent(jButtonAgregar1)
+                    .addComponent(jButtonAgregar2))
+                .addGap(4, 4, 4)
+                .addComponent(jButtonAgregar3)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToggleButton1)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -245,7 +327,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
         String cliente = this.obtenerIdentificacionSeleccionado();
-        
+        Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
             
             this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
@@ -254,30 +336,30 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
             StringTokenizer st = new StringTokenizer(mesAño, " ");
             String año = st.nextToken();
             String mes = st.nextToken();
-            double c1 = new Reportes().costoOperacionalxMes(loteID,cliente, año, mes);
-            double c2 = new Reportes().costoComercializacionxMes(loteID,cliente, año, mes);
-            double c3 = new Reportes().costoInversionxMes(loteID,cliente, año, mes);
+            double c1 = reportes.costoOperacionalxMes(loteID,cliente, año, mes);
+            double c2 = reportes.costoComercializacionxMes(loteID,cliente, año, mes);
+            double c3 = reportes.costoInversionxMes(loteID,cliente, año, mes);
+            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
             
-            try {
-                String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
-                Map parametros = new HashMap();
-                parametros.put("cliente", cliente);parametros.put("costoComercializacion", c2);
-                parametros.put("costoInversion", c3);parametros.put("costoOperacional", c1);
-                parametros.put("fecha", new Date());parametros.put("lote", loteID);
-                parametros.put("totalCostos", (c1+c2+c3));
- 
-                //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper"));
-                JasperPrint jasperPrint = JasperFillManager.fillReport(rutaInforme, parametros, new Fachada().conectar_BD());
-                JasperViewer ventana = new JasperViewer(jasperPrint, false);
-                ventana.setVisible(true);
-                //JRExporter exporter = new JRPdfExporter();
-                //exporter.setParameter(JRExporterParameter.JASPER_PRINT,jasperPrint); 
-                //exporter.setParameter(JRExporterParameter.OUTPUT_FILE,new java.io.File("reportePDF.pdf"));
-                //exporter.exportReport();
             
-            } catch (JRException ex) {
-                Logger.getLogger(GUI_AdminLotesReportes.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+            Map parametros = new HashMap();
+            parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+            parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+            parametros.put("cliente", cliente);
+            parametros.put("corriente", produccion[1]);
+            parametros.put("costoComercializacion", c2);
+            parametros.put("costoInversion", c3);
+            parametros.put("costoOperacional", c1);
+            parametros.put("fecha", new Date());            
+            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+            parametros.put("industrial", produccion[2]);
+            parametros.put("lote", loteID);
+            parametros.put("selecta", produccion[0]);
+            parametros.put("totalCostos", (c1+c2+c3));
+            parametros.put("totalProduccion", produccion[3]);
+            new Reportes().generarReporteBasico(parametros);
             
        
             
@@ -307,6 +389,138 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         jTableLotes.setRowSorter(trsFiltro);
 
     }//GEN-LAST:event_jTextFieldBusquedaKeyTyped
+
+    private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
+        String cliente = this.obtenerIdentificacionSeleccionado();
+        Reportes reportes = new Reportes();
+        if (cliente.equalsIgnoreCase("No selecciono") == false) {
+            
+            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+            this.cliente = cliente;
+            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+            StringTokenizer st = new StringTokenizer(mesAño, " ");
+            String año = st.nextToken();
+            String mes = st.nextToken();
+            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
+            
+            
+            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+            Map parametros = new HashMap();
+            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+            //parametros.put("cliente", cliente);
+            //parametros.put("fecha", new Date());            
+            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+            //parametros.put("lote", loteID);
+
+            List listaCostos = new ArrayList();
+            if (semanas.size() == 4) {
+                listaCostos = new DaoCostosInversion().consultarCostosInversionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+            }else{
+                listaCostos = new DaoCostosInversion().consultarCostosInversionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+            }
+            
+            new Reportes().generarReporteInversion(parametros, listaCostos);
+            
+       
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonAgregar1ActionPerformed
+
+    private void jButtonAgregar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar2ActionPerformed
+        String cliente = this.obtenerIdentificacionSeleccionado();
+        Reportes reportes = new Reportes();
+        if (cliente.equalsIgnoreCase("No selecciono") == false) {
+            
+            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+            this.cliente = cliente;
+            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+            StringTokenizer st = new StringTokenizer(mesAño, " ");
+            String año = st.nextToken();
+            String mes = st.nextToken();
+            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
+            
+            
+            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+            Map parametros = new HashMap();
+            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+            //parametros.put("cliente", cliente);
+            //parametros.put("fecha", new Date());            
+            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+            //parametros.put("lote", loteID);
+
+            List listaCostos = new ArrayList();
+            if (semanas.size() == 4) {
+                listaCostos = new DaoCostosComercializacion().consultarCostosComercializacionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+            }else{
+                listaCostos = new DaoCostosComercializacion().consultarCostosComercializacionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+            }
+            
+            new Reportes().generarReporteComercializacion(parametros, listaCostos);
+            
+       
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonAgregar2ActionPerformed
+
+    private void jButtonAgregar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar3ActionPerformed
+        String cliente = this.obtenerIdentificacionSeleccionado();
+        Reportes reportes = new Reportes();
+        if (cliente.equalsIgnoreCase("No selecciono") == false) {
+            
+            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+            System.out.println(loteID);
+            this.cliente = cliente;
+            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+            StringTokenizer st = new StringTokenizer(mesAño, " ");
+            String año = st.nextToken();
+            String mes = st.nextToken();
+            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
+            
+            
+            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+            Map parametros = new HashMap();
+            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+            //parametros.put("cliente", cliente);
+            //parametros.put("fecha", new Date());            
+            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+            //parametros.put("lote", loteID);
+
+            List listaCostos1 = new ArrayList();
+            List listaCostos2 = new ArrayList();
+            List listaCostos3 = new ArrayList();
+            
+            if (semanas.size() == 4) {
+                listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
+                System.err.println(loteID);
+            }else{
+                listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
+                System.err.println(loteID);
+            }
+            
+            listaCostos1.addAll(listaCostos2);
+            listaCostos1.addAll(listaCostos3);
+            new Reportes().generarReporteCoostosOperacionales(parametros, listaCostos1);
+            
+       
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonAgregar3ActionPerformed
 
     public String obtenerIdentificacionSeleccionado(){
         try{
@@ -362,6 +576,9 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAgregar;
+    private javax.swing.JButton jButtonAgregar1;
+    private javax.swing.JButton jButtonAgregar2;
+    private javax.swing.JButton jButtonAgregar3;
     private javax.swing.JComboBox jComboBoxBusqueda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

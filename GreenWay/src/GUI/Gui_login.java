@@ -7,6 +7,7 @@ package GUI;
 
 import Clases.Reportes;
 import Clases.Validaciones;
+import java.util.ArrayList;
 
 
 
@@ -181,7 +182,11 @@ public class Gui_login extends javax.swing.JFrame {
         String password = jPassword.getText();
         
         Reportes reportes = new Reportes();
-        
+        ArrayList<Integer> semanas = reportes.determinarSemnas("abril");
+        for (int i = 0; i < semanas.size(); i++) {
+            System.err.println(semanas.get(i));
+        }
+        //reportes.generarReporte();
         Gui_VentanaPrincipalGerente principalGenrente = new Gui_VentanaPrincipalGerente(this);
         principalGenrente.setVisible(true);
         this.setVisible(false);
