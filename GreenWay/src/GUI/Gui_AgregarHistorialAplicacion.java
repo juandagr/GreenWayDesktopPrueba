@@ -62,7 +62,7 @@ public class Gui_AgregarHistorialAplicacion extends javax.swing.JFrame {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
             if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarDia(dia)) {
                 //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
-                if (controladorHistorial.HistorialAplicacionRegistrado(Lote_identificador, id_historial, anio, semana, dia) == false) {
+                if (controladorHistorial.HistorialAplicacionRegistrado(Lote_identificador, id_historial, anio, semana, dia, producto_utilizado) == false) {
                     
                     if ((jTextAreaObjetivo.getText().length() < 21) && (jTextFieldProductoUtilizado.getText().length() < 21)) {
                         

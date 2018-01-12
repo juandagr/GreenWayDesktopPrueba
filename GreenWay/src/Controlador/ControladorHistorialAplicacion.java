@@ -61,10 +61,10 @@ public class ControladorHistorialAplicacion {
     }   
     
 
-    public HistorialAplicacion consultarHistorialAplicacion(String loteId, String id_historial, String anio, String semana, String dia){
+    public HistorialAplicacion consultarHistorialAplicacion(String loteId, String id_historial, String anio, String semana, String dia, String producto_utilizado){
         
         HistorialAplicacion h= null;
-        ResultSet consulta = this.daoHistorialAplicacion.consultarHistorialAplicacionBD(loteId, id_historial, anio, semana, dia);
+        ResultSet consulta = this.daoHistorialAplicacion.consultarHistorialAplicacionBD(loteId, id_historial, anio, semana, dia, producto_utilizado);
         try {
             //se pregunta si el resultset no esta vacio, es decir si consulto algo
             if( consulta.next()){
@@ -72,7 +72,6 @@ public class ControladorHistorialAplicacion {
                 //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
 
                 String objetivoBiologico = consulta.getString(6);;
-                String producto_utilizado = consulta.getString(7);;
                 double dosis_por_litro = consulta.getDouble(8);
                 double volumen_utilizado = consulta.getDouble(9);
                 //se crea el objeto una vez se hayan extraido los datos
@@ -95,9 +94,9 @@ public class ControladorHistorialAplicacion {
     
 
     
-    public boolean HistorialAplicacionRegistrado(String loteId, String id_historial, String anio, String semana, String dia){
+    public boolean HistorialAplicacionRegistrado(String loteId, String id_historial, String anio, String semana, String dia, String producto_utilizado){
         boolean resultado = false;
-        ResultSet rs = this.daoHistorialAplicacion.consultarHistorialAplicacionBD(loteId, id_historial, anio, semana, dia);
+        ResultSet rs = this.daoHistorialAplicacion.consultarHistorialAplicacionBD(loteId, id_historial, anio, semana, dia, producto_utilizado);
         
         try {
             if (rs.next()) {

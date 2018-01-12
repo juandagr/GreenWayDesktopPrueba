@@ -288,11 +288,11 @@ public class GUI_HistorialAplicacion extends javax.swing.JFrame {
             String anio = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 1));
             String semana = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 2));
             String dia = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 3));
-
+            String producto_utilizado = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 5));
             
             if (this.obtenerIdentificacionSeleccionado().equalsIgnoreCase("No selecciono") == false) {
 
-                Gui_ModificarHistorialAplicacion modificar = new Gui_ModificarHistorialAplicacion(this, loteId, anio, semana, dia);
+                Gui_ModificarHistorialAplicacion modificar = new Gui_ModificarHistorialAplicacion(this, loteId, anio, semana, dia,producto_utilizado);
                 modificar.setVisible(true);
 
                 this.dispose();

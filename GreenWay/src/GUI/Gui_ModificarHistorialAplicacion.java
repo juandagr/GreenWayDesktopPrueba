@@ -39,19 +39,19 @@ public class Gui_ModificarHistorialAplicacion extends javax.swing.JFrame {
     GUI_HistorialAplicacion gui_historiaClinica;
     
     //Constructor
-    public Gui_ModificarHistorialAplicacion(GUI_HistorialAplicacion gui_historiaClinica, String loteId, String anio, String semana, String dia) {
+    public Gui_ModificarHistorialAplicacion(GUI_HistorialAplicacion gui_historiaClinica, String loteId, String anio, String semana, String dia, String producto_utilizado) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.gui_historiaClinica = gui_historiaClinica;        
 
         this.jTextFieldLote.setText(this.gui_historiaClinica.gui_infoLotes.gui_adminLotes.loteID);
         this.jTextFieldLote.setEditable(false);
-        this.llenarDatos(loteId, anio, semana, dia);
+        this.llenarDatos(loteId, anio, semana, dia, producto_utilizado);
     }
     
-    public void llenarDatos(String loteId, String anio, String semana, String dia){
+    public void llenarDatos(String loteId, String anio, String semana, String dia, String producto_utilizado){
         String id_historial = loteId+"-"+anio+"-"+semana+"-"+dia;
-        HistorialAplicacion hs = new ControladorHistorialAplicacion().consultarHistorialAplicacion(loteId, id_historial, anio, semana, dia);
+        HistorialAplicacion hs = new ControladorHistorialAplicacion().consultarHistorialAplicacion(loteId, id_historial, anio, semana, dia, producto_utilizado);
         
         this.jTextFieldSemana.setText(hs.getSemana()); 
         this.jTextFieldDia.setText(hs.getDia());
@@ -81,7 +81,7 @@ public class Gui_ModificarHistorialAplicacion extends javax.swing.JFrame {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos asi como los datos que deben estar dentro de un rango como el cargo y estado civil
             if ((verificarCamposVacios() == false) && verificarTipos() && validar.validarDia(dia)) {
                 //se verifica que el empleado no haya sido creado anteriormente por medio de la identificacion
-                if (controladorHistorial.HistorialAplicacionRegistrado(Lote_identificador, id_historial, anio, semana, dia)) {
+                if (controladorHistorial.HistorialAplicacionRegistrado(Lote_identificador, id_historial, anio, semana, dia, producto_utilizado)) {
                     
                     if ((jTextAreaObjetivo.getText().length() < 21) && (jTextFieldProductoUtilizado.getText().length() < 21)) {
                         
@@ -667,7 +667,7 @@ public class Gui_ModificarHistorialAplicacion extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui_ModificarHistorialAplicacion(null, null, null, null, null).setVisible(true);
+                new Gui_ModificarHistorialAplicacion(null, null, null, null, null, null).setVisible(true);
             }
         });
     }

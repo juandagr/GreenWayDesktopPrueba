@@ -53,11 +53,11 @@ public class DaoHistorialAplicacion {
     }
     
 
-    public ResultSet consultarHistorialAplicacionBD(String loteId, String id_historial, String anio, String semana, String dia){
+    public ResultSet consultarHistorialAplicacionBD(String loteId, String id_historial, String anio, String semana, String dia, String producto_utilizado){
         
         String sql_select;
-        sql_select="SELECT DISTINCT * FROM historial_aplicacion WHERE lote_identificador ='"+loteId+"' AND id_historial ='" +id_historial+"' AND anio ='" +anio+ "' AND semana ='"+semana+"' AND dia ='" +dia+"';";
-        
+        sql_select="SELECT DISTINCT * FROM historial_aplicacion WHERE lote_identificador ='"+loteId+"' AND id_historial ='" +id_historial+"' AND anio ='" +anio+ "' AND semana ='"+semana+"' AND dia ='" +dia+"' AND producto_utilizado ='" +producto_utilizado+"';";
+        System.err.println(sql_select);
         try{
             Connection conn= fachada.conectar_BD();
             instruccion = conn.createStatement();
