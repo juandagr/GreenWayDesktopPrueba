@@ -13,6 +13,7 @@ import Dao.DaoHistorialAplicacion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -125,6 +126,40 @@ public class ControladorHistorialAplicacion {
                 String Lote_identificador = consulta.getString(1);
                 String id_historial = consulta.getString(2);
                 String anio = consulta.getString(3);
+                String semana = consulta.getString(4);
+                String dia = consulta.getString(5);
+                String objetivoBiologico = consulta.getString(6);
+                String producto_utilizado = consulta.getString(7);;
+                double dosis_por_litro = consulta.getDouble(8);
+                double volumen_utilizado = consulta.getDouble(9);
+                //se crea el objeto una vez se hayan extraido los datos
+                HistorialAplicacion h = new HistorialAplicacion(Lote_identificador, id_historial, anio, semana, dia, objetivoBiologico, producto_utilizado, dosis_por_litro, volumen_utilizado);
+  
+                historiales.add(h);
+  
+            }
+        }
+
+        catch (SQLException ex) {
+
+        }
+        
+        return historiales;
+        
+    }
+    
+    public List consultarHistorialessxMes(String loteId, String anio, String s1,String s2,String s3,String s4,String s5){
+        ArrayList<HistorialAplicacion> historiales = new ArrayList();
+        
+        ResultSet consulta = this.daoHistorialAplicacion.consultarHistorialxMesBD(loteId, anio, s1, s2, s3, s4, s5);
+        try {
+            //se extraen los registros de la tabla cliente
+            while( consulta.next()){
+                
+                //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
+                String Lote_identificador = consulta.getString(1);
+                String id_historial = consulta.getString(2);
+
                 String semana = consulta.getString(4);
                 String dia = consulta.getString(5);
                 String objetivoBiologico = consulta.getString(6);

@@ -14,6 +14,7 @@ import Dao.DaoCostosOperacionalesProducto;
 import Dao.DaoItemsComercializacion;
 import Dao.DaoItemsCostosOperacionales;
 import Dao.DaoItemsInversion;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -364,6 +365,11 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                 jTableLabores9FocusLost(evt);
             }
         });
+        jTableLabores9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableLabores9KeyPressed(evt);
+            }
+        });
         jScrollPane36.setViewportView(jTableLabores9);
 
         jTableOtros9.setModel(new javax.swing.table.DefaultTableModel(
@@ -382,6 +388,11 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                 jTableOtros9FocusLost(evt);
             }
         });
+        jTableOtros9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableOtros9KeyPressed(evt);
+            }
+        });
         jScrollPane37.setViewportView(jTableOtros9);
 
         jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
@@ -398,6 +409,11 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         jTableProductos.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTableProductosFocusLost(evt);
+            }
+        });
+        jTableProductos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableProductosKeyPressed(evt);
             }
         });
         jScrollPane38.setViewportView(jTableProductos);
@@ -510,6 +526,11 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
                 jTableInversionFocusLost(evt);
             }
         });
+        jTableInversion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableInversionKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableInversion);
 
         jTableComercializacion.setModel(new javax.swing.table.DefaultTableModel(
@@ -526,6 +547,11 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
         jTableComercializacion.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 jTableComercializacionFocusLost(evt);
+            }
+        });
+        jTableComercializacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableComercializacionKeyPressed(evt);
             }
         });
         jScrollPane2.setViewportView(jTableComercializacion);
@@ -912,6 +938,37 @@ public class GUI_InfoCostosLote extends javax.swing.JFrame {
     private void jTableProductosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTableProductosFocusLost
         jTableProductos.clearSelection();        // TODO add your handling code here:
     }//GEN-LAST:event_jTableProductosFocusLost
+
+    private void jTableInversionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableInversionKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_DELETE){
+            modeloInversion.removeRow(jTableInversion.getSelectedRow());
+        }
+        
+    }//GEN-LAST:event_jTableInversionKeyPressed
+
+    private void jTableComercializacionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableComercializacionKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_DELETE){
+            modeloComercializacion.removeRow(jTableComercializacion.getSelectedRow());
+        }
+    }//GEN-LAST:event_jTableComercializacionKeyPressed
+
+    private void jTableProductosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableProductosKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_DELETE){
+            modeloProductos.removeRow(jTableProductos.getSelectedRow());
+        }
+    }//GEN-LAST:event_jTableProductosKeyPressed
+
+    private void jTableOtros9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableOtros9KeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_DELETE){
+            modeloOtros.removeRow(jTableOtros9.getSelectedRow());
+        }
+    }//GEN-LAST:event_jTableOtros9KeyPressed
+
+    private void jTableLabores9KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableLabores9KeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_DELETE){
+            modeloItems.removeRow(jTableLabores9.getSelectedRow());
+        }
+    }//GEN-LAST:event_jTableLabores9KeyPressed
 
     /**
      * @param args the command line arguments

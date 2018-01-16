@@ -12,6 +12,7 @@ import Dao.DaoLote;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -120,6 +121,35 @@ public class ControladorHistoriaClinica {
                 //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
                 String Lote_identificador  = consulta.getString(1);
                 String anio = consulta.getString(2);
+                String semana = consulta.getString(3);
+                String dia = consulta.getString(4);
+                String descripcion = consulta.getString(5);
+                                           
+                //se crea el objeto una vez se hayan extraido los datos
+                HistoriaClinica hc = new HistoriaClinica(Lote_identificador, anio, semana, dia, descripcion);
+                historias.add(hc);
+  
+            }
+        }
+
+        catch (SQLException ex) {
+
+        }
+        
+        return historias;
+        
+    }
+    
+    public List consultarHistoriasxMes(String loteId, String anio, String s1,String s2,String s3,String s4,String s5){
+        ArrayList<HistoriaClinica> historias = new ArrayList();
+        
+        ResultSet consulta = this.daoHistoriaClinica.consultarHistoriasClinicasxMesBD(loteId, anio, s1, s2, s3, s4, s5);
+        try {
+            //se extraen los registros de la tabla cliente
+            while( consulta.next()){
+                
+                //en caso de ser exitosa la consulta se procede a extraer los datos del objeto
+                String Lote_identificador  = loteId;
                 String semana = consulta.getString(3);
                 String dia = consulta.getString(4);
                 String descripcion = consulta.getString(5);

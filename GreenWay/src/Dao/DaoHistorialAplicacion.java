@@ -119,4 +119,22 @@ public class DaoHistorialAplicacion {
     
     }
     
+    public ResultSet consultarHistorialxMesBD(String loteId, String anio, String s1,String s2,String s3,String s4,String s5 ){
+        
+        String sql_select;
+        sql_select="SELECT * FROM historial_aplicacion WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio
+                + "' AND (semana ='"+s1+ "' OR semana ='"+s2+ "' OR semana ='"+s3+ "' OR semana ='"+s4+ "' OR semana ='"+s5+"')"+";";
+        
+        try{
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        return respuesta; 
+    
+    }
 }

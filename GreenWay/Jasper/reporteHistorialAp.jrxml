@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInv" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab7622d0-0bb4-40b2-a37d-0c3a16b2c26e">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fondo" class="java.io.InputStream"/>
+	<field name="objetivoBiologico" class="java.lang.String"/>
+	<field name="producto_utilizado" class="java.lang.String"/>
+	<field name="dosis_por_litro" class="java.lang.Double"/>
+	<field name="volumen_utilizado" class="java.lang.Double"/>
+	<field name="id_historial" class="java.lang.String"/>
+	<background>
+		<band height="802" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="555" height="802" uuid="42ee7c48-d3d5-437a-b14b-1883316c4da8"/>
+				<imageExpression><![CDATA[$P{fondo}]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement x="10" y="117" width="542" height="338" forecolor="#FFFFFF" uuid="6fe71e3d-d7ba-4cf4-ada8-fa9cdf354d43"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="323" y="677" width="219" height="76" forecolor="#FFFFFF" uuid="e52f6f03-49f9-4025-9835-950f4014c030"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="433" y="10" width="119" height="34" forecolor="#FFFFFF" uuid="1d86876c-fa56-4630-ad46-7f7fec4e58dc"/>
+			</rectangle>
+		</band>
+	</background>
+	<title>
+		<band height="137" splitType="Stretch">
+			<staticText>
+				<reportElement x="182" y="117" width="241" height="20" uuid="1dd79cf7-4220-4c56-85d0-1218a6d18ab3"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HISTORIAL DE APLICACION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="233" y="0" width="76" height="20" uuid="d45be16d-4cd7-4fef-a585-1affc8ff17b4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBJETIVO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="0" width="100" height="20" uuid="9e0d83b6-6103-4613-94d1-8da1af9f1906"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="cb4a644f-9c7f-4ab5-b84b-375cf9c41b1a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID-HISTORIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="487" y="0" width="65" height="20" uuid="cea5500c-6e6e-412a-b62b-0d3b728c2034"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOSIS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="233" y="5" width="122" height="20" uuid="61446d68-70cc-4d7c-a09b-26b921c67443"/>
+				<textFieldExpression><![CDATA[$F{objetivoBiologico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="5" width="119" height="20" uuid="f99974f4-80c9-40a4-a188-49c0365d128a"/>
+				<textFieldExpression><![CDATA[$F{producto_utilizado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="5" width="233" height="20" uuid="fd65cb8e-2460-4d33-b09f-6eb0591fc8c8"/>
+				<textFieldExpression><![CDATA[$F{id_historial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="487" y="3" width="65" height="20" uuid="a70dd14a-d082-47e7-b540-483459240e3a"/>
+				<textFieldExpression><![CDATA[$F{dosis_por_litro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

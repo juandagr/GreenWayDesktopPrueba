@@ -391,4 +391,54 @@ public class Reportes {
             Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    //reporte de Historial de aplicacion
+    public void generarReporteHistorialAp(Map parametros, List<CostosInversion> listaCostos){
+        
+        try {
+            
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
+            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteHistorialAp.jrxml");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
+            JasperViewer view = new JasperViewer(jasperPrint, false);
+                view.setTitle("Reporte Basico");
+                view.setExtendedState(Frame.MAXIMIZED_BOTH);
+                view.setVisible(true);
+            
+            //JRExporter exporter = new JRPdfExporter();
+            
+            //exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            //exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("Reportes/reportePDF.pdf"));
+            //exporter.exportReport(); 
+            //JasperExportManager.exportReportToPdfFile( jasperPrint, "Reportes/reporteePDF.pdf");
+            
+        } catch (JRException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    //reporte de Historia clinica
+    public void generarReporteHistoriaClinica(Map parametros, List<CostosInversion> listaCostos){
+        
+        try {
+            
+            //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
+            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteHistoriaClinica.jrxml");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
+            JasperViewer view = new JasperViewer(jasperPrint, false);
+                view.setTitle("Reporte Basico");
+                view.setExtendedState(Frame.MAXIMIZED_BOTH);
+                view.setVisible(true);
+            
+            //JRExporter exporter = new JRPdfExporter();
+            
+            //exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            //exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File("Reportes/reportePDF.pdf"));
+            //exporter.exportReport(); 
+            //JasperExportManager.exportReportToPdfFile( jasperPrint, "Reportes/reporteePDF.pdf");
+            
+        } catch (JRException ex) {
+            Logger.getLogger(Reportes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
