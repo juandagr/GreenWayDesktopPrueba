@@ -19,6 +19,11 @@ public class Gui_VentanaPrincipalGerente extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.gui_login = login;
+        if (this.gui_login.cargoUsuario.equalsIgnoreCase("Digitador")) {
+            jPanel1.remove(jButtonEmpleados);jPanel1.remove(jLabel5);
+            jPanel1.remove(jButtonItems);jPanel1.remove(jLabel2);
+            jPanel1.remove(jButtonReportes);jPanel1.remove(jLabel4);
+        }
     
     }
 

@@ -5,9 +5,14 @@
  */
 package GUI;
 
+import Clases.Empleado;
 import Clases.Reportes;
+import Clases.Usuario;
 import Clases.Validaciones;
+import Controlador.ControladorEmpleado;
+import Controlador.ControladorUsuario;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 
 
@@ -31,7 +36,7 @@ public class Gui_login extends javax.swing.JFrame {
     /**************************************************/
     //Metodo que se encarga de hacer el logueo de un usuario
     //  String String -> loguear -> String
-    /*public String loguear(String usuario, String password){
+    public String loguear(String usuario, String password){
         String validacion = null;
         
 
@@ -42,52 +47,33 @@ public class Gui_login extends javax.swing.JFrame {
         }
   
         else{
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("SG-RESTPU");                       
-            EmpleadoJpaController daoEmpleado = new EmpleadoJpaController(emf);
-            
-            Empleado empleado = daoEmpleado.findEmpleado(usuario);
-            
-            if (empleado.getPassword().equalsIgnoreCase(password)) {
+                        
+            Usuario user = new ControladorUsuario().consultarUsuarioPorNombre(usuario);
 
-                CargoEmpleado cargoEmpleado = empleado.getCargo();
-                String cargo = cargoEmpleado.getCargo();
+            if (user.getPassword().equalsIgnoreCase(password)) {
+
+                Empleado empleado = new ControladorEmpleado().consultarEmpleado(user.getIdentificacion());
+                String cargo = empleado.getCargo();
                 
                 this.usuario = empleado.getIdentificacion();
                 this.cargoUsuario = cargo;
                 System.err.println(cargo);
+     
                 
-                if (cargo.equalsIgnoreCase("Gerente")) {
-                    
-                    Gui_VentanaPrincipalGerente principalGenrente = new Gui_VentanaPrincipalGerente(this);
-                    principalGenrente.setVisible(true);
-                    validacion= "El gerente ingreso exitosamente";
-                    this.dispose();
-                                       
-                }else if (cargo.equalsIgnoreCase("Cajero")) {
-                    
-                     Gui_VentanaPrincipalCajero principalCajero = new Gui_VentanaPrincipalCajero(this);
-                    principalCajero.setVisible(true);
-                    validacion= "El cajero ingreso exitosamente";
-                    this.dispose();
-                        
-                }else{
-                    
-                    Gui_VentanaPrincipalMesero principalMesero = new Gui_VentanaPrincipalMesero(this);
-                    principalMesero.setVisible(true);
-                    validacion= "El mesero ingreso exitosamente";
-                    this.dispose();
-                }
+                validacion= "Ingreso exitosamente";
+                this.dispose();
+                 
                       
             }else{
                 validacion= "Contraseña incorrecta";
-                JOptionPane.showMessageDialog(null, "Contraseña incorrecta", "Error!", JOptionPane.ERROR_MESSAGE);
+                
             }
         }
         
         jTextFieldIdentificacion.setText("");
         jPassword.setText("");
         return validacion;
-    }*/
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -180,24 +166,23 @@ public class Gui_login extends javax.swing.JFrame {
     private void jButtonIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIngresarActionPerformed
         String usuario=jTextFieldIdentificacion.getText();
         String password = jPassword.getText();
-        
-        Reportes reportes = new Reportes();
-        ArrayList<Integer> semanas = reportes.determinarSemnas("abril");
-        for (int i = 0; i < semanas.size(); i++) {
-            System.err.println(semanas.get(i));
-        }
-        //reportes.generarReporte();
-        Gui_VentanaPrincipalGerente principalGenrente = new Gui_VentanaPrincipalGerente(this);
-        principalGenrente.setVisible(true);
-        this.setVisible(false);
-        /*try{
+        try{
             String validacion = this.loguear(usuario, password);
-            
+            if (validacion.equalsIgnoreCase("Ingrese los datos completos")) {
+                JOptionPane.showMessageDialog(null, validacion, "Error!", JOptionPane.ERROR_MESSAGE);
+            }else if (validacion.equalsIgnoreCase("Contraseña incorrecta")) {
+                JOptionPane.showMessageDialog(null, validacion, "Error!", JOptionPane.ERROR_MESSAGE);
+            }else if (validacion.equalsIgnoreCase("Ingreso exitosamente")) {
+                Gui_VentanaPrincipalGerente principalGenrente = new Gui_VentanaPrincipalGerente(this);
+                principalGenrente.setVisible(true);
+            }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, "Error al ingresar", "Error!", JOptionPane.ERROR_MESSAGE);
             jPassword.setText("");
             jTextFieldIdentificacion.setText("");
-        }*/
+        }
+        
+        
             
         
         
