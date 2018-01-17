@@ -140,6 +140,7 @@ GROUP BY produccion.lote_identificador;]]>
 	<parameter name="fondo" class="java.io.InputStream"/>
 	<parameter name="blarga" class="java.io.InputStream"/>
 	<parameter name="bcorta" class="java.io.InputStream"/>
+	<parameter name="mes" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[SELECT
      cliente."nombre" AS cliente_nombre,
@@ -161,7 +162,7 @@ FROM
      INNER JOIN "public"."ubicacion" ubicacion ON lote."ubicacion_id_ubicacion" = ubicacion."id_ubicacion"
 WHERE
      cliente."identificacion" = $P{cliente}
- AND lote."identificador" = $P{lote}	]]>
+ AND lote."identificador" = $P{lote}]]>
 	</queryString>
 	<field name="cliente_nombre" class="java.lang.String"/>
 	<field name="cliente_apellido" class="java.lang.String"/>
@@ -202,6 +203,10 @@ WHERE
 			<textField>
 				<reportElement x="455" y="0" width="100" height="20" uuid="2f01c5a2-ae4d-4314-9fd3-85c84986bf20"/>
 				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="20" width="100" height="21" uuid="8a20d53a-948d-4426-8116-e17f3df93042"/>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

@@ -192,6 +192,7 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        jTextFieldHoras.setText("");
         if ((jTextFieldAño.getText().equalsIgnoreCase("") 
                 || jTextFieldSemana.getText().equalsIgnoreCase("")) == false) {
          
@@ -256,6 +257,10 @@ public class GUI_CostoSemanal extends javax.swing.JFrame {
                 new DaoValorFacturado().ingresarValorFacturadoBD(loteId, anio, semana, horas, valor, valorHora);
                 JOptionPane.showMessageDialog(null, "Valor registrado exitosamente!", "Informacion!", JOptionPane.INFORMATION_MESSAGE);
             }
+            
+            jTextFieldHoras.setText("");jTextFieldValor.setText("");
+            jTextFieldAño.setText("");
+            jTextFieldSemana.setText("");
         }
     }//GEN-LAST:event_jButtonGuardarValorActionPerformed
 

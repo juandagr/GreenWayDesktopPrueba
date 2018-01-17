@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fondo" class="java.io.InputStream"/>
+	<parameter name="mes" class="java.lang.String"/>
 	<field name="objetivoBiologico" class="java.lang.String"/>
 	<field name="producto_utilizado" class="java.lang.String"/>
 	<field name="dosis_por_litro" class="java.lang.Double"/>
@@ -35,6 +36,10 @@
 				</textElement>
 				<text><![CDATA[HISTORIAL DE APLICACION]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="455" y="21" width="100" height="20" uuid="f3413ada-46f2-4b25-a5ad-cb663029abb5"/>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

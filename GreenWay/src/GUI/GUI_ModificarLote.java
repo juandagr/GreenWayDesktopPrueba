@@ -7,6 +7,7 @@ package GUI;
 
 import Clases.Cliente;
 import Clases.Cultivo;
+import Clases.Lote;
 import Clases.Ubicacion;
 import Clases.Validaciones;
 import Controlador.ControladorCliente;
@@ -14,9 +15,13 @@ import Controlador.ControladorCultivo;
 import Controlador.ControladorLote;
 import Controlador.ControladorUbicacion;
 import java.awt.HeadlessException;
+import java.awt.Image;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -29,6 +34,7 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
 
     //Atributos
     GUI_AdminLotes admin;
+    String idLote;
     //private TableRowSorter trsFiltro;
     
     DefaultTableModel modeloCliente = new DefaultTableModel(){
@@ -46,10 +52,11 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
                 return false;}
         };;
     //Constructor
-    public GUI_ModificarLote(GUI_AdminLotes admin) {
+    public GUI_ModificarLote(GUI_AdminLotes admin, String idLote) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.admin = admin;
+        this.idLote = idLote;
         
         //items del modelo para los clientes
         modeloCliente.addColumn("Identificacion");
@@ -64,6 +71,7 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
         buscarClientes();
         buscarUbicaciones();
         buscarCultivos();
+        llenarDatos();
     }
 
     // metodo para buscar los clientes que estan registrados en la base de datos y mostrar sus datos
@@ -148,6 +156,20 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
         
     }
       
+    public void llenarDatos(){
+        Lote lote = new ControladorLote().consultarLote(this.idLote);
+        jTextFieldNumeroPlantas.setText(String.valueOf(lote.getNumero_plantas()));
+        jTextFieldArea.setText(String.valueOf(lote.getArea()));
+        
+        for (int i = 0; i < jComboBoxCultivo.getItemCount(); i++) {
+            if (jComboBoxCultivo.getItemAt(i).toString().equalsIgnoreCase(lote.getCultivo_identificador())) {
+                jComboBoxCultivo.setSelectedIndex(i);
+            }
+        }
+        
+        
+   }
+    
     public String agregarLote(String Cliente_identificacion, String Cultivo_identificador, String identificador, double area, int numero_plantas, double costo_por_hora, String Ubicacion_id_ubicacion){
         //variable que almacenara el resultado
         String resultado = "";     
@@ -160,25 +182,25 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
             //se verifica que no haya campos obligatorios vacios, que los tipos de datos sean correctos
             if ((verificarCamposVacios() == false)) {
                 //se verifica que el lote no haya sido creado anteriormente por medio de la identificacion
-                if (controladorLote.loteRegistrado(identificador) == false) {
+                if (controladorLote.loteRegistrado(identificador)) {
 
-                    resultado = controladorLote.ingresarLote(Cliente_identificacion, Cultivo_identificador, identificador, area, numero_plantas, costo_por_hora, Ubicacion_id_ubicacion);
+                    resultado = controladorLote.actualizarLote(Cliente_identificacion, Cultivo_identificador, identificador, area, numero_plantas, costo_por_hora, Ubicacion_id_ubicacion);
                     limpiar();
 
                 }else{
                     
-                    resultado = "El lote ya se encuentra registrado.";
+                    resultado = "El lote no se encuentra registrado.";
                     //JOptionPane.showMessageDialog(null, "El empleado ya se encuentra registrado.", "Error!", JOptionPane.ERROR_MESSAGE);
                     limpiar();
                 }                
                 
             }else{
-                resultado = "No se pudo crear el lote, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+                resultado = "No se pudo modificar el lote, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
                 //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (NullPointerException ex) {
-            resultado = "No se pudo crear el lote, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
+            resultado = "No se pudo modificar el lote, por favor verifique que sus datos están correctos e inténtelo de nuevo.";
             //JOptionPane.showMessageDialog(null, "No se pudo crear el empleado, por favor verifique que sus datos están correctos e inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
             limpiar();
         } catch (Exception ex) {
@@ -283,7 +305,7 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
 
         jLabel4.setText("Hectareas");
 
-        jButtonAgregarLote.setText("Agregar");
+        jButtonAgregarLote.setText("Modificar");
         jButtonAgregarLote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAgregarLoteActionPerformed(evt);
@@ -404,12 +426,15 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
                 String identificador = Cliente_identificacion +"-"+ Cultivo_identificador +"-"+ Ubicacion_id_ubicacion;
                 String resultado = this.agregarLote(Cliente_identificacion, Cultivo_identificador, identificador, area, numero_plantas, costo_por_hora, Ubicacion_id_ubicacion);
                 
-                if (resultado.equalsIgnoreCase("El lote ya se encuentra registrado.")) {
+                if (resultado.equalsIgnoreCase("El lote no se encuentra registrado.")) {
                     JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
-                }else if (resultado.equalsIgnoreCase("No se pudo crear el lote, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
+                }else if (resultado.equalsIgnoreCase("No se pudo modificar el lote, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
                     JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
                 } else{
                     JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+                    this.admin.buscarLotes();
+                    this.admin.setVisible(true);
+                    this.dispose();
                 }
 
             }
@@ -472,7 +497,7 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUI_ModificarLote(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login())))).setVisible(true);
+                new GUI_ModificarLote(new GUI_AdminLotes(new Gui_Lotes(new Gui_VentanaPrincipalGerente(new Gui_login()))), null).setVisible(true);
             }
         });
     }

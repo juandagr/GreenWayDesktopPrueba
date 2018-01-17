@@ -382,6 +382,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
             parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
             parametros.put("industrial", produccion[2]);
             parametros.put("lote", loteID);
+            parametros.put("mes", año + "-" + mes);
             parametros.put("selecta", produccion[0]);
             parametros.put("totalCostos", (c1+c2+c3));
             parametros.put("totalProduccion", produccion[3]);
@@ -420,37 +421,40 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         String cliente = this.obtenerIdentificacionSeleccionado();
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
-            
-            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
-            this.cliente = cliente;
-            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
-            StringTokenizer st = new StringTokenizer(mesAño, " ");
-            String año = st.nextToken();
-            String mes = st.nextToken();
-            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
-            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
-            
-            
-            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
-            Map parametros = new HashMap();
-            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
-            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
-            //parametros.put("cliente", cliente);
-            //parametros.put("fecha", new Date());            
-            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
-            //parametros.put("lote", loteID);
+            try{
+                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.cliente = cliente;
+                String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+                StringTokenizer st = new StringTokenizer(mesAño, " ");
+                String año = st.nextToken();
+                String mes = st.nextToken();
+                ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+                Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
 
-            List listaCostos = new ArrayList();
-            if (semanas.size() == 4) {
-                listaCostos = new DaoCostosInversion().consultarCostosInversionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
-            }else{
-                listaCostos = new DaoCostosInversion().consultarCostosInversionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+
+                //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+                Map parametros = new HashMap();
+                //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+                //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+                //parametros.put("cliente", cliente);
+                //parametros.put("fecha", new Date());            
+                parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+                //parametros.put("lote", loteID);
+                parametros.put("mes", año + "-" + mes);
+
+                List listaCostos = new ArrayList();
+                if (semanas.size() == 4) {
+                    listaCostos = new DaoCostosInversion().consultarCostosInversionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                }else{
+                    listaCostos = new DaoCostosInversion().consultarCostosInversionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                }
+
+                new Reportes().generarReporteInversion(parametros, listaCostos);
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Ingrese los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
-            new Reportes().generarReporteInversion(parametros, listaCostos);
-            
-       
-            
+
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -460,36 +464,39 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         String cliente = this.obtenerIdentificacionSeleccionado();
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
-            
-            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
-            this.cliente = cliente;
-            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
-            StringTokenizer st = new StringTokenizer(mesAño, " ");
-            String año = st.nextToken();
-            String mes = st.nextToken();
-            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
-            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
-            
-            
-            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
-            Map parametros = new HashMap();
-            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
-            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
-            //parametros.put("cliente", cliente);
-            //parametros.put("fecha", new Date());            
-            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
-            //parametros.put("lote", loteID);
+            try{
+                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.cliente = cliente;
+                String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+                StringTokenizer st = new StringTokenizer(mesAño, " ");
+                String año = st.nextToken();
+                String mes = st.nextToken();
+                ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+                Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
 
-            List listaCostos = new ArrayList();
-            if (semanas.size() == 4) {
-                listaCostos = new DaoCostosComercializacion().consultarCostosComercializacionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
-            }else{
-                listaCostos = new DaoCostosComercializacion().consultarCostosComercializacionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+
+                //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+                Map parametros = new HashMap();
+                //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+                //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+                //parametros.put("cliente", cliente);
+                //parametros.put("fecha", new Date());            
+                parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+                //parametros.put("lote", loteID);
+                parametros.put("mes", año + "-" + mes);
+
+                List listaCostos = new ArrayList();
+                if (semanas.size() == 4) {
+                    listaCostos = new DaoCostosComercializacion().consultarCostosComercializacionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                }else{
+                    listaCostos = new DaoCostosComercializacion().consultarCostosComercializacionxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                }
+
+                new Reportes().generarReporteComercializacion(parametros, listaCostos);
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Ingrese los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
-            new Reportes().generarReporteComercializacion(parametros, listaCostos);
-            
-       
             
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
@@ -500,48 +507,51 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         String cliente = this.obtenerIdentificacionSeleccionado();
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
-            
-            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
-            System.out.println(loteID);
-            this.cliente = cliente;
-            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
-            StringTokenizer st = new StringTokenizer(mesAño, " ");
-            String año = st.nextToken();
-            String mes = st.nextToken();
-            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
-            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
-            
-            
-            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
-            Map parametros = new HashMap();
-            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
-            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
-            //parametros.put("cliente", cliente);
-            //parametros.put("fecha", new Date());            
-            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
-            //parametros.put("lote", loteID);
+            try{
+                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                System.out.println(loteID);
+                this.cliente = cliente;
+                String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+                StringTokenizer st = new StringTokenizer(mesAño, " ");
+                String año = st.nextToken();
+                String mes = st.nextToken();
+                ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+                Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
 
-            List listaCostos1 = new ArrayList();
-            List listaCostos2 = new ArrayList();
-            List listaCostos3 = new ArrayList();
-            
-            if (semanas.size() == 4) {
-                listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
-                listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
-                listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
-                System.err.println(loteID);
-            }else{
-                listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
-                listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
-                listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
-                System.err.println(loteID);
+
+                //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+                Map parametros = new HashMap();
+                //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+                //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+                //parametros.put("cliente", cliente);
+                //parametros.put("fecha", new Date());            
+                parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+                //parametros.put("lote", loteID);
+                parametros.put("mes", año + "-" + mes);
+
+                List listaCostos1 = new ArrayList();
+                List listaCostos2 = new ArrayList();
+                List listaCostos3 = new ArrayList();
+
+                if (semanas.size() == 4) {
+                    listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                    listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                    listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
+                    System.err.println(loteID);
+                }else{
+                    listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                    listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                    listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
+                    System.err.println(loteID);
+                }
+
+                listaCostos1.addAll(listaCostos2);
+                listaCostos1.addAll(listaCostos3);
+                new Reportes().generarReporteCoostosOperacionales(parametros, listaCostos1);
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Ingrese los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
-            listaCostos1.addAll(listaCostos2);
-            listaCostos1.addAll(listaCostos3);
-            new Reportes().generarReporteCoostosOperacionales(parametros, listaCostos1);
-            
-       
             
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
@@ -552,34 +562,37 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         String cliente = this.obtenerIdentificacionSeleccionado();
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
-            
-            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
-            this.cliente = cliente;
-            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
-            StringTokenizer st = new StringTokenizer(mesAño, " ");
-            String año = st.nextToken();
-            String mes = st.nextToken();
-            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+            try{
+                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.cliente = cliente;
+                String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+                StringTokenizer st = new StringTokenizer(mesAño, " ");
+                String año = st.nextToken();
+                String mes = st.nextToken();
+                ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
 
-            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
-            Map parametros = new HashMap();
-            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
-            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
-            //parametros.put("cliente", cliente);
-            //parametros.put("fecha", new Date());            
-            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
-            //parametros.put("lote", loteID);
+                //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+                Map parametros = new HashMap();
+                //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+                //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+                //parametros.put("cliente", cliente);
+                //parametros.put("fecha", new Date());            
+                parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+                //parametros.put("lote", loteID);
+                parametros.put("mes", año + "-" + mes);
 
-            List listaCostos = new ArrayList();
-            if (semanas.size() == 4) {
-                listaCostos = new ControladorHistorialAplicacion().consultarHistorialessxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
-            }else{
-                listaCostos = new ControladorHistorialAplicacion().consultarHistorialessxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                List listaCostos = new ArrayList();
+                if (semanas.size() == 4) {
+                    listaCostos = new ControladorHistorialAplicacion().consultarHistorialessxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                }else{
+                    listaCostos = new ControladorHistorialAplicacion().consultarHistorialessxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                }
+
+                new Reportes().generarReporteHistorialAp(parametros, listaCostos);
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Ingrese los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
-            new Reportes().generarReporteHistorialAp(parametros, listaCostos);
-            
-       
             
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
@@ -590,34 +603,37 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         String cliente = this.obtenerIdentificacionSeleccionado();
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
-            
-            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
-            this.cliente = cliente;
-            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
-            StringTokenizer st = new StringTokenizer(mesAño, " ");
-            String año = st.nextToken();
-            String mes = st.nextToken();
-            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+            try{
+                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.cliente = cliente;
+                String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+                StringTokenizer st = new StringTokenizer(mesAño, " ");
+                String año = st.nextToken();
+                String mes = st.nextToken();
+                ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
 
-            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
-            Map parametros = new HashMap();
-            //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
-            //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
-            //parametros.put("cliente", cliente);
-            //parametros.put("fecha", new Date());            
-            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
-            parametros.put("lote", loteID);
+                //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+                Map parametros = new HashMap();
+                //parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+                //parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+                //parametros.put("cliente", cliente);
+                //parametros.put("fecha", new Date());            
+                parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+                parametros.put("lote", loteID);
+                parametros.put("mes", año + "-" + mes);
 
-            List listaCostos = new ArrayList();
-            if (semanas.size() == 4) {
-                listaCostos = new ControladorHistoriaClinica().consultarHistoriasxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
-            }else{
-                listaCostos = new ControladorHistoriaClinica().consultarHistoriasxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                List listaCostos = new ArrayList();
+                if (semanas.size() == 4) {
+                    listaCostos = new ControladorHistoriaClinica().consultarHistoriasxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
+                }else{
+                    listaCostos = new ControladorHistoriaClinica().consultarHistoriasxMes(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
+                }
+
+                new Reportes().generarReporteHistoriaClinica(parametros, listaCostos);
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Ingrese los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            
-            new Reportes().generarReporteHistoriaClinica(parametros, listaCostos);
-            
-       
             
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);

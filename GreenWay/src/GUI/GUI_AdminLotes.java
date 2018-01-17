@@ -55,6 +55,8 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
     // en pantalla por medio de una tabla
     public void buscarLotes(){
         while(modeloItems.getRowCount()>0)modeloItems.removeRow(0);
+        this.idLotes.removeAll(idLotes);
+        System.err.println(idLotes.size());
         jTableLotes.setModel(modeloItems);
         
         ArrayList<Lote> lotes = new ControladorLote().consultarTodosLotes();
@@ -294,17 +296,17 @@ public class GUI_AdminLotes extends javax.swing.JFrame {
 
     private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
 
-       /* String identificacion = this.obtenerIdentificacionSeleccionado();
-        if (identificacion.equalsIgnoreCase("No selecciono") == false) {
-            
-            Gui_ModificarCliente gui_modificarCliente = new Gui_ModificarCliente(this,identificacion);  
+       String idLote = this.obtenerIdentificacionSeleccionado();
+        if (idLote.equalsIgnoreCase("No selecciono") == false) {
+            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+            GUI_ModificarLote gui_modificar = new GUI_ModificarLote(this, loteID);
 
-            gui_modificarCliente.setVisible(true);
+            gui_modificar.setVisible(true);
 
             this.dispose();
         }else{
-            JOptionPane.showMessageDialog(null, "Seleccione un cliente para modificar", "Error", JOptionPane.ERROR_MESSAGE);
-        }*/
+            JOptionPane.showMessageDialog(null, "Seleccione un lote para modificar", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         
     }//GEN-LAST:event_jButtonAgregar1ActionPerformed

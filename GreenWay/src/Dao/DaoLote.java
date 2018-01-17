@@ -134,7 +134,7 @@ public class DaoLote {
         sql_update = "UPDATE lote SET cliente_identificacion='" + lote.getCliente_identificacion()+ "', cultivo_identificador='" + lote.getCultivo_identificador()+ 
                     "',identificador='" + lote.getIdentificador() + "',area='" + lote.getArea() + 
                     "',numero_plantas='" + lote.getNumero_plantas() + "',costo_por_hora='" + lote.getCosto_por_hora()
-                    +  "' WHERE ubicacion_id_ubicacion = '" + lote.getUbicacion_id_ubicacion()+"';";   
+                    +  "' WHERE identificador = '" + lote.getIdentificador()+"';";   
             
             System.out.println(sql_update);
         try{

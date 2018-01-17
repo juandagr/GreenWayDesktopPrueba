@@ -2,8 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInv" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab7622d0-0bb4-40b2-a37d-0c3a16b2c26e">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="254"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="fondo" class="java.io.InputStream"/>
+	<parameter name="mes" class="java.lang.String"/>
 	<field name="valor" class="java.lang.Double"/>
 	<field name="item" class="java.lang.String"/>
 	<background>
@@ -48,6 +49,10 @@
 				</textElement>
 				<text><![CDATA[COSTOS DE COMERCIALIZACION]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="455" y="18" width="100" height="20" uuid="5b384d79-fe4b-4890-87cc-056f6b188d84"/>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

@@ -11,6 +11,7 @@ import Clases.Usuario;
 import Clases.Validaciones;
 import Controlador.ControladorEmpleado;
 import Controlador.ControladorUsuario;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -135,6 +136,12 @@ public class Gui_login extends javax.swing.JFrame {
         });
         jPanel1.add(jButtonIngresar);
         jButtonIngresar.setBounds(280, 230, 90, 23);
+
+        jPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordKeyPressed(evt);
+            }
+        });
         jPanel1.add(jPassword);
         jPassword.setBounds(120, 180, 180, 30);
 
@@ -188,6 +195,28 @@ public class Gui_login extends javax.swing.JFrame {
         
       
     }//GEN-LAST:event_jButtonIngresarActionPerformed
+
+    private void jPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String usuario=jTextFieldIdentificacion.getText();
+        String password = jPassword.getText();
+        try{
+            String validacion = this.loguear(usuario, password);
+            if (validacion.equalsIgnoreCase("Ingrese los datos completos")) {
+                JOptionPane.showMessageDialog(null, validacion, "Error!", JOptionPane.ERROR_MESSAGE);
+            }else if (validacion.equalsIgnoreCase("Contraseña incorrecta")) {
+                JOptionPane.showMessageDialog(null, validacion, "Error!", JOptionPane.ERROR_MESSAGE);
+            }else if (validacion.equalsIgnoreCase("Ingreso exitosamente")) {
+                Gui_VentanaPrincipalGerente principalGenrente = new Gui_VentanaPrincipalGerente(this);
+                principalGenrente.setVisible(true);
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, "Error al ingresar", "Error!", JOptionPane.ERROR_MESSAGE);
+            jPassword.setText("");
+            jTextFieldIdentificacion.setText("");
+        }
+        }
+    }//GEN-LAST:event_jPasswordKeyPressed
 
     /**
      * @param args the command line arguments

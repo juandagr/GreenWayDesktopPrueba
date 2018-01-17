@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="fondo" class="java.io.InputStream"/>
+	<parameter name="mes" class="java.lang.String"/>
 	<field name="valor" class="java.lang.Double"/>
 	<field name="item" class="java.lang.String"/>
 	<background>
@@ -48,6 +49,10 @@
 				</textElement>
 				<text><![CDATA[COSTOS OPERACIONALES]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="455" y="20" width="100" height="20" uuid="e9e280c3-1a92-4971-84cc-444d3dff040b"/>
+				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
