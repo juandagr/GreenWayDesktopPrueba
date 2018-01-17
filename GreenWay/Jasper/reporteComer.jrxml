@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInv" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab7622d0-0bb4-40b2-a37d-0c3a16b2c26e">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInv" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -10,17 +10,17 @@
 	<background>
 		<band height="802" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="555" height="802" uuid="42ee7c48-d3d5-437a-b14b-1883316c4da8"/>
+				<reportElement x="0" y="0" width="555" height="802"/>
 				<imageExpression><![CDATA[$P{fondo}]]></imageExpression>
 			</image>
 			<rectangle>
-				<reportElement x="10" y="117" width="542" height="338" forecolor="#FFFFFF" uuid="6fe71e3d-d7ba-4cf4-ada8-fa9cdf354d43"/>
+				<reportElement x="10" y="117" width="542" height="338" forecolor="#FFFFFF"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="323" y="677" width="219" height="76" forecolor="#FFFFFF" uuid="e52f6f03-49f9-4025-9835-950f4014c030"/>
+				<reportElement x="323" y="677" width="219" height="76" forecolor="#FFFFFF"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="433" y="10" width="119" height="34" forecolor="#FFFFFF" uuid="1d86876c-fa56-4630-ad46-7f7fec4e58dc"/>
+				<reportElement x="433" y="10" width="119" height="34" forecolor="#FFFFFF"/>
 			</rectangle>
 		</band>
 	</background>
@@ -28,7 +28,7 @@
 		<band height="316" splitType="Stretch">
 			<pie3DChart>
 				<chart evaluationTime="Report">
-					<reportElement x="137" y="140" width="274" height="166" uuid="e409261b-0131-4a2b-9725-5ed99490cdf1"/>
+					<reportElement x="137" y="140" width="274" height="166"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -43,14 +43,14 @@
 				</pie3DPlot>
 			</pie3DChart>
 			<staticText>
-				<reportElement x="152" y="108" width="241" height="20" uuid="1dd79cf7-4220-4c56-85d0-1218a6d18ab3"/>
+				<reportElement x="152" y="108" width="241" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[COSTOS DE COMERCIALIZACION]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="455" y="18" width="100" height="20" uuid="5b384d79-fe4b-4890-87cc-056f6b188d84"/>
+				<reportElement x="455" y="18" width="100" height="20"/>
 				<textFieldExpression><![CDATA[$P{mes}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -61,14 +61,14 @@
 	<columnHeader>
 		<band height="34" splitType="Stretch">
 			<staticText>
-				<reportElement x="124" y="0" width="147" height="20" uuid="d45be16d-4cd7-4fef-a585-1affc8ff17b4"/>
+				<reportElement x="124" y="0" width="147" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[COMERCIALIZACION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="311" y="0" width="100" height="20" uuid="9e0d83b6-6103-4613-94d1-8da1af9f1906"/>
+				<reportElement x="311" y="0" width="100" height="20"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -79,11 +79,11 @@
 	<detail>
 		<band height="25" splitType="Stretch">
 			<textField>
-				<reportElement x="311" y="0" width="100" height="20" uuid="df237df0-0239-4ed8-a021-f97715632ea1"/>
+				<reportElement x="311" y="0" width="100" height="20"/>
 				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="152" y="0" width="100" height="20" uuid="66ad5e7f-13cd-41eb-a0d9-d19434448946"/>
+				<reportElement x="152" y="0" width="100" height="20"/>
 				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
 			</textField>
 		</band>

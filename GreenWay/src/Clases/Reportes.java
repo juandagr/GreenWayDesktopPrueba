@@ -348,7 +348,7 @@ public class Reportes {
         try {
             
             //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
-            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteComer.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport(System.getProperty("user.dir")+"/Jasper/reporteComer.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
             JasperViewer view = new JasperViewer(jasperPrint, false);
                 view.setTitle("Reporte Basico");
