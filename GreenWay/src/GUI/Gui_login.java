@@ -87,8 +87,6 @@ public class Gui_login extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabelLogin = new javax.swing.JLabel();
-        jLabelIncon = new javax.swing.JLabel();
         jLabelUsuario = new javax.swing.JLabel();
         jLabelContraseña = new javax.swing.JLabel();
         jTextFieldIdentificacion = new javax.swing.JTextField();
@@ -101,23 +99,15 @@ public class Gui_login extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(null);
 
-        jLabelLogin.setFont(new java.awt.Font("Bodoni MT Black", 1, 36)); // NOI18N
-        jLabelLogin.setForeground(new java.awt.Color(102, 102, 102));
-        jLabelLogin.setText("LOGIN");
-        jPanel1.add(jLabelLogin);
-        jLabelLogin.setBounds(10, 20, 150, 30);
-        jPanel1.add(jLabelIncon);
-        jLabelIncon.setBounds(370, 0, 170, 170);
-
         jLabelUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelUsuario.setText("Usuario");
         jPanel1.add(jLabelUsuario);
-        jLabelUsuario.setBounds(20, 120, 100, 40);
+        jLabelUsuario.setBounds(110, 110, 100, 40);
 
         jLabelContraseña.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelContraseña.setText("Contraseña");
         jPanel1.add(jLabelContraseña);
-        jLabelContraseña.setBounds(20, 180, 100, 30);
+        jLabelContraseña.setBounds(110, 170, 100, 30);
 
         jTextFieldIdentificacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,17 +115,17 @@ public class Gui_login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jTextFieldIdentificacion);
-        jTextFieldIdentificacion.setBounds(120, 122, 180, 30);
+        jTextFieldIdentificacion.setBounds(210, 110, 180, 30);
 
         jButtonIngresar.setBackground(new java.awt.Color(102, 255, 204));
-        jButtonIngresar.setText("Ingresar\n");
+        jButtonIngresar.setText("Ingresar ");
         jButtonIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonIngresarActionPerformed(evt);
             }
         });
         jPanel1.add(jButtonIngresar);
-        jButtonIngresar.setBounds(280, 230, 90, 23);
+        jButtonIngresar.setBounds(210, 240, 120, 23);
 
         jPassword.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -143,18 +133,21 @@ public class Gui_login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jPassword);
-        jPassword.setBounds(120, 180, 180, 30);
+        jPassword.setBounds(210, 170, 180, 30);
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconosgrennway/login-1.png"))); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(0, 0, 540, 270);
+        jLabel2.setBounds(0, 0, 520, 270);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,8 +257,6 @@ public class Gui_login extends javax.swing.JFrame {
     private javax.swing.JButton jButtonIngresar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelContraseña;
-    private javax.swing.JLabel jLabelIncon;
-    private javax.swing.JLabel jLabelLogin;
     private javax.swing.JLabel jLabelUsuario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPassword;
