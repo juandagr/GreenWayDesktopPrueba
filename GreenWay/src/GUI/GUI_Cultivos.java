@@ -60,7 +60,7 @@ public class GUI_Cultivos extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.cultivosYUbicaciones = cultivosYUbicaciones;
         modeloItems.addColumn("Nombre");
-        modeloItems.addColumn("Descripcion");
+        
         
         buscarCultivos();
         modeloItems.addTableModelListener(new TableModelListener () {
@@ -176,11 +176,10 @@ public class GUI_Cultivos extends javax.swing.JFrame {
         
         for (int i = 0; i < ubicaciones.size(); i++) {
             // Se crea un array que será una de las filas de la tabla.
-            Object [] fila = new Object[2]; // Hay tres columnas en la tabla
+            Object [] fila = new Object[1]; // Hay tres columnas en la tabla
 
             // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
             fila[0] = ubicaciones.get(i).getNombre();
-            fila[1] = ubicaciones.get(i).getDescripcion();
 
             // Se añade al modelo la fila completa.
             modeloItems.addRow(fila);
@@ -191,9 +190,9 @@ public class GUI_Cultivos extends javax.swing.JFrame {
 
     //factores por los cuales se va a aplicar el filtro a la tabla de ubicaciones
     public void filtro() {
-        int columnaABuscar = 1;
+        int columnaABuscar = 0;
         if (jComboBoxBusqueda.getSelectedItem() == "nombre") {
-            columnaABuscar = 1;
+            columnaABuscar = 0;
         }
         trsFiltro.setRowFilter(RowFilter.regexFilter(jTextFieldBusqueda.getText(), columnaABuscar));
     }
@@ -289,14 +288,10 @@ public class GUI_Cultivos extends javax.swing.JFrame {
         jTextFieldNombreModificar = new javax.swing.JTextField();
         jButtonModificar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jButtonArchivoModificar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButtonAgregar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -370,28 +365,15 @@ public class GUI_Cultivos extends javax.swing.JFrame {
 
         jLabel2.setText("Nombre");
 
-        jLabel4.setText("Cambiar archivo");
-
-        jButtonArchivoModificar.setText("Seleccionar");
-        jButtonArchivoModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonArchivoModificarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonArchivoModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextFieldNombreModificar))
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldNombreModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -404,13 +386,9 @@ public class GUI_Cultivos extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldNombreModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jButtonArchivoModificar))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(jButtonModificar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Agregar"));
@@ -424,15 +402,6 @@ public class GUI_Cultivos extends javax.swing.JFrame {
 
         jLabel1.setText("Nombre");
 
-        jButton1.setText("Seleccionar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("Seleccione el archivo de descripcion");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -441,10 +410,7 @@ public class GUI_Cultivos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonAgregar))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -456,7 +422,7 @@ public class GUI_Cultivos extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(42, Short.MAX_VALUE)
                 .addComponent(jButtonAgregar)
                 .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -464,10 +430,6 @@ public class GUI_Cultivos extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel7))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -506,7 +468,7 @@ public class GUI_Cultivos extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -520,28 +482,6 @@ public class GUI_Cultivos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-        
-        String nombre = jTextFieldNombre.getText().trim();
-        String descripcion = copiarArchivo();
-        
-        String resultado = this.ingresarCultivo(nombre, descripcion);
-        
-        if (resultado.equalsIgnoreCase("No se pudo crear el cultivo debido a que ya se encuentra registrado.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("No puede dejar campos vacios, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
-        }else if (resultado.equalsIgnoreCase("No se pudo crear el cultivo, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
-            JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
-        } else{
-            JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
-        }
-        
-        buscarCultivos();
-        jTextFieldNombre.setText("");
-        archivo = null;
-    }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         this.cultivosYUbicaciones.setVisible(true);
@@ -578,7 +518,7 @@ public class GUI_Cultivos extends javax.swing.JFrame {
         try{
             String nombreNuevo = jTextFieldNombreModificar.getText().trim();
             String nombreAnterior = String.valueOf(jTableUbicaciones.getValueAt(jTableUbicaciones.getSelectedRow(), 0));
-            String descripcion = copiarArchivoModificar();
+            String descripcion = "";
             if (obtenerIdentificacionSeleccionado().equalsIgnoreCase("No selecciono")) {
                 JOptionPane.showMessageDialog(null, "Seleccione el cultivo que desea modificar", "Error", JOptionPane.ERROR_MESSAGE);
             }else{
@@ -609,21 +549,6 @@ public class GUI_Cultivos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNombreModificarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        int resultado;
-
-        JFileChooser ventana = new JFileChooser();
-        resultado= ventana.showOpenDialog(null);
-
-
-        if (JFileChooser.APPROVE_OPTION == resultado){
-
-                archivo = ventana.getSelectedFile();
-
-         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void jTableUbicacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableUbicacionesMouseClicked
     jTableUbicaciones.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -646,20 +571,27 @@ public class GUI_Cultivos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTableUbicacionesMouseClicked
 
-    private void jButtonArchivoModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonArchivoModificarActionPerformed
-        // TODO add your handling code here:
-        int resultado;
+    private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
 
-        JFileChooser ventana = new JFileChooser();
-        resultado= ventana.showOpenDialog(null);
+        String nombre = jTextFieldNombre.getText().trim();
+        String descripcion = "";
 
+        String resultado = this.ingresarCultivo(nombre, descripcion);
 
-        if (JFileChooser.APPROVE_OPTION == resultado){
+        if (resultado.equalsIgnoreCase("No se pudo crear el cultivo debido a que ya se encuentra registrado.")) {
+            JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
+        }else if (resultado.equalsIgnoreCase("No puede dejar campos vacios, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
+            JOptionPane.showMessageDialog(null, resultado, "Error!", JOptionPane.ERROR_MESSAGE);
+        }else if (resultado.equalsIgnoreCase("No se pudo crear el cultivo, por favor verifique que sus datos están correctos e inténtelo de nuevo.")) {
+            JOptionPane.showMessageDialog(null, resultado, "Error", JOptionPane.ERROR_MESSAGE);
+        } else{
+            JOptionPane.showMessageDialog(null, resultado, "Informacion!", JOptionPane.INFORMATION_MESSAGE);
+        }
 
-                archivo = ventana.getSelectedFile();
-
-         }
-    }//GEN-LAST:event_jButtonArchivoModificarActionPerformed
+        buscarCultivos();
+        jTextFieldNombre.setText("");
+        archivo = null;
+    }//GEN-LAST:event_jButtonAgregarActionPerformed
 
 
     
@@ -716,17 +648,13 @@ public class GUI_Cultivos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAgregar;
-    private javax.swing.JButton jButtonArchivoModificar;
     private javax.swing.JButton jButtonModificar;
     private javax.swing.JComboBox jComboBoxBusqueda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

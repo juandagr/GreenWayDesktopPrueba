@@ -274,7 +274,7 @@ public class Reportes {
         
         try {
             //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
-            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reportpr.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport(System.getProperty("user.dir")+"/Jasper/reportpr.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, new Conexion.Fachada().conectar_BD());
             JasperViewer view = new JasperViewer(jasperPrint, false);
                 view.setTitle("Reporte");
@@ -298,7 +298,8 @@ public class Reportes {
         
         try {
             //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
-            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteBasico.jrxml");
+            System.err.println(System.getProperty("user.dir")+"\\Jasper\\reporteBasico.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport(System.getProperty("user.dir")+"/Jasper/reporteBasico.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros, new Conexion.Fachada().conectar_BD());
             JasperViewer view = new JasperViewer(jasperPrint, false);
                 view.setTitle("Reporte Basico");
@@ -323,7 +324,7 @@ public class Reportes {
         try {
             
             //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
-            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteInv.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport(System.getProperty("user.dir")+"/Jasper/reporteInv.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
             JasperViewer view = new JasperViewer(jasperPrint, false);
                 view.setTitle("Reporte Basico");
@@ -373,7 +374,7 @@ public class Reportes {
         try {
             
             //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
-            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteOper.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport(System.getProperty("user.dir")+"/Jasper/reporteOper.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
             JasperViewer view = new JasperViewer(jasperPrint, false);
                 view.setTitle("Reporte Basico");
@@ -398,7 +399,7 @@ public class Reportes {
         try {
             
             //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
-            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteHistorialAp.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport(System.getProperty("user.dir")+"/Jasper/reporteHistorialAp.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
             JasperViewer view = new JasperViewer(jasperPrint, false);
                 view.setTitle("Reporte Basico");
@@ -423,7 +424,7 @@ public class Reportes {
         try {
             
             //JasperReport reporte = (JasperReport) JRLoader.loadObject(new File("Reportes/reportpr.jasper"));
-            JasperReport reporte = JasperCompileManager.compileReport("Jasper/reporteHistoriaClinica.jrxml");
+            JasperReport reporte = JasperCompileManager.compileReport(System.getProperty("user.dir")+"/Jasper/reporteHistoriaClinica.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, parametros,  new JRBeanCollectionDataSource(listaCostos));
             JasperViewer view = new JasperViewer(jasperPrint, false);
                 view.setTitle("Reporte Basico");

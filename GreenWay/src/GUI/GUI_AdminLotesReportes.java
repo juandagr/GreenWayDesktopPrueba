@@ -355,40 +355,42 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         String cliente = this.obtenerIdentificacionSeleccionado();
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
-            
-            this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
-            this.cliente = cliente;
-            String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
-            StringTokenizer st = new StringTokenizer(mesAño, " ");
-            String año = st.nextToken();
-            String mes = st.nextToken();
-            double c1 = reportes.costoOperacionalxMes(loteID,cliente, año, mes);
-            double c2 = reportes.costoComercializacionxMes(loteID,cliente, año, mes);
-            double c3 = reportes.costoInversionxMes(loteID,cliente, año, mes);
-            ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
-            Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
-            
-            
-            //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
-            Map parametros = new HashMap();
-            parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
-            parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
-            parametros.put("cliente", cliente);
-            parametros.put("corriente", produccion[1]);
-            parametros.put("costoComercializacion", c2);
-            parametros.put("costoInversion", c3);
-            parametros.put("costoOperacional", c1);
-            parametros.put("fecha", new Date());            
-            parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
-            parametros.put("industrial", produccion[2]);
-            parametros.put("lote", loteID);
-            parametros.put("mes", año + "-" + mes);
-            parametros.put("selecta", produccion[0]);
-            parametros.put("totalCostos", (c1+c2+c3));
-            parametros.put("totalProduccion", produccion[3]);
-            new Reportes().generarReporteBasico(parametros);
-            
-       
+            try{
+                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.cliente = cliente;
+                String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
+                StringTokenizer st = new StringTokenizer(mesAño, " ");
+                String año = st.nextToken();
+                String mes = st.nextToken();
+                double c1 = reportes.costoOperacionalxMes(loteID,cliente, año, mes);
+                double c2 = reportes.costoComercializacionxMes(loteID,cliente, año, mes);
+                double c3 = reportes.costoInversionxMes(loteID,cliente, año, mes);
+                ArrayList<Integer> semanas = reportes.determinarSemnas(mes);
+                Double[] produccion = reportes.produccionxMes(loteID, cliente, año, mes);
+
+
+                //String rutaInforme = "C:\\Users\\Daniel\\Documents\\Reportes GreenWay\\reporteBasico.jasper";
+                Map parametros = new HashMap();
+                parametros.put("bcorta", this.getClass().getResourceAsStream("/imagenes/reportes/bcorta.png"));
+                parametros.put("blarga", this.getClass().getResourceAsStream("/imagenes/reportes/blarga.png"));
+                parametros.put("cliente", cliente);
+                parametros.put("corriente", produccion[1]);
+                parametros.put("costoComercializacion", c2);
+                parametros.put("costoInversion", c3);
+                parametros.put("costoOperacional", c1);
+                parametros.put("fecha", new Date());            
+                parametros.put("fondo", this.getClass().getResourceAsStream("/imagenes/reportes/fondo.png"));
+                parametros.put("industrial", produccion[2]);
+                parametros.put("lote", loteID);
+                parametros.put("mes", año + "-" + mes);
+                parametros.put("selecta", produccion[0]);
+                parametros.put("totalCostos", (c1+c2+c3));
+                parametros.put("totalProduccion", produccion[3]);
+                new Reportes().generarReporteBasico(parametros);
+
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, "Ingrese los datos correctamente", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un lote para administrar informacion", "Error", JOptionPane.ERROR_MESSAGE);
