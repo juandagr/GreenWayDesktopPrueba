@@ -205,4 +205,28 @@ public class ControladorLote {
         return lotes;
         
     }
+    
+    /**
+     * Metodo para verificar si un lote ya ha sido registrado en la base de datos
+     * @param identificador
+     * @return boolean resultado
+     */
+    public int lotesIguales(Lote lote){
+        boolean resultado = false;
+        ResultSet rs = this.daoLote.consultarLotesIgualesClienteBD(lote);
+        int cont = 0;
+        try {
+            //se extraen los registros de la tabla cliente
+            while( rs.next()){
+                
+                cont++;
+  
+            }
+        }
+
+        catch (SQLException ex) {
+
+        }
+        return cont;
+    }
 }

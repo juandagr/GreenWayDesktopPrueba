@@ -108,7 +108,7 @@ public class DaoLote {
     public ResultSet consultarLotesClienteBD(String cliente){
         
         String sql_select;
-        sql_select="SELECT DISTINCT * FROM lote WHERE cliente_identificacion = '"+cliente+"';";
+        sql_select="SELECT * FROM lote WHERE cliente_identificacion = '"+cliente+"';";
         try{
             Connection conn= fachada.conectar_BD();
             instruccion = conn.createStatement();
@@ -155,4 +155,28 @@ public class DaoLote {
         }
         return numFilas;
     }
+    
+    /**
+     * Metodo para consultar todos los lotes que se encuentran registrados a un cliente en la base de datos 
+     * @return
+     */
+    public ResultSet consultarLotesIgualesClienteBD(Lote lote){
+        
+        String sql_select;
+        sql_select="SELECT * FROM lote WHERE cliente_identificacion='" + lote.getCliente_identificacion()+ "'AND cultivo_identificador='" + lote.getCultivo_identificador()+ 
+                    "' AND ubicacion_id_ubicacion='" + lote.getUbicacion_id_ubicacion()+"';";
+        try{System.err.println(sql_select);
+            Connection conn= fachada.conectar_BD();
+            instruccion = conn.createStatement();
+            respuesta = instruccion.executeQuery(sql_select);
+            fachada.cerrarConexion(conn);              
+        }catch(SQLException e){
+            
+            System.out.println("Error al consultar datos");
+        }
+        return respuesta; 
+    
+    }
+    
 }
+

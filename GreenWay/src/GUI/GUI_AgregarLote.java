@@ -7,6 +7,7 @@ package GUI;
 
 import Clases.Cliente;
 import Clases.Cultivo;
+import Clases.Lote;
 import Clases.Ubicacion;
 import Clases.Validaciones;
 import Controlador.ControladorCliente;
@@ -161,8 +162,11 @@ public class GUI_AgregarLote extends javax.swing.JFrame {
             if ((verificarCamposVacios() == false)) {
                 //se verifica que el lote no haya sido creado anteriormente por medio de la identificacion
                 if (controladorLote.loteRegistrado(identificador) == false) {
-
-                    resultado = controladorLote.ingresarLote(Cliente_identificacion, Cultivo_identificador, identificador, area, numero_plantas, costo_por_hora, Ubicacion_id_ubicacion);
+                    Lote lote = new Lote(Cliente_identificacion, Cultivo_identificador, identificador, area, numero_plantas, costo_por_hora, Ubicacion_id_ubicacion);
+                    int numero = controladorLote.lotesIguales(lote)+1;
+                    //System.err.println(numero);
+                    
+                    resultado = controladorLote.ingresarLote(Cliente_identificacion, Cultivo_identificador, identificador+"-"+numero, area, numero_plantas, costo_por_hora, Ubicacion_id_ubicacion);
                     limpiar();
 
                 }else{

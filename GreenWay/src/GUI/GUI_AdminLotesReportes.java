@@ -72,6 +72,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.admin = admin;
+        modeloItems.addColumn("Id");
         modeloItems.addColumn("Cliente");
         modeloItems.addColumn("Cultivo");
         modeloItems.addColumn("Area");
@@ -91,14 +92,15 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         
         for (int i = 0; i < lotes.size(); i++) {
             // Se crea un array que será una de las filas de la tabla.
-            Object [] fila = new Object[5]; // Hay tres columnas en la tabla
+            Object [] fila = new Object[6]; // Hay tres columnas en la tabla
 
             // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-            fila[0] = lotes.get(i).getCliente_identificacion();
-            fila[1] = lotes.get(i).getCultivo_identificador();
-            fila[2] = lotes.get(i).getArea();
-            fila[3] = lotes.get(i).getNumero_plantas();
-            fila[4] = lotes.get(i).getUbicacion_id_ubicacion();
+            fila[0] = lotes.get(i).getIdentificador();
+            fila[1] = lotes.get(i).getCliente_identificacion();
+            fila[2] = lotes.get(i).getCultivo_identificador();
+            fila[3] = lotes.get(i).getArea();
+            fila[4] = lotes.get(i).getNumero_plantas();
+            fila[5] = lotes.get(i).getUbicacion_id_ubicacion();
             
             this.idLotes.add(lotes.get(i).getIdentificador());
 
@@ -111,15 +113,15 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
 
     //filtro para realizar las busquedas
     public void filtro() {
-        int columnaABuscar = 0;
+        int columnaABuscar = 1;
         if (jComboBoxBusqueda.getSelectedItem() == "cliente") {
-            columnaABuscar = 0;
-        }
-        if (jComboBoxBusqueda.getSelectedItem().toString() == "cultivo") {
             columnaABuscar = 1;
         }
+        if (jComboBoxBusqueda.getSelectedItem().toString() == "cultivo") {
+            columnaABuscar = 2;
+        }
         if (jComboBoxBusqueda.getSelectedItem() == "ubicacion") {
-            columnaABuscar = 5;
+            columnaABuscar = 6;
         }
         trsFiltro.setRowFilter(RowFilter.regexFilter(jTextFieldBusqueda.getText(), columnaABuscar));
     }
@@ -356,7 +358,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
             try{
-                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.loteID = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
                 this.cliente = cliente;
                 String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
                 StringTokenizer st = new StringTokenizer(mesAño, " ");
@@ -424,7 +426,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
             try{
-                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.loteID = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
                 this.cliente = cliente;
                 String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
                 StringTokenizer st = new StringTokenizer(mesAño, " ");
@@ -467,7 +469,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
             try{
-                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.loteID = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
                 this.cliente = cliente;
                 String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
                 StringTokenizer st = new StringTokenizer(mesAño, " ");
@@ -510,7 +512,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
             try{
-                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.loteID = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
                 System.out.println(loteID);
                 this.cliente = cliente;
                 String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
@@ -565,7 +567,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
             try{
-                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.loteID = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
                 this.cliente = cliente;
                 String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
                 StringTokenizer st = new StringTokenizer(mesAño, " ");
@@ -606,7 +608,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
         Reportes reportes = new Reportes();
         if (cliente.equalsIgnoreCase("No selecciono") == false) {
             try{
-                this.loteID = this.idLotes.get(jTableLotes.getSelectedRow());
+                this.loteID = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
                 this.cliente = cliente;
                 String mesAño = JOptionPane.showInputDialog(null, "Ingrese el año y el mes separados por un espacio");
                 StringTokenizer st = new StringTokenizer(mesAño, " ");
@@ -644,7 +646,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
 
     public String obtenerIdentificacionSeleccionado(){
         try{
-            String identificacion = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 0));
+            String identificacion = String.valueOf(jTableLotes.getValueAt(jTableLotes.getSelectedRow(), 1));
             return identificacion;
         }catch(Exception e){
             return "No selecciono";

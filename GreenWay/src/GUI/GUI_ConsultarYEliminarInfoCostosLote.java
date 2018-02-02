@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Daniel
  */
 public class GUI_ConsultarYEliminarInfoCostosLote extends javax.swing.JFrame {
-
+    
     String loteID = null;
     String cliente = null;
     Gui_InfoLotes gui_infoLotes = null;
@@ -41,7 +41,7 @@ public class GUI_ConsultarYEliminarInfoCostosLote extends javax.swing.JFrame {
     public GUI_ConsultarYEliminarInfoCostosLote(Gui_InfoLotes gui_infoLotes) {
         initComponents();
         this.gui_infoLotes=gui_infoLotes;
-        
+        this.setLocationRelativeTo(null);
         
         
         this.jTextFieldLote.setText(this.gui_infoLotes.gui_adminLotes.loteID);

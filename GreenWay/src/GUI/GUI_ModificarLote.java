@@ -423,7 +423,7 @@ public class GUI_ModificarLote extends javax.swing.JFrame {
             if ((Cliente_identificacion.equalsIgnoreCase("No selecciono")) || (Ubicacion_id_ubicacion.equalsIgnoreCase("No selecciono"))) {
                 JOptionPane.showMessageDialog(null, "Seleccione un cliente y una ubicacion para el lote", "Error", JOptionPane.ERROR_MESSAGE);
             }else{
-                String identificador = Cliente_identificacion +"-"+ Cultivo_identificador +"-"+ Ubicacion_id_ubicacion;
+                String identificador = idLote;
                 String resultado = this.agregarLote(Cliente_identificacion, Cultivo_identificador, identificador, area, numero_plantas, costo_por_hora, Ubicacion_id_ubicacion);
                 
                 if (resultado.equalsIgnoreCase("El lote no se encuentra registrado.")) {
