@@ -152,7 +152,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
                 }
                 
                 //se crea el objeto una vez se hayan extraido los datos
-                CostosInversion c = new CostosInversion(item, valor);
+                CostosInversion c = new CostosInversion(item, valor*horas);
                 costos.add(c);
   
             }
