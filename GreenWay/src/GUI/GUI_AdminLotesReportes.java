@@ -152,7 +152,7 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
                 }
                 
                 //se crea el objeto una vez se hayan extraido los datos
-                CostosInversion c = new CostosInversion(item, valor*horas);
+                CostosInversion c = new CostosInversion(item, valor*horas, valor, Integer.toString(horas)+" horas");
                 costos.add(c);
   
             }
@@ -541,12 +541,12 @@ public class GUI_AdminLotesReportes extends javax.swing.JFrame {
                     listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
                     listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(3).toString());
                     listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
-                    System.err.println(loteID);
+                    //System.err.println(loteID);
                 }else{
                     listaCostos1 = new DaoCostosOperacionalesOtros().consultarCostosOtrosxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
                     listaCostos2 = new DaoCostosOperacionalesProducto().consultarCostosProductoxMesBD(loteID, año, semanas.get(0).toString(), semanas.get(1).toString(), semanas.get(2).toString(), semanas.get(3).toString(), semanas.get(4).toString());
                     listaCostos3 = this.valorOperacionalxSemana(loteID, año, mes);
-                    System.err.println(loteID);
+                    //System.err.println(loteID);
                 }
 
                 listaCostos1.addAll(listaCostos2);

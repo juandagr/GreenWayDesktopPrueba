@@ -153,7 +153,7 @@ public class DaoCostosOperacionalesOtros {
     public List<CostosInversion> consultarCostosOtrosxMesBD(String loteId, String anio, String s1,String s2,String s3,String s4,String s5 ){
         
         String sql_select;
-        sql_select="SELECT  items_de_inversion_item, SUM(valor) AS valor FROM costos_operacionales_otros WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio
+        sql_select="SELECT  items_de_inversion_item, SUM(valor), count(items_de_inversion_item) AS valor FROM costos_operacionales_otros WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio
                 + "' AND (semana ='"+s1+ "' OR semana ='"+s2+ "' OR semana ='"+s3+ "' OR semana ='"+s4+ "' OR semana ='"+s5+"') GROUP BY items_de_inversion_item"+";";
         try{System.err.println(sql_select);
             Connection conn= fachada.conectar_BD();
@@ -174,8 +174,9 @@ public class DaoCostosOperacionalesOtros {
 
                 String item = respuesta.getString(1);
                 Double valor = respuesta.getDouble(2);           
+                Double unidades = respuesta.getDouble(3);
                 //se crea el objeto una vez se hayan extraido los datos
-                CostosInversion c = new CostosInversion(item, valor);
+                CostosInversion c = new CostosInversion(item, valor, valor, String.valueOf(unidades)+" unidades");
                 costos.add(c);
   
             }

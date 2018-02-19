@@ -13,7 +13,17 @@ public class CostosInversion {
     
     String item;
     Double valor;
+    Double valorUnitario;
+    String unidades;
 
+    public CostosInversion(String item, Double valor, Double valorUnitario, String unidades) {
+        this.item = item;
+        this.valor = valor;
+        this.valorUnitario = valorUnitario;
+        this.unidades = unidades;
+    }
+
+    
     public CostosInversion(String item, Double valor) {
         this.item = item;
         this.valor = valor;
@@ -33,6 +43,22 @@ public class CostosInversion {
 
     public void setValor(Double valor) {
         this.valor = valor;
+    }
+
+    public Double getValorUnitario() {
+        return valorUnitario;
+    }
+
+    public String getUnidades() {
+        return unidades;
+    }
+
+    public void setValorUnitario(Double valorUnitario) {
+        this.valorUnitario = valorUnitario;
+    }
+
+    public void setUnidades(String unidades) {
+        this.unidades = unidades;
     }
 
     

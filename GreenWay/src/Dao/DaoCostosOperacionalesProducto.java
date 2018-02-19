@@ -160,7 +160,7 @@ public class DaoCostosOperacionalesProducto {
     public List<CostosInversion> consultarCostosProductoxMesBD(String loteId, String anio, String s1,String s2,String s3,String s4,String s5 ){
         
         String sql_select;
-        sql_select="SELECT  items_de_inversion_item, SUM(costo_final) AS valor FROM costos_operacionales_producto WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio
+        sql_select="SELECT  items_de_inversion_item, SUM(costo_final), SUM(volumen_gastado), AVG(costo_producto / presentacion) AS valor FROM costos_operacionales_producto WHERE Lote_identificador ='"+loteId+ "' AND anio ='" +anio
                 + "' AND (semana ='"+s1+ "' OR semana ='"+s2+ "' OR semana ='"+s3+ "' OR semana ='"+s4+ "' OR semana ='"+s5+"') GROUP BY items_de_inversion_item"+";";
         try{System.err.println(sql_select);
             Connection conn= fachada.conectar_BD();
@@ -172,6 +172,8 @@ public class DaoCostosOperacionalesProducto {
             System.out.println("Error al consultar datos");
         }
         
+        
+        
         List<CostosInversion> costos = new ArrayList();
         try {
             //se extraen los registros de la tabla cliente
@@ -181,8 +183,10 @@ public class DaoCostosOperacionalesProducto {
 
                 String item = respuesta.getString(1);
                 Double valor = respuesta.getDouble(2);           
+                String unidades = respuesta.getString(3)+" ml";           
+                Double valorUnidad  = respuesta.getDouble(4);           
                 //se crea el objeto una vez se hayan extraido los datos
-                CostosInversion c = new CostosInversion(item, valor);
+                CostosInversion c = new CostosInversion(item, valor, valorUnidad, unidades);
                 costos.add(c);
   
             }

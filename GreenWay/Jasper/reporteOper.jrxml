@@ -2,11 +2,13 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteInv" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab7622d0-0bb4-40b2-a37d-0c3a16b2c26e">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="245"/>
 	<parameter name="fondo" class="java.io.InputStream"/>
 	<parameter name="mes" class="java.lang.String"/>
 	<field name="valor" class="java.lang.Double"/>
 	<field name="item" class="java.lang.String"/>
+	<field name="valorUnitario" class="java.lang.Double"/>
+	<field name="unidades" class="java.lang.String"/>
 	<background>
 		<band height="802" splitType="Stretch">
 			<image>
@@ -25,10 +27,10 @@
 		</band>
 	</background>
 	<title>
-		<band height="316" splitType="Stretch">
+		<band height="380" splitType="Stretch">
 			<pie3DChart>
 				<chart evaluationTime="Report">
-					<reportElement x="137" y="140" width="274" height="166" uuid="e409261b-0131-4a2b-9725-5ed99490cdf1"/>
+					<reportElement x="115" y="142" width="318" height="211" uuid="e409261b-0131-4a2b-9725-5ed99490cdf1"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -61,30 +63,52 @@
 	<columnHeader>
 		<band height="34" splitType="Stretch">
 			<staticText>
-				<reportElement x="152" y="0" width="80" height="20" uuid="d45be16d-4cd7-4fef-a585-1affc8ff17b4"/>
+				<reportElement x="66" y="0" width="80" height="20" uuid="d45be16d-4cd7-4fef-a585-1affc8ff17b4"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[COSTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="311" y="0" width="100" height="20" uuid="9e0d83b6-6103-4613-94d1-8da1af9f1906"/>
+				<reportElement x="411" y="0" width="100" height="20" uuid="9e0d83b6-6103-4613-94d1-8da1af9f1906"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[VALOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="80" height="20" uuid="2bdf8f95-ea47-4abc-b045-ee319128de21"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIDADES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="0" width="122" height="20" uuid="3924de3b-4caf-4d95-8923-b38bcf69da4b"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR UNITARIO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="25" splitType="Stretch">
 			<textField>
-				<reportElement x="323" y="0" width="100" height="20" uuid="df237df0-0239-4ed8-a021-f97715632ea1"/>
+				<reportElement x="411" y="0" width="100" height="20" uuid="df237df0-0239-4ed8-a021-f97715632ea1"/>
 				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="152" y="0" width="100" height="20" uuid="66ad5e7f-13cd-41eb-a0d9-d19434448946"/>
+				<reportElement x="66" y="0" width="100" height="20" uuid="66ad5e7f-13cd-41eb-a0d9-d19434448946"/>
 				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="80" height="20" uuid="67667043-cd4a-4cd0-91a6-955d488482ac"/>
+				<textFieldExpression><![CDATA[$F{unidades}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="277" y="0" width="100" height="20" uuid="b8a11283-6834-4b50-9b25-73feaecb7bf8"/>
+				<textFieldExpression><![CDATA[$F{valorUnitario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
